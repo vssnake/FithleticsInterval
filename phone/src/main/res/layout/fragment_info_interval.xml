@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    tools:context="vssnake.intervaltraining.customFragments.InfoIntervalFragment"
+    android:background="@color/black">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/tabata"
+        android:id="@+id/infoInterval_Title_TextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:textColor="#ff439eff" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_below="@+id/infoInterval_Title_TextView"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="50">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/Rounds"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textColor="@android:color/holo_red_dark" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="1/8"
+                android:id="@+id/infoInterval_Rounds_TextView"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="50">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/Mode"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textColor="@android:color/holo_red_dark" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/Running"
+                android:id="@+id/infoInterval_Mode_TextView"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
