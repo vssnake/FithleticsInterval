@@ -38,6 +38,10 @@ public abstract class MainBase_Activity extends Activity
     private CharSequence mTitle;
 
 
+    public  static final String FRAGMENT_KEY = "FRAGMENT";
+    public static final int TABATA_FRAGMENT = 2;
+
+
 
 
     @Override
@@ -49,10 +53,20 @@ public abstract class MainBase_Activity extends Activity
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
+
+
+
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Intent i = getIntent();
+        int fragmentKey = i.getIntExtra(MainBase_Activity.FRAGMENT_KEY,-1);
+
+        if (fragmentKey > -1){
+            onNavigationDrawerItemSelected(fragmentKey);
+        }
 
 
     }

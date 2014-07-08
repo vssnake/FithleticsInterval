@@ -45,7 +45,8 @@ public class IntervalNotification {
      */
     public static Notification notify(final Context context,final String intervalName,
             final int numberInterval, final int totalIntervals,final String stateInterval,
-            final String intervalTime, final String totalTime) {
+            final String intervalTime, final String totalTime,PendingIntent showIntent,
+            PendingIntent closeIntent) {
         final Resources res = context.getResources();
 
         // This image is used as the notification's large icon (thumbnail).
@@ -56,7 +57,7 @@ public class IntervalNotification {
 
 
        Notification notification = createNotification(context,intervalName,numberInterval,totalIntervals,
-               stateInterval,intervalTime,totalTime);
+               stateInterval,intervalTime,totalTime,showIntent,closeIntent);
         notify(context, notification);
         return notification;
     }
@@ -64,7 +65,10 @@ public class IntervalNotification {
     public static Notification createNotification(final Context context,final String intervalName,
                                                   final int numberInterval, final int totalIntervals,
                                                   final String stateInterval,final String intervalTime,
-                                                  final String totalTime){
+                                                  final String totalTime,PendingIntent showIntent,
+                                                  PendingIntent closeIntent){
+
+
 
         RemoteViews contentView = new RemoteViews(context.getPackageName(),
                 R.layout.notification_interval);
@@ -73,6 +77,10 @@ public class IntervalNotification {
         contentView.setTextViewText(R.id.notifIntervalState_TextView,stateInterval);
         contentView.setTextViewText(R.id.notifIntervalTime_TextView,intervalTime);
         contentView.setTextViewText(R.id.notifIntervalTotalTime_TextView,totalTime);
+        contentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button,closeIntent);
+
+
+
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -93,9 +101,12 @@ public class IntervalNotification {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
 
+                .setContentIntent(showIntent)
+
 
                         // Automatically dismiss the notification when it is touched.
                 .setAutoCancel(true);
+
         Notification notification = builder.build();
         notification.defaults = Notification.DEFAULT_LIGHTS;
 

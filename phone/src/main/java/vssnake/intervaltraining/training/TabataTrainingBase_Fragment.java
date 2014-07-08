@@ -56,9 +56,7 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
         main_Activity =(Main_Activity) getActivity();
         intent = new Intent(main_Activity,Interval_Service.class);
 
@@ -74,11 +72,7 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
         super.onResume();
     }
 
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-       // getActivity().stopService(new Intent(getActivity(),Tabata_Service.class));
-    }
+
 
 
     @Override

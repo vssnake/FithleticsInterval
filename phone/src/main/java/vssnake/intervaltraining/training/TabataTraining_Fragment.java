@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import vssnake.intervaltraining.R;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -55,18 +58,38 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     };
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
+        getActivity().startService(intent);
+
+    }
+
+    @Override
+    public void onDestroy(){
+        getActivity().unbindService(mConnection);
+        super.onDestroy();
+    }
+
+
+
+    @Override
     public void onPause(){
         if (binder != null) {
             binder.runBackground(true);
+            Log.i("Background","true");
         }
-        getActivity().unbindService(mConnection);
+
         super.onPause();
     }
     @Override
     public void onResume(){
-        getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
-        getActivity().startService(intent);
 
+        if (binder != null) {
+            binder.runBackground(false);
+            Log.i("Background", "false");
+
+        }
 
         super.onResume();
     }
@@ -78,6 +101,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
             mBound = false;
+
         }
 
         Interval_Service mService;
@@ -89,6 +113,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
             mService = binder.getService();
             binder.setListener(TabataTraining_Fragment.this);
             mBound = true;
+            Log.i("Background", "false | OnSericeConnected");
             binder.runBackground(false);
 
         };
@@ -109,5 +134,17 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     @Override
     public void changeInterval(int numberInterval, int totalInterval) {
         mInfoIntervalFragment.changeRound(numberInterval,totalInterval);
+    }
+
+    @Override
+    public void statusInterval(boolean status) {
+        if(isAdded()){
+            if (status){
+                mStartCountDownButton.setText(getResources().getString(R.string.stopCountDown));
+            }else{
+                mStartCountDownButton.setText( getResources().getString(R.string.startCountDown));
+            }
+        }
+
     }
 }

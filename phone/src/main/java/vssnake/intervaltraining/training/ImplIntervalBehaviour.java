@@ -65,8 +65,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
             currentIntervalTime -=currentIntervalSpace;
             lastIntervalsTime = totalIntervalsTime - currentIntervalTime;
 
-            iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,
-                    new Integer(2));
+            iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,2);
             tryone = false; trytwo = false; trythree = false;
 
             if (currentIntervalSpace == timeToRest){
@@ -90,17 +89,17 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
             if (!trythree && (currentIntervalSpace - currentIntervalTime)<=3000){
                 trythree = true;
                 iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,
-                        new Integer(1));
+                        1);
             }
             if (!trytwo && (currentIntervalSpace - currentIntervalTime)<=2000){
                 trytwo = true;
                 iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,
-                        new Integer(1));
+                        1);
             }
             if (!tryone && (currentIntervalSpace - currentIntervalTime)<=1000){
                 tryone = true;
                 iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,
-                        new Integer(1));
+                        1);
             }
         }
         mIntervalData.setIntervalData(currentInterval,totalIntervals,
@@ -119,6 +118,8 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
         currentInterval = 1;
         currentIntervalTime = 0;
         totalIntervalsTime = 0;
+       // currentIntervalSpace = 0;
+        lastIntervalsTime = 0;
         finish = false;
         intervalState = IntervalData_Base.eIntervalState.RUNNING;
         return true;

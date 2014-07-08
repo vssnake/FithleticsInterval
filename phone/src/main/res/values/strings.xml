@@ -16,7 +16,8 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="countDown_button">Start CountDown</string>
+    <string name="startCountDown">Start CountDown</string>
+    <string name="stopCountDown">Stop CountDown</string>
 
     <!-- Main Fragment -->
     <string name="last_intervals">Last Intervals</string>
@@ -35,6 +36,7 @@
     <string name="Mode">Mode</string>
     <string name="Resting">Resting</string>
     <string name="Running">Running</string>
+    <string name="nothing">Nothing</string>
 
     <!--NotificationInterval -->
     <string name="Pause">Pause</string>

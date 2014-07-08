@@ -2,8 +2,11 @@ package vssnake.intervaltraining.training;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Binder;
@@ -11,12 +14,17 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.util.SparseArray;
 
 import java.util.HashMap;
 
 import vssnake.intervaltraining.IntervalNotification;
 import vssnake.intervaltraining.R;
+import vssnake.intervaltraining.main.MainBase_Activity;
+import vssnake.intervaltraining.main.Main_Activity;
+import vssnake.intervaltraining.model.Exercise;
 import vssnake.intervaltraining.utils.Utils;
 
 /**
@@ -39,21 +47,29 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
 
     boolean background = false;
 
+    //Is the Interval Running
+    boolean isIntervalStart = false; //
+
     IntervalBehaviour intervalBehaviour;
 
     Notification mNotification;
 
 
     private SoundPool soundPool;
-    private HashMap<Integer, Integer> soundsMap;
+    private SparseArray<Integer> soundsMap;
     int SOUND1=1;
     int SOUND2=2;
+
+
+    long timeInMilliseconds = 0L;
+    long startTime = 0L;
 
     public interface IntervalServiceListener {
 
         public void changeIntervalMode(String mode);
         public void changeTime(long secondsTotal,long secondInterval);
         public void changeInterval(int numberInterval,int totalInterval);
+        public void statusInterval(boolean status);
 
     }
 
@@ -101,11 +117,12 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
 
 
 
+        //Start the sounds for interval
         soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 100);
-        soundsMap = new HashMap<Integer, Integer>();
+        soundsMap = new SparseArray<Integer>();
         soundsMap.put(SOUND1, soundPool.load(this, R.raw.sfx, 1));
         soundsMap.put(SOUND2, soundPool.load(this, R.raw.sfx2, 1));
-
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,new IntentFilter("TEST"));
 
     }
 
@@ -113,6 +130,11 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
     public int onStartCommand(Intent intent,int flags,int startId){
         //Get the binder for activity class
 
+        String action = intent.getAction();
+        if (intent.getAction() == "STOP"){
+            endTrain();
+
+        }
 
         return START_STICKY;
 
@@ -122,6 +144,7 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
     @Override
     public void onDestroy(){
         Log.i("Tabata_Service", "Destroy service");
+        isIntervalStart = false;
         handler.removeCallbacks(runnable);
         super.onDestroy();
 
@@ -129,38 +152,17 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
 
 
 
-    long timeInMilliseconds = 0L;
-    long startTime = 0L;
+
 
     void startTabata(){
-        intervalBehaviour = ImplIntervalBehaviour.newInstance(8,10000,20000,this);
-
-        notificationTitle = getResources().getString(R.string.tabata);
-        notification = IntervalNotification.createNotification(getApplicationContext(),getApplicationContext().
-                        getResources().getString(R.string.tabata),0,0,"nothing","00:00","00:00");
-
-        runnable = new Runnable() {
-            @Override
-            public void run() {
 
 
-                    timeInMilliseconds = SystemClock.uptimeMillis() -  startTime;
-
-
-
-                    handler.postDelayed(this,500);
-                    intervalBehaviour.executeTime(timeInMilliseconds);
-
-
-
-            }
-        };
-       // Log.i("Tabata_Service", "Start Tabata");
-        if (startTime == 0){
-            startTime = SystemClock.uptimeMillis();
+        if (!isIntervalStart){
+           startTrain();
+        }else{
+            endTrain();
         }
 
-        handler.postDelayed(runnable,500);
     }
 
     public void playSound(int sound, float fSpeed) {
@@ -175,12 +177,24 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
 
 
     void setBackground(boolean background){
-        if (background){
-            startForeground(1024, notification);
-        }else{
+
+        if (isIntervalStart){
+            if (background){
+                startForeground(1024, notification);
+            }else{
+                stopForeground(true);
+            }
+
+        }
+        if (!background){
             stopForeground(true);
         }
+        if (mListener != null){
+            mListener.statusInterval(isIntervalStart);
+        }
         this.background = background;
+
+
     }
 
     @Override
@@ -195,27 +209,30 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
                     intervalData.getIntervalTime());
 
             if (background){
+
+                PendingIntent showFragmentIntent ;
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), Main_Activity.class);
+
+                intent.putExtra(MainBase_Activity.FRAGMENT_KEY,MainBase_Activity.TABATA_FRAGMENT);
+                showFragmentIntent = PendingIntent.getActivity(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+                PendingIntent cancelIntervalIntent ;
+                Intent intervalIntent = new Intent(this,Interval_Service.class);
+                intervalIntent.setAction("STOP");
+                cancelIntervalIntent = PendingIntent.getService(getBaseContext(),0,intervalIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
                 notification = IntervalNotification.createNotification(getApplicationContext(),getApplicationContext().
                                 getResources().getString(R.string.tabata),
                         intervalData.getNumberInterval(),
                         intervalData.getTotalIntervals(),
                         intervalData.getIntervalState().name(),
                         Utils.formatIntervalTime(intervalData.getIntervalTime()/1000),
-                        Utils.formatTotalIntervalTime(intervalData.getTotalIntervalTime()/1000));
+                        Utils.formatTotalIntervalTime(intervalData.getTotalIntervalTime()/1000),
+                        showFragmentIntent,cancelIntervalIntent);
 
                 mNotificationManager.notify(1024,notification);
             }
-
-
-
-           /*mListener.showTabataData(intervalData.getTotalIntervalTime(),
-                    intervalData.getIntervalTime(),intervalData.getNumberInterval(),
-                    intervalData.getTotalIntervals(),"hello");*/
-            /*Log.i("ServiceNotification",intervalData.getIntervalTime() /1000 + " IntervalTime");
-            Log.i("ServiceNotification",intervalData.getTotalIntervalTime() /1000 + " TotalIntervalTime");
-            Log.i("ServiceNotification",intervalData.getNumberInterval() /1000 + " NumberInterval");
-            Log.i("ServiceNotification",intervalData.getTotalIntervals() /1000 + " TotalIntervals");*/
-
 
         }
     }
@@ -223,6 +240,54 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
     @Override
     public void endTrain() {
         handler.removeCallbacks(runnable);
+        IntervalData_Base intervalData = new IntervalData_Base();
+        intervalData.setIntervalData(1,8, IntervalData_Base.eIntervalState.RUNNING,0,0,0);
+        isIntervalStart = false;
+        newNotification(intervalData);
+        setBackground(false);
+
+        if (mListener != null){
+            mListener.statusInterval(isIntervalStart);
+        }
+    }
+
+    void startTrain(){
+
+
+        if (intervalBehaviour == null)
+            intervalBehaviour = ImplIntervalBehaviour.newInstance(2,10000,20000,this);
+
+        intervalBehaviour.resetInterval();
+
+        notificationTitle = getResources().getString(R.string.tabata);
+        notification = IntervalNotification.createNotification(getApplicationContext(),getApplicationContext().
+                getResources().getString(R.string.tabata),0,0,"nothing","00:00","00:00",null,null);
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+
+
+                timeInMilliseconds = SystemClock.uptimeMillis() -  startTime;
+
+
+
+                handler.postDelayed(this,500);
+                intervalBehaviour.executeTime(timeInMilliseconds);
+
+
+
+            }
+        };
+        // Log.i("Tabata_Service", "Start Tabata");
+
+        startTime = SystemClock.uptimeMillis();
+
+        isIntervalStart = true;
+        if (mListener != null){
+            mListener.statusInterval(isIntervalStart);
+        }
+        handler.postDelayed(runnable,500);
     }
 
 
@@ -238,4 +303,12 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
                     break;
             }
     }
+
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+    };
 }
