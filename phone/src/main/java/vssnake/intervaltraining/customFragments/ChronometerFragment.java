@@ -96,7 +96,7 @@ public class ChronometerFragment extends Fragment {
      */
     private void changeFontsAndSize(){
 
-        mIntervalTime.setTextSize(50);
+        mIntervalTime.setTextSize(80);
         mIntervalTime.setTextColor(Color.RED);
         mIntervalTime.setTypeface(font);
 

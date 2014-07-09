@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import vssnake.intervaltraining.R;
-
 /**
  * A simple {@link android.app.Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -34,7 +32,8 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
 
        View view =   super.onCreateView(inflater,container,savedInstanceState);
-        mStartCountDownButton.setOnClickListener(botonClick);
+
+        mSecondFrame.setOnClickListener(botonClick);
         return view;
 
     }
@@ -139,13 +138,13 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
     @Override
     public void statusInterval(boolean status) {
-        if(isAdded()){
+       /* if(isAdded()){
             if (status){
                 mStartCountDownButton.setText(getResources().getString(R.string.stopCountDown));
             }else{
                 mStartCountDownButton.setText( getResources().getString(R.string.startCountDown));
             }
-        }
+        }*/
 
     }
 }

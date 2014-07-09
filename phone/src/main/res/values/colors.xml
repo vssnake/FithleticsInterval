@@ -4,4 +4,6 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="red">#ffff0008</color>
+    <color name="cream_dark">#000000</color>
+    <color name="cream">#ffffff</color>
 </resources>

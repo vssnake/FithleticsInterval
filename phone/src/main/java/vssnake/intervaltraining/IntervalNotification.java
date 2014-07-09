@@ -86,11 +86,11 @@ public class IntervalNotification {
 
                 // Set appropriate defaults for the notification light, sound,
                 // and vibration.
-                .setDefaults(Notification.DEFAULT_ALL)
+                .setDefaults(Notification.DEFAULT_LIGHTS)
 
                         // Set required fields, including the small icon, the
                         // notification title, and text.
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.hiit)
                         //.setContentTitle(title)
                         //.setContentText(text)
 

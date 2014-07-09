@@ -125,6 +125,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
         currentIntervalTime = 0;
         totalIntervalsTime = 0;
         lastIntervalsTime = 0;
+        currentIntervalSpace = timeToExercise;
         finish = false;
         intervalState = IntervalData_Base.eIntervalState.RUNNING;
         return true;

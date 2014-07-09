@@ -6,28 +6,49 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/startCountDown"
-        android:id="@+id/training_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp" />
-
-    <FrameLayout
+    <View
         android:layout_width="fill_parent"
-        android:layout_height="140dp"
+        android:layout_height="8dp"
+        android:background="@drawable/shadow_fragmentinterval2"
+        android:id="@+id/view3"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/intervalFragment_FirstFrame"></FrameLayout>
-
+        android:layout_marginTop="-1dp">
+    </View>
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="180dp"
-        android:layout_below="@+id/intervalFragment_FirstFrame"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/intervalFragment_SecondFrame"
-        android:layout_marginTop="10dp"></FrameLayout>
+        android:layout_height="130dp"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/view3"
+        android:id="@+id/intervalFragment_FirstFrame"
+        android:layout_marginTop="-1dp"></FrameLayout>
+    <View
+        android:layout_below="@id/intervalFragment_FirstFrame"
+        android:layout_width="fill_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/shadow_fragmentinterval"
+        android:id="@+id/view2">
+    </View>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:background="#f9a825"
+        android:layout_below="@+id/view2"
+        android:id="@+id/intervalFragment_clickView">
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="260dp"
+            android:layout_below="@+id/intervalFragment_FirstFrame"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/intervalFragment_SecondFrame"
+            android:layout_marginBottom="20dp">
+
+        </FrameLayout>
+    </LinearLayout>
 
 </RelativeLayout>

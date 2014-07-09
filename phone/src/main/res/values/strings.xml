@@ -27,7 +27,7 @@
     <string name="chronometer_total">Total</string>
     <string name="seconds">Seconds</string>
     <string name="interval_timer">Interval Timer</string>
-    <string name="total_remaining">Total \n Remaining</string>
+    <string name="total_remaining">Total Remaining</string>
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
 

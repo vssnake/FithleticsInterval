@@ -246,7 +246,7 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
     public void endTrain() {
         handler.removeCallbacks(runnable);
         IntervalData_Base intervalData = new IntervalData_Base();
-        intervalData.setIntervalData(1,8, IntervalData_Base.eIntervalState.RUNNING,0,0,0);
+        intervalData.setIntervalData(0,0, IntervalData_Base.eIntervalState.NOTHING,0,0,0);
         isIntervalStart = false;
         newNotification(intervalData);
         setBackground(false);

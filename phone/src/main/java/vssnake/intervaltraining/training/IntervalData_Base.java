@@ -35,7 +35,8 @@ public class IntervalData_Base {
 
     public enum eIntervalState{
         RUNNING,
-        RESTING
+        RESTING,
+        NOTHING
     }
 
     private int numberIntervals;

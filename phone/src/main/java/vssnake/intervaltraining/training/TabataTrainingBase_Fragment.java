@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
 import vssnake.intervaltraining.R;
@@ -23,7 +21,7 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
 
     OnFragmentInteractionListener mListener;
 
-    Button mStartCountDownButton;
+    View mIntervalClickView;
 
     ChronometerFragment mChronometerFragment;
 
@@ -31,8 +29,8 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
 
 
 
-    FrameLayout FirstFrame;
-    FrameLayout SecondFrame;
+    FrameLayout mFirstFrame;
+    FrameLayout mSecondFrame;
 
     Main_Activity main_Activity;
 
@@ -105,14 +103,14 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
 
         View view = inflater.inflate(R.layout.fragment_training_tabata, container, false);
 
-        FirstFrame = (FrameLayout)view.findViewById(R.id.intervalFragment_FirstFrame);
-        SecondFrame = (FrameLayout)view.findViewById(R.id.intervalFragment_SecondFrame);
+        mFirstFrame = (FrameLayout)view.findViewById(R.id.intervalFragment_FirstFrame);
+        mSecondFrame = (FrameLayout)view.findViewById(R.id.intervalFragment_SecondFrame);
 
 
 
 
 
-        mStartCountDownButton = (Button) view.findViewById(R.id.training_button);
+        mIntervalClickView = (View) view.findViewById(R.id.intervalFragment_clickView);
         //mChronometerFragment = (ChronometerFragment) getFragmentManager().findFragmentById(R.id.tabataChronometer_Fragment);
 
 

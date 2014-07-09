@@ -3,31 +3,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="120dp"
     android:id="@+id/intervalNotification"
-    android:background="#e1050804">
+    android:background="#ffd8460f">
 
     <ImageView android:id="@+id/notifIntervalImage_Image"
         android:layout_width="90dp"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/hiit"
+        android:layout_below="@+id/notifIntervalClose_Button" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/notifIntervalImage_Image">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Tabata"
-            android:id="@+id/notifIntervalName_TextView"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@android:color/holo_blue_dark" />
+        android:layout_toRightOf="@+id/notifIntervalImage_Image"
+        android:layout_marginLeft="4dp"
+        android:layout_alignTop="@+id/notifIntervalImage_Image">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -35,43 +27,51 @@
             android:layout_height="37dp">
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/notification_Round"
-                android:textColor="@android:color/darker_gray"
-                android:gravity="center" />
-
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="2/8"
-                android:id="@+id/notifIntervalRound_TextView"
-                android:textColor="@color/white"
-                android:layout_marginLeft="0dp"
-                android:gravity="center" />
-
-            <TextView
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
-                android:background="@color/white"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="20dp" />
-
-            <TextView
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Running"
-                android:id="@+id/notifIntervalState_TextView"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:gravity="center" />
+                android:layout_weight="50">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/notification_Round"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:alpha="0.6" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="2/8"
+                    android:id="@+id/notifIntervalRound_TextView"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="0dp"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="50">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Running"
+                    android:id="@+id/notifIntervalState_TextView"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:alpha="1" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView
@@ -98,16 +98,18 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/notification_Interval_time"
-                    android:textColor="@android:color/darker_gray"
-                    android:gravity="left" />
+                    android:textColor="@color/black"
+                    android:gravity="left"
+                    android:alpha="0.6" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/notification_Total_time"
-                    android:textColor="@android:color/darker_gray"
-                    android:gravity="left" />
+                    android:textColor="@color/black"
+                    android:gravity="left"
+                    android:alpha="0.6" />
             </LinearLayout>
 
             <LinearLayout
@@ -118,20 +120,24 @@
                 android:gravity="left|center_vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="20 Seconds"
                     android:id="@+id/notifIntervalTime_TextView"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textAlignment="gravity"
+                    android:gravity="center_vertical|center_horizontal" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="12 min 04 sec"
                     android:id="@+id/notifIntervalTotalTime_TextView"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textAlignment="gravity"
+                    android:gravity="center_vertical|center_horizontal" />
             </LinearLayout>
         </LinearLayout>
 
@@ -152,5 +158,18 @@
         android:layout_marginRight="0dp"
         android:gravity="center"
         android:clickable="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Tabata"
+        android:id="@+id/notifIntervalName_TextView"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#fbe9e7"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
