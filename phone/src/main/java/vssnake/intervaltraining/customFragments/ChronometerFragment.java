@@ -106,12 +106,16 @@ public class ChronometerFragment extends Fragment {
     }
 
     public void changeTime(Long secondsTotal,Long secondsInterval){
-        //Reformat and convert of milliseconds to seconds
-        secondsTotal = secondsTotal/1000;
-        secondsInterval = secondsInterval/1000;
+        if (isAdded()){
+            //Reformat and convert of milliseconds to seconds
+            secondsTotal = secondsTotal/1000;
+            secondsInterval = secondsInterval/1000;
 
-        mIntervalTime.setText(Utils.formatIntervalTime(secondsInterval));
+            mIntervalTime.setText(Utils.formatIntervalTime(secondsInterval));
 
-        mTotalTime.setText(Utils.formatTotalIntervalTime(secondsTotal));
+            mTotalTime.setText(Utils.formatTotalIntervalTime(secondsTotal));
+        }
+
+
     }
 }

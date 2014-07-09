@@ -1,7 +1,5 @@
 package vssnake.intervaltraining.training;
 
-import android.util.Log;
-
 /**
  * Created by unai on 04/07/2014.
  */
@@ -26,47 +24,56 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
     boolean finish= false;
 
+    int[] soundTimeArray;
+    int [] temporalSoundArray;
+
     private ImplIntervalBehaviour(int totalIntervals, long timeToRest,
-                                  long timeToExercise,IntervalServiceConnector iIntervalService){
+                                  long timeToExercise,IntervalServiceConnector iIntervalService,
+                                  int[] soundsTimeArray){
         this.totalIntervals = totalIntervals;
         this.timeToRest = timeToRest;
         this.timeToExercise = timeToExercise;
         currentIntervalSpace = timeToExercise;
         this.iIntervalService = iIntervalService;
+
+
+
+        this.soundTimeArray = soundsTimeArray;
+
+        this.temporalSoundArray = soundsTimeArray.clone();
+
         mIntervalData = new IntervalData_Base();
     }
 
     public static ImplIntervalBehaviour
                     newInstance (int totalIntervals, int timeToRest,
-                    int timeToExercise,IntervalServiceConnector iIntervalService){
+                    int timeToExercise,IntervalServiceConnector iIntervalService,
+                    int[] soundsTimeArray){
         return new ImplIntervalBehaviour(totalIntervals,
-                timeToRest,timeToExercise,iIntervalService);
+                timeToRest,timeToExercise,iIntervalService,soundsTimeArray);
     }
 
-    boolean tryone = false;
-    boolean trytwo = false;
-    boolean trythree = false;
     /***
      * @Override
      * @param time In milliseconds
      */
     public void executeTime(long time) {
+
         totalIntervalsTime = time;
         currentIntervalTime = totalIntervalsTime - lastIntervalsTime;
-        /*Log.i("IntervalBehaviour", totalIntervalsTime + " Total Time |" +
-                currentIntervalTime + " Current IntervalTime |"  +
-            intervalState.name().toString() + " Interval State |" +
-            currentInterval + " Current Interval");*/
 
 
         if (currentIntervalSpace <= currentIntervalTime){
+
+            //Set again the sound array
+            temporalSoundArray = soundTimeArray.clone();
+
             //Reset the new intervalTime + the time overhead
 
             currentIntervalTime -=currentIntervalSpace;
             lastIntervalsTime = totalIntervalsTime - currentIntervalTime;
 
             iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,2);
-            tryone = false; trytwo = false; trythree = false;
 
             if (currentIntervalSpace == timeToRest){
                 //The user is going to rest
@@ -86,21 +93,20 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
                 currentIntervalSpace = timeToRest;
             }
         }else{
-            if (!trythree && (currentIntervalSpace - currentIntervalTime)<=3000){
-                trythree = true;
-                iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,
-                        1);
+            if (temporalSoundArray.length != 0) {
+                int intervalTime =  (int)(currentIntervalSpace - currentIntervalTime);
+                for (int i = 0; i < temporalSoundArray.length; i++) {
+                    if (intervalTime <= temporalSoundArray[i]){
+                        temporalSoundArray[i]=-1;
+                        iIntervalService.specialCommand(
+                                IntervalServiceConnector.specialsCommands.sound, 1);
+                    }
+                }
+
             }
-            if (!trytwo && (currentIntervalSpace - currentIntervalTime)<=2000){
-                trytwo = true;
-                iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,
-                        1);
-            }
-            if (!tryone && (currentIntervalSpace - currentIntervalTime)<=1000){
-                tryone = true;
-                iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,
-                        1);
-            }
+
+
+
         }
         mIntervalData.setIntervalData(currentInterval,totalIntervals,
                 intervalState,totalIntervalsTime,currentIntervalTime,0);
@@ -118,7 +124,6 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
         currentInterval = 1;
         currentIntervalTime = 0;
         totalIntervalsTime = 0;
-       // currentIntervalSpace = 0;
         lastIntervalsTime = 0;
         finish = false;
         intervalState = IntervalData_Base.eIntervalState.RUNNING;

@@ -260,7 +260,8 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
 
 
         if (intervalBehaviour == null)
-            intervalBehaviour = ImplIntervalBehaviour.newInstance(2,10000,20000,this);
+            intervalBehaviour = ImplIntervalBehaviour.newInstance(2,10000,20000,this, new int[]{3000,
+            2000,1000});
 
         intervalBehaviour.resetInterval();
 
