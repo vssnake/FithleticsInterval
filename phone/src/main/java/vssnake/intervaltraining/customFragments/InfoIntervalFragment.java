@@ -91,12 +91,21 @@ public class InfoIntervalFragment extends Fragment {
 
 
     public void changeTitle(String title){
-        mInfoIntervalTitle.setText(title);
+        if (isAdded()){
+            mInfoIntervalTitle.setText(title);
+        }
+
     }
     public void changeRound(int currentRound, int totalRounds){
-        mInfoIntervalRound.setText(currentRound + "/"+ totalRounds);
+        if (isAdded()){
+            mInfoIntervalRound.setText(currentRound + "/"+ totalRounds);
+        }
+
     }
     public void changeMode(String mode){
-        mInfoIntervalMode.setText(mode);
+        if (isAdded()){
+            mInfoIntervalMode.setText(mode);
+        }
+
     }
 }

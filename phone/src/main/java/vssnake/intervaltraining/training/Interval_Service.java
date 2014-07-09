@@ -45,7 +45,8 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
     //The runnable of TabataTraining
     Runnable runnable;
 
-    boolean background = false;
+    //The background of the application
+    private boolean background = false;
 
     //Is the Interval Running
     boolean isIntervalStart = false; //
@@ -130,13 +131,16 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
     public int onStartCommand(Intent intent,int flags,int startId){
         //Get the binder for activity class
 
-        String action = intent.getAction();
-        if (intent.getAction() == "STOP"){
-            endTrain();
+        if (intent != null){
+            String action = intent.getAction();
+            if (intent.getAction() == "STOP"){
+                endTrain();
 
+            }
         }
 
-        return START_STICKY;
+
+        return START_NOT_STICKY;
 
 
     }
@@ -208,32 +212,33 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
             mListener.changeTime(intervalData.getTotalIntervalTime(),
                     intervalData.getIntervalTime());
 
-            if (background){
 
-                PendingIntent showFragmentIntent ;
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), Main_Activity.class);
 
-                intent.putExtra(MainBase_Activity.FRAGMENT_KEY,MainBase_Activity.TABATA_FRAGMENT);
-                showFragmentIntent = PendingIntent.getActivity(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        if (background){
 
-                PendingIntent cancelIntervalIntent ;
-                Intent intervalIntent = new Intent(this,Interval_Service.class);
-                intervalIntent.setAction("STOP");
-                cancelIntervalIntent = PendingIntent.getService(getBaseContext(),0,intervalIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent showFragmentIntent ;
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), Main_Activity.class);
 
-                notification = IntervalNotification.createNotification(getApplicationContext(),getApplicationContext().
-                                getResources().getString(R.string.tabata),
-                        intervalData.getNumberInterval(),
-                        intervalData.getTotalIntervals(),
-                        intervalData.getIntervalState().name(),
-                        Utils.formatIntervalTime(intervalData.getIntervalTime()/1000),
-                        Utils.formatTotalIntervalTime(intervalData.getTotalIntervalTime()/1000),
-                        showFragmentIntent,cancelIntervalIntent);
+            intent.putExtra(MainBase_Activity.FRAGMENT_KEY,MainBase_Activity.TABATA_FRAGMENT);
+            showFragmentIntent = PendingIntent.getActivity(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-                mNotificationManager.notify(1024,notification);
-            }
+            PendingIntent cancelIntervalIntent ;
+            Intent intervalIntent = new Intent(this,Interval_Service.class);
+            intervalIntent.setAction("STOP");
+            cancelIntervalIntent = PendingIntent.getService(getBaseContext(),0,intervalIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
+            notification = IntervalNotification.createNotification(getApplicationContext(),getApplicationContext().
+                            getResources().getString(R.string.tabata),
+                    intervalData.getNumberInterval(),
+                    intervalData.getTotalIntervals(),
+                    intervalData.getIntervalState().name(),
+                    Utils.formatIntervalTime(intervalData.getIntervalTime()/1000),
+                    Utils.formatTotalIntervalTime(intervalData.getTotalIntervalTime()/1000),
+                    showFragmentIntent,cancelIntervalIntent);
+
+            mNotificationManager.notify(1024,notification);
         }
     }
 

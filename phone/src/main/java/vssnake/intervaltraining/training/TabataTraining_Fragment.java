@@ -75,23 +75,24 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
     @Override
     public void onPause(){
+        super.onPause();
         if (binder != null) {
             binder.runBackground(true);
             Log.i("Background","true");
         }
 
-        super.onPause();
+
     }
     @Override
     public void onResume(){
-
+        super.onResume();
         if (binder != null) {
             binder.runBackground(false);
             Log.i("Background", "false");
 
         }
 
-        super.onResume();
+
     }
 
     boolean mBound = false;
