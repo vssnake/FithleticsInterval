@@ -1,4 +1,4 @@
-package vssnake.intervaltraining.training;
+package vssnake.intervaltraining.interval;
 
 /**
  * Created by unai on 04/07/2014.

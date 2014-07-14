@@ -1,4 +1,4 @@
-package vssnake.intervaltraining.training;
+package vssnake.intervaltraining.interval;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -83,9 +83,6 @@ public abstract class TabataTrainingBase_Fragment extends Fragment
     @Override
     public void onDestroyView(){
         super.onDestroyView();
-       /* android.app.FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-        ft.remove(this);
-        ft.commit();*/
     }
 
 
@@ -106,10 +103,6 @@ public abstract class TabataTrainingBase_Fragment extends Fragment
                 .replace(R.id.intervalFragment_SecondFrame, mChronometerFragment)
                 .commit();
 
-
-
-
-
         View view = inflater.inflate(R.layout.fragment_training_tabata, container, false);
 
         mFirstFrame = (FrameLayout)view.findViewById(R.id.intervalFragment_FirstFrame);
@@ -122,11 +115,6 @@ public abstract class TabataTrainingBase_Fragment extends Fragment
         mIntervalClickView = (View) view.findViewById(R.id.intervalFragment_clickView);
 
         mShadowFrame2 = (View) view.findViewById(R.id.intervalFragment_shadowFrame2);
-
-
-        //mChronometerFragment = (ChronometerFragment) getFragmentManager().findFragmentById(R.id.tabataChronometer_Fragment);
-
-
 
 
         return view;

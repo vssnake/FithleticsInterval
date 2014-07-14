@@ -1,4 +1,4 @@
-package vssnake.intervaltraining.training;
+package vssnake.intervaltraining.interval;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
@@ -41,9 +41,6 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
         getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
         getActivity().startService(intent);
 
-
-
-
     }
 
     @Override
@@ -78,19 +75,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
         @Override
         public void onClick(View v) {
-
-
-
-
-
-
-            //Intent intent = new Intent(main_Activity,Tabata_Service.class);
-
             binder.runTabata();
-
-
-
-
         }
     };
 
@@ -184,22 +169,14 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     public void specialEvent(Interval_Service.specialCommands commands) {
         switch (commands) {
             case REST:
-
-
-                /*colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorTo, colorFrom);
-               colorAnimation.addUpdateListener(animationUpdate);*/
                 mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.startInterval));
-                mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shadow_fragmentinterval));
+                mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shaw_frag_interval));
                 mChronometerFragment.changeIntervalColor( getResources().getColor(R.color.numbers_interval_goo));
-                /*colorAnimation.start();*/
                 break;
             case RUN:
-                /*colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-                colorAnimation.addUpdateListener(animationUpdate);*/
                 mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.rest_Interval));
-                mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shadow_fragmentinterval_inverter));
+                mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shaw_frag_interval_inv));
                 mChronometerFragment.changeIntervalColor( getResources().getColor(R.color.numbers_interval_rest));
-
                 break;
             case END_TRAINING:
                 break;

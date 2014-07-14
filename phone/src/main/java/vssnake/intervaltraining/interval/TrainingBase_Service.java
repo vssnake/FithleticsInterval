@@ -1,4 +1,4 @@
-package vssnake.intervaltraining.training;
+package vssnake.intervaltraining.interval;
 
 import android.app.NotificationManager;
 import android.app.Service;

@@ -1,14 +1,7 @@
 package vssnake.intervaltraining.utils;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
-import android.os.IBinder;
-import android.os.Messenger;
-import android.util.Log;
-
-import vssnake.intervaltraining.training.TabataTrainingBase_Fragment;
 
 /**
  * Created by unai on 27/06/2014.

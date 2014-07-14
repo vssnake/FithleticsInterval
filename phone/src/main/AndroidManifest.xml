@@ -18,7 +18,7 @@
         </activity>
 
         <service
-            android:name=".training.Interval_Service"
+            android:name=".interval.Interval_Service"
             android:enabled="true"
             android:exported="true" >
         </service>

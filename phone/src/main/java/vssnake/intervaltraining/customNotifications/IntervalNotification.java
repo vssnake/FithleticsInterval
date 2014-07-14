@@ -1,4 +1,4 @@
-package vssnake.intervaltraining;
+package vssnake.intervaltraining.customNotifications;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -13,6 +13,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
+
+import vssnake.intervaltraining.R;
 
 
 /**

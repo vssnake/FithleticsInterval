@@ -7,7 +7,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,8 +18,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.TextView;
 
 import vssnake.intervaltraining.R;
-import vssnake.intervaltraining.training.TabataTraining_Fragment;
-import vssnake.intervaltraining.training.TabataTrainingBase_Fragment;
+import vssnake.intervaltraining.interval.TabataTraining_Fragment;
+import vssnake.intervaltraining.interval.TabataTrainingBase_Fragment;
 
 
 public abstract class MainBase_Activity extends Activity

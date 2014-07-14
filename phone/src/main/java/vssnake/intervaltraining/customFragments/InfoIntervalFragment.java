@@ -101,7 +101,7 @@ public class InfoIntervalFragment extends Fragment {
                 R.id.infoInterval_Mode_Text);
 
 
-
+        /*
         mInfoIntervalMoveView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -118,10 +118,7 @@ public class InfoIntervalFragment extends Fragment {
                         break;
                     case MotionEvent.ACTION_MOVE:
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-                       /* layoutParams.leftMargin = X - _xDelta;
-                        layoutParams.topMargin = X - _xDelta;
-                        layoutParams.rightMargin = -250;
-                        layoutParams.bottomMargin = -250;*/
+
                         v.setLayoutParams(layoutParams);
                         if (mInfoFragmentListener != null) {
                            /// Log.i("InfoIntervalMove", event.getX() + " " + event.getY());
@@ -135,7 +132,7 @@ public class InfoIntervalFragment extends Fragment {
                 //v.invalidate();
                 return true;
             }
-        });
+        });*/
         mInfoIntervalTitle.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
         mInfoIntervalModeText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
         mInfoIntervalRoundText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));

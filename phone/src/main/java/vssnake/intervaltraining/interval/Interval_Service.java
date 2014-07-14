@@ -1,4 +1,4 @@
-package vssnake.intervaltraining.training;
+package vssnake.intervaltraining.interval;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -17,8 +17,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.util.SparseArray;
 
-import vssnake.intervaltraining.IntervalNotification;
+import vssnake.intervaltraining.customNotifications.IntervalNotification;
 import vssnake.intervaltraining.R;
+import vssnake.intervaltraining.behaviours.ImplIntervalBehaviour;
 import vssnake.intervaltraining.main.MainBase_Activity;
 import vssnake.intervaltraining.main.Main_Activity;
 import vssnake.intervaltraining.utils.Utils;
@@ -26,7 +27,7 @@ import vssnake.intervaltraining.utils.Utils;
 /**
  * Created by unai on 27/06/2014.
  */
-public class Interval_Service extends TrainingBase_Service implements IntervalServiceConnector{
+public class Interval_Service extends TrainingBase_Service implements IntervalServiceInterface {
 
     public enum  specialCommands {REST,RUN, END_TRAINING}
 
@@ -264,8 +265,8 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
 
 
         if (intervalBehaviour == null)
-            intervalBehaviour = ImplIntervalBehaviour.newInstance(8,10000,20000,this, new int[]{3000,
-            2000,1000});
+            intervalBehaviour = ImplIntervalBehaviour.newInstance(8, 10000, 20000, this, new int[]{3000,
+                    2000, 1000});
 
         intervalBehaviour.resetInterval();
 

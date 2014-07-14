@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="vssnake.intervaltraining.training.TabataTrainingBase_Fragment"
+    tools:context="vssnake.intervaltraining.interval.TabataTrainingBase_Fragment"
     android:id="@+id/intervalFragment_Parent">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,7 +10,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="6dp"
-        android:background="@drawable/shadow_fragmentinterval2"
+        android:background="@drawable/shaw_frag_interval"
         android:id="@+id/view3"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
@@ -25,7 +25,7 @@
         android:layout_below="@id/intervalFragment_FirstFrame"
         android:layout_width="fill_parent"
         android:layout_height="8dp"
-        android:background="@drawable/shadow_fragmentinterval"
+        android:background="@drawable/shaw_frag_interval"
         android:id="@+id/intervalFragment_shadowFrame2">
     </View>
 
