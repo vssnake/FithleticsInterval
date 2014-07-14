@@ -5,10 +5,12 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
 import vssnake.intervaltraining.R;
@@ -16,18 +18,21 @@ import vssnake.intervaltraining.customFragments.ChronometerFragment;
 import vssnake.intervaltraining.main.Main_Activity;
 
 
-public abstract class TabataTrainingBase_Fragment extends Fragment{
+public abstract class TabataTrainingBase_Fragment extends Fragment
+        implements InfoIntervalFragment.onInfoIntervalFragmentListener{
 
 
     OnFragmentInteractionListener mListener;
 
     View mIntervalClickView;
 
+
+
     ChronometerFragment mChronometerFragment;
 
     InfoIntervalFragment mInfoIntervalFragment;
 
-
+    RelativeLayout mParent;
 
     FrameLayout mFirstFrame;
     FrameLayout mSecondFrame;
@@ -35,6 +40,8 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
     Main_Activity main_Activity;
 
     Intent intent;
+
+    View mShadowFrame2;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -88,7 +95,9 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
 
         //Create the Fragments and  push into the corresponds FrameLayouts
         mChronometerFragment = mChronometerFragment.newInstance("","");
-        mInfoIntervalFragment = InfoIntervalFragment.newInstance("","");
+        mInfoIntervalFragment = InfoIntervalFragment.newInstance(this);
+
+
 
         this.getChildFragmentManager().beginTransaction()
                 .replace(R.id.intervalFragment_FirstFrame, mInfoIntervalFragment)
@@ -107,10 +116,14 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
         mSecondFrame = (FrameLayout)view.findViewById(R.id.intervalFragment_SecondFrame);
 
 
-
+        mParent = (RelativeLayout)view.findViewById(R.id.intervalFragment_Parent);
 
 
         mIntervalClickView = (View) view.findViewById(R.id.intervalFragment_clickView);
+
+        mShadowFrame2 = (View) view.findViewById(R.id.intervalFragment_shadowFrame2);
+
+
         //mChronometerFragment = (ChronometerFragment) getFragmentManager().findFragmentById(R.id.tabataChronometer_Fragment);
 
 
@@ -165,6 +178,19 @@ public abstract class TabataTrainingBase_Fragment extends Fragment{
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    int anterior = 0;
+
+    @Override
+    public void moveInfoIntervalFragment(float x, float y) {
+
+        ViewGroup.MarginLayoutParams layoutParams =  (ViewGroup.MarginLayoutParams)mFirstFrame.getLayoutParams();
+        Log.i("Margin", y +" " + anterior);
+        layoutParams.topMargin += (int)y - anterior;
+        anterior = (int)y;
+        mParent.invalidate();
+
     }
 
 

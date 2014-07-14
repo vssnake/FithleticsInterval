@@ -27,6 +27,8 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
     int[] soundTimeArray;
     int [] temporalSoundArray;
 
+    long millisecondsTotal;
+
     private ImplIntervalBehaviour(int totalIntervals, long timeToRest,
                                   long timeToExercise,IntervalServiceConnector iIntervalService,
                                   int[] soundsTimeArray){
@@ -35,6 +37,8 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
         this.timeToExercise = timeToExercise;
         currentIntervalSpace = timeToExercise;
         this.iIntervalService = iIntervalService;
+
+        millisecondsTotal = (totalIntervals * timeToExercise) + ((totalIntervals-1) * timeToRest);
 
 
 
@@ -65,7 +69,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
         if (currentIntervalSpace <= currentIntervalTime){
 
-            //Set again the sound array
+            //Set again the SOUND array
             temporalSoundArray = soundTimeArray.clone();
 
             //Reset the new intervalTime + the time overhead
@@ -73,21 +77,29 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
             currentIntervalTime -=currentIntervalSpace;
             lastIntervalsTime = totalIntervalsTime - currentIntervalTime;
 
-            iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.sound,2);
+            iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.SOUND,2);
+
 
             if (currentIntervalSpace == timeToRest){
-                //The user is going to rest
+                //The user is going to REST
                 intervalState = IntervalData_Base.eIntervalState.RUNNING;
                 currentIntervalSpace = timeToExercise;
                 currentInterval++;
 
-                if (currentInterval > totalIntervals){
+                //Send command to service to inform what the interval has changes the state to REST
+                iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.REST,null);
+
+
+            }else{
+                //Send command to service to inform what the interval has changes the state to RUN
+                iIntervalService.specialCommand(IntervalServiceConnector.specialsCommands.RUN,null);
+
+                if (currentInterval >= totalIntervals){
                     finish = true;
                     mIntervalData.intervalDone();
                     iIntervalService.endTrain();
                     return;
                 }
-            }else{
                 //The user is going to make exercise
                 intervalState = IntervalData_Base.eIntervalState.RESTING;
                 currentIntervalSpace = timeToRest;
@@ -99,7 +111,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
                     if (intervalTime <= temporalSoundArray[i]){
                         temporalSoundArray[i]=-1;
                         iIntervalService.specialCommand(
-                                IntervalServiceConnector.specialsCommands.sound, 1);
+                                IntervalServiceConnector.specialsCommands.SOUND, 1);
                     }
                 }
 
@@ -109,7 +121,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
         }
         mIntervalData.setIntervalData(currentInterval,totalIntervals,
-                intervalState,totalIntervalsTime,currentIntervalTime,0);
+                intervalState,millisecondsTotal - totalIntervalsTime,currentIntervalSpace - currentIntervalTime,0);
         //TODO make notifications and show data to the interface
         iIntervalService.newNotification(mIntervalData);
     }

@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="260dp"
+    android:layout_height="300dp"
     tools:context=".customFragments.ChronometerFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -16,10 +16,9 @@
         android:layout_alignParentStart="true"
         android:textSize="80dp"
         android:typeface="monospace"
-        android:textColor="@color/black"
+        android:textColor="@color/numbers_interval_goo"
         android:layout_below="@+id/chronomterTextInterval_TextView"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginTop="-30dp" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -34,15 +33,17 @@
         android:gravity="center" />
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/total_remaining"
         android:id="@+id/chronometerTotalText_TextView"
         android:gravity="center"
         android:textColor="@color/black"
-        android:layout_below="@+id/chronometer_TextView"
-        android:layout_alignParentStart="true" />
+        android:layout_alignBottom="@+id/chronometerTotal_TextView"
+        android:layout_toLeftOf="@+id/chronometerTotal_TextView"
+        android:layout_marginRight="44dp"
+        android:layout_marginBottom="3dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,9 +54,10 @@
         android:gravity="center"
         android:textSize="40dp"
         android:typeface="monospace"
-        android:textColor="@color/black"
-        android:layout_below="@+id/chronometerTotalText_TextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:textColor="@color/white"
+        android:layout_marginRight="61dp"
+        android:layout_below="@+id/chronometer_TextView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-20dp" />
 
 </RelativeLayout>

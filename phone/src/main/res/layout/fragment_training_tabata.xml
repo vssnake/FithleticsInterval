@@ -2,32 +2,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="vssnake.intervaltraining.training.TabataTrainingBase_Fragment">
+    tools:context="vssnake.intervaltraining.training.TabataTrainingBase_Fragment"
+    android:id="@+id/intervalFragment_Parent">
 
     <!-- TODO: Update blank fragment layout -->
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="8dp"
+        android:layout_height="6dp"
         android:background="@drawable/shadow_fragmentinterval2"
         android:id="@+id/view3"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="-1dp">
+        android:layout_alignParentStart="true">
     </View>
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="130dp"
+        android:layout_height="300dp"
         android:layout_alignParentStart="false"
-        android:layout_below="@+id/view3"
         android:id="@+id/intervalFragment_FirstFrame"
-        android:layout_marginTop="-1dp"></FrameLayout>
+        android:layout_marginTop="-200dp"></FrameLayout>
     <View
         android:layout_below="@id/intervalFragment_FirstFrame"
         android:layout_width="fill_parent"
         android:layout_height="8dp"
         android:background="@drawable/shadow_fragmentinterval"
-        android:id="@+id/view2">
+        android:id="@+id/intervalFragment_shadowFrame2">
     </View>
 
     <LinearLayout
@@ -36,13 +35,13 @@
         android:layout_height="fill_parent"
         android:layout_alignParentStart="true"
         android:gravity="center"
-        android:background="#f9a825"
-        android:layout_below="@+id/view2"
+        android:background="@color/startInterval"
+        android:layout_below="@+id/intervalFragment_shadowFrame2"
         android:id="@+id/intervalFragment_clickView">
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="260dp"
+            android:layout_height="300dp"
             android:layout_below="@+id/intervalFragment_FirstFrame"
             android:layout_alignParentEnd="true"
             android:id="@+id/intervalFragment_SecondFrame"

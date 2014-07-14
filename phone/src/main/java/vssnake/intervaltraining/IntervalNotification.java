@@ -84,8 +84,8 @@ public class IntervalNotification {
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
-                // Set appropriate defaults for the notification light, sound,
-                // and vibration.
+                // Set appropriate defaults for the notification light, SOUND,
+                // and VIBRATION.
                 .setDefaults(Notification.DEFAULT_LIGHTS)
 
                         // Set required fields, including the small icon, the

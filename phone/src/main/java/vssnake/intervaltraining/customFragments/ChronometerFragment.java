@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,14 @@ public class ChronometerFragment extends Fragment {
 
     private TextView mIntervalTime;
     private TextView mTotalTime;
+    private TextView mIntervalTimeText;
+    private TextView mTotalTimeText;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    Typeface font;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -78,10 +81,13 @@ public class ChronometerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chronometer, container, false);
 
-       font = Typeface.createFromAsset(getActivity().getAssets(),"digitaldream.ttf");
+
 
         mIntervalTime = (TextView)view.findViewById(R.id.chronometer_TextView);
         mTotalTime = (TextView)view.findViewById(R.id.chronometerTotal_TextView);
+
+        mIntervalTimeText = (TextView)view.findViewById(R.id.chronomterTextInterval_TextView);
+        mTotalTimeText  = (TextView)view.findViewById(R.id.chronometerTotalText_TextView);
 
 
         changeFontsAndSize();
@@ -96,20 +102,24 @@ public class ChronometerFragment extends Fragment {
      */
     private void changeFontsAndSize(){
 
-        mIntervalTime.setTextSize(80);
-        mIntervalTime.setTextColor(Color.RED);
-        mIntervalTime.setTypeface(font);
+        mIntervalTime.setTextSize(140);
+        //getResources().getColor(R.color.greenDark);
+       // mIntervalTime.setTextColor();
+        mIntervalTime.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
 
         mTotalTime.setTextSize(40);
-        mTotalTime.setTextColor(Color.RED);
-        mTotalTime.setTypeface(font);
+       // mTotalTime.setTextColor(R.color.greenDark);
+        mTotalTime.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
+
+        mTotalTimeText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
+        mIntervalTimeText.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
+        mIntervalTimeText.setTextSize(50);
     }
 
     public void changeTime(Long secondsTotal,Long secondsInterval){
         if (isAdded()){
             //Reformat and convert of milliseconds to seconds
-            secondsTotal = secondsTotal/1000;
-            secondsInterval = secondsInterval/1000;
+
 
             mIntervalTime.setText(Utils.formatIntervalTime(secondsInterval));
 
@@ -117,5 +127,9 @@ public class ChronometerFragment extends Fragment {
         }
 
 
+    }
+
+    public void changeIntervalColor(int color){
+        mIntervalTime.setTextColor(color);
     }
 }

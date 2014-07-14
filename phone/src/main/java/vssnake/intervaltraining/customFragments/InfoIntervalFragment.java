@@ -2,12 +2,16 @@ package vssnake.intervaltraining.customFragments;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import vssnake.intervaltraining.R;
+import vssnake.intervaltraining.utils.Utils;
 
 
 /**
@@ -30,22 +34,32 @@ public class InfoIntervalFragment extends Fragment {
     TextView mInfoIntervalRound;
     TextView mInfoIntervalMode;
 
+    TextView mInfoIntervalRoundText;
+    TextView mInfoIntervalModeText;
+
+    View mInfoIntervalMoveView;
+
+    public interface onInfoIntervalFragmentListener{
+        void moveInfoIntervalFragment(float x, float y);
+    }
+
+    onInfoIntervalFragmentListener mInfoFragmentListener;
+
+    private InfoIntervalFragment(onInfoIntervalFragmentListener infoFragmentListener){
+        mInfoFragmentListener = infoFragmentListener;
+    }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param infoFragmentListener Parameter 1.
      * @return A new instance of fragment InfoIntervalFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static InfoIntervalFragment newInstance(String param1, String param2) {
-        InfoIntervalFragment fragment = new InfoIntervalFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+    public static InfoIntervalFragment newInstance(onInfoIntervalFragmentListener infoFragmentListener) {
+        InfoIntervalFragment fragment = new InfoIntervalFragment(infoFragmentListener);
+
         return fragment;
     }
     public InfoIntervalFragment() {
@@ -61,6 +75,10 @@ public class InfoIntervalFragment extends Fragment {
         }
     }
 
+    private int _xDelta;
+    private int _yDelta;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,16 +87,63 @@ public class InfoIntervalFragment extends Fragment {
 
         // Inflate the layout for this fragment
         //Reference the textViews to modify the data in runtime
-        mInfoIntervalTitle = (TextView)view.findViewById
+        mInfoIntervalTitle = (TextView) view.findViewById
                 (R.id.infoInterval_Title_TextView);
-        mInfoIntervalRound =  (TextView)view.findViewById
+        mInfoIntervalRound = (TextView) view.findViewById
                 (R.id.infoInterval_Rounds_TextView);
-        mInfoIntervalMode= (TextView)view.findViewById
-                (R.id.infoInterval_Mode_TextView);
+        mInfoIntervalMode = (TextView) view.findViewById
+                 (R.id.infoInterval_Mode_TextView);
+        mInfoIntervalMoveView = (View) view.findViewById
+                (R.id.infoInterval_move_View);
+        mInfoIntervalRoundText = (TextView) view.findViewById(
+                R.id.infoInterval_Rounds_Text);
+        mInfoIntervalModeText = (TextView) view.findViewById(
+                R.id.infoInterval_Mode_Text);
+
+
+
+        mInfoIntervalMoveView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                final int X = (int) event.getRawX();
+                final int Y = (int) event.getRawY();
+
+                switch (event.getAction() & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:
+                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
+                        _xDelta = X - lParams.leftMargin;
+                        _yDelta = Y - lParams.topMargin;
+                        Log.i("InfoIntervalMove",  "Action Down");
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
+                       /* layoutParams.leftMargin = X - _xDelta;
+                        layoutParams.topMargin = X - _xDelta;
+                        layoutParams.rightMargin = -250;
+                        layoutParams.bottomMargin = -250;*/
+                        v.setLayoutParams(layoutParams);
+                        if (mInfoFragmentListener != null) {
+                           /// Log.i("InfoIntervalMove", event.getX() + " " + event.getY());
+                            mInfoFragmentListener.moveInfoIntervalFragment(X - _xDelta, Y - _yDelta);
+                        }
+                        break;
+                    default:
+                }
+
+
+                //v.invalidate();
+                return true;
+            }
+        });
+        mInfoIntervalTitle.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
+        mInfoIntervalModeText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
+        mInfoIntervalRoundText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
+
 
         return view;
-    }
 
+    }
 
 
 

@@ -5,7 +5,9 @@ package vssnake.intervaltraining.training;
  */
 public interface IntervalServiceConnector {
     //Specials Commands for service
-    public enum specialsCommands {sound,vibration}
+    public enum specialsCommands {
+        SOUND, VIBRATION, END_INTERVAL, RUN, REST
+    }
     void newNotification(IntervalData_Base intervalData);
     void endTrain();
     void specialCommand(specialsCommands commands,Object adicionalData);

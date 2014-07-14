@@ -13,18 +13,14 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.util.SparseArray;
-
-import java.util.HashMap;
 
 import vssnake.intervaltraining.IntervalNotification;
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.main.MainBase_Activity;
 import vssnake.intervaltraining.main.Main_Activity;
-import vssnake.intervaltraining.model.Exercise;
 import vssnake.intervaltraining.utils.Utils;
 
 /**
@@ -32,6 +28,7 @@ import vssnake.intervaltraining.utils.Utils;
  */
 public class Interval_Service extends TrainingBase_Service implements IntervalServiceConnector{
 
+    public enum  specialCommands {REST,RUN, END_TRAINING}
 
     static int sNOTIFID = 1325;
 
@@ -71,6 +68,7 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
         public void changeTime(long secondsTotal,long secondInterval);
         public void changeInterval(int numberInterval,int totalInterval);
         public void statusInterval(boolean status);
+        public void specialEvent(specialCommands commands);
 
     }
 
@@ -203,14 +201,16 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
 
     @Override
     public void newNotification(IntervalData_Base intervalData) {
+        long secondsTotal = (long) Math.ceil( intervalData.getTotalIntervalTime()/1000d);
+
+        long secondsInterval = (long) Math.ceil( intervalData.getIntervalTime()/1000d);
         if (mListener != null){
             mListener.changeInterval(intervalData.getNumberInterval(),
                     intervalData.getTotalIntervals());
 
             mListener.changeIntervalMode(intervalData.getIntervalState().name());
 
-            mListener.changeTime(intervalData.getTotalIntervalTime(),
-                    intervalData.getIntervalTime());
+            mListener.changeTime(secondsTotal,secondsInterval);
 
 
 
@@ -224,6 +224,10 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
             intent.putExtra(MainBase_Activity.FRAGMENT_KEY,MainBase_Activity.TABATA_FRAGMENT);
             showFragmentIntent = PendingIntent.getActivity(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
+
+
+
+
             PendingIntent cancelIntervalIntent ;
             Intent intervalIntent = new Intent(this,Interval_Service.class);
             intervalIntent.setAction("STOP");
@@ -234,8 +238,8 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
                     intervalData.getNumberInterval(),
                     intervalData.getTotalIntervals(),
                     intervalData.getIntervalState().name(),
-                    Utils.formatIntervalTime(intervalData.getIntervalTime()/1000),
-                    Utils.formatTotalIntervalTime(intervalData.getTotalIntervalTime()/1000),
+                    Utils.formatIntervalTime(secondsInterval),
+                    Utils.formatTotalIntervalTime(secondsTotal),
                     showFragmentIntent,cancelIntervalIntent);
 
             mNotificationManager.notify(1024,notification);
@@ -260,7 +264,7 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
 
 
         if (intervalBehaviour == null)
-            intervalBehaviour = ImplIntervalBehaviour.newInstance(2,10000,20000,this, new int[]{3000,
+            intervalBehaviour = ImplIntervalBehaviour.newInstance(8,10000,20000,this, new int[]{3000,
             2000,1000});
 
         intervalBehaviour.resetInterval();
@@ -293,6 +297,7 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
         if (mListener != null){
             mListener.statusInterval(isIntervalStart);
         }
+        intervalBehaviour.executeTime(0);
         handler.postDelayed(runnable,500);
     }
 
@@ -302,10 +307,16 @@ public class Interval_Service extends TrainingBase_Service implements IntervalSe
     public void specialCommand(specialsCommands commands, Object adicionalData) {
             switch (commands){
 
-                case sound:
+                case SOUND:
                     playSound((Integer)adicionalData,1.0f);
                     break;
-                case vibration:
+                case VIBRATION:
+                    break;
+                case RUN:
+                    mListener.specialEvent(specialCommands.RUN);
+                    break;
+                case REST:
+                    mListener.specialEvent(specialCommands.REST);
                     break;
             }
     }

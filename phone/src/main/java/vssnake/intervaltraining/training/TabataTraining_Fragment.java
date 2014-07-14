@@ -1,5 +1,7 @@
 package vssnake.intervaltraining.training;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;
@@ -10,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import vssnake.intervaltraining.R;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -26,6 +30,22 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
     Interval_Service.TabataServiceBinder binder;
 
+    //Color for Layout color transition
+    Integer colorFrom;
+    Integer colorTo;
+    ValueAnimator colorAnimation;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
+        getActivity().startService(intent);
+
+
+
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,16 +54,34 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
        View view =   super.onCreateView(inflater,container,savedInstanceState);
 
         mSecondFrame.setOnClickListener(botonClick);
+
+        colorFrom = getResources().getColor(R.color.startInterval);
+        colorTo = getResources().getColor(R.color.rest_Interval);
+
+        colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+
         return view;
 
     }
 
+    private ValueAnimator.AnimatorUpdateListener animationUpdate =new ValueAnimator.AnimatorUpdateListener(){
+
+
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            mIntervalClickView.setBackgroundColor((Integer)animation.getAnimatedValue());
+        }
+    };
 
 
     private Button.OnClickListener botonClick = new Button.OnClickListener(){
 
         @Override
         public void onClick(View v) {
+
+
+
+
 
 
             //Intent intent = new Intent(main_Activity,Tabata_Service.class);
@@ -56,13 +94,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
         }
     };
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
-        getActivity().startService(intent);
 
-    }
 
     @Override
     public void onDestroy(){
@@ -147,4 +179,32 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
         }*/
 
     }
+
+    @Override
+    public void specialEvent(Interval_Service.specialCommands commands) {
+        switch (commands) {
+            case REST:
+
+
+                /*colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorTo, colorFrom);
+               colorAnimation.addUpdateListener(animationUpdate);*/
+                mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.startInterval));
+                mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shadow_fragmentinterval));
+                mChronometerFragment.changeIntervalColor( getResources().getColor(R.color.numbers_interval_goo));
+                /*colorAnimation.start();*/
+                break;
+            case RUN:
+                /*colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                colorAnimation.addUpdateListener(animationUpdate);*/
+                mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.rest_Interval));
+                mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shadow_fragmentinterval_inverter));
+                mChronometerFragment.changeIntervalColor( getResources().getColor(R.color.numbers_interval_rest));
+
+                break;
+            case END_TRAINING:
+                break;
+        }
+    }
+
+
 }

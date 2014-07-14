@@ -6,4 +6,9 @@
     <color name="red">#ffff0008</color>
     <color name="cream_dark">#000000</color>
     <color name="cream">#ffffff</color>
+    <color name="greenDark">#ff0d5302</color>
+    <color name="startInterval">#f9a825</color>
+    <color name="rest_Interval">#4db6ac</color>
+    <color name="numbers_interval_goo">#ffff</color>
+    <color name="numbers_interval_rest">#ff419426</color>
 </resources>
