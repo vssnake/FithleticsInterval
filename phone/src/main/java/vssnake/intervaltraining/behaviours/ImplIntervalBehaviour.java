@@ -2,7 +2,7 @@ package vssnake.intervaltraining.behaviours;
 
 import vssnake.intervaltraining.interval.IntervalBehaviour;
 import vssnake.intervaltraining.interval.IntervalData_Base;
-import vssnake.intervaltraining.interval.IntervalServiceInterface;
+import vssnake.intervaltraining.interval.TrainingServiceInterface;
 
 /**
  * Created by unai on 04/07/2014.
@@ -24,7 +24,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
     IntervalData_Base mIntervalData;
 
-    IntervalServiceInterface mIntervalServiceInterface;
+    TrainingServiceInterface mTrainingServiceInterface;
 
     boolean mFinish = false;
 
@@ -34,13 +34,13 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
     long mMillisecondsTotal;
 
     private ImplIntervalBehaviour(int totalIntervals, long timeToRest,
-                                  long timeToExercise,IntervalServiceInterface iIntervalService,
+                                  long timeToExercise,TrainingServiceInterface iIntervalService,
                                   int[] soundsTimeArray){
         this.mTotalIntervals = totalIntervals;
         this.mTimeToRest = timeToRest;
         this.mTimeToExercise = timeToExercise;
         mCurrentIntervalSpace = timeToExercise;
-        this.mIntervalServiceInterface = iIntervalService;
+        this.mTrainingServiceInterface = iIntervalService;
 
         mMillisecondsTotal = (totalIntervals * timeToExercise) + ((totalIntervals-1) * timeToRest);
 
@@ -55,7 +55,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
     public static ImplIntervalBehaviour
                     newInstance (int totalIntervals, int timeToRest,
-                    int timeToExercise,IntervalServiceInterface iIntervalService,
+                    int timeToExercise,TrainingServiceInterface iIntervalService,
                     int[] soundsTimeArray){
         return new ImplIntervalBehaviour(totalIntervals,
                 timeToRest,timeToExercise,iIntervalService,soundsTimeArray);
@@ -68,7 +68,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
     public void executeTime(long time) {
 
 
-        if (mIntervalServiceInterface == null){
+        if (mTrainingServiceInterface == null){
             return;
         }
         mTotalIntervalsTime = time;
@@ -85,7 +85,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
             mCurrentIntervalTime -= mCurrentIntervalSpace;
             mLastIntervalsTime = mTotalIntervalsTime - mCurrentIntervalTime;
 
-            mIntervalServiceInterface.specialCommand(IntervalServiceInterface.specialsCommands.SOUND, 2);
+            mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.SOUND, 2);
 
 
             if (mCurrentIntervalSpace == mTimeToRest){
@@ -95,17 +95,17 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
                 mCurrentInterval++;
 
                 //Send command to service to inform what the interval has changes the state to REST
-                mIntervalServiceInterface.specialCommand(IntervalServiceInterface.specialsCommands.REST, null);
+                mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.REST, null);
 
 
             }else{
                 //Send command to service to inform what the interval has changes the state to RUN
-                mIntervalServiceInterface.specialCommand(IntervalServiceInterface.specialsCommands.RUN, null);
+                mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.RUN, null);
 
                 if (mCurrentInterval >= mTotalIntervals){
                     mFinish = true;
                     mIntervalData.intervalDone();
-                    mIntervalServiceInterface.endTrain();
+                    mTrainingServiceInterface.endTrain();
                     return;
                 }
                 //The user is going to make exercise
@@ -118,8 +118,8 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
                 for (int i = 0; i < mTemporalSoundArray.length; i++) {
                     if (intervalTime <= mTemporalSoundArray[i]){
                         mTemporalSoundArray[i]=-1;
-                        mIntervalServiceInterface.specialCommand(
-                                IntervalServiceInterface.specialsCommands.SOUND, 1);
+                        mTrainingServiceInterface.specialCommand(
+                                TrainingServiceInterface.specialsCommands.SOUND, 1);
                     }
                 }
 
@@ -129,7 +129,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
         mIntervalData.setIntervalData(mCurrentInterval, mTotalIntervals,
                 intervalState, mMillisecondsTotal - mTotalIntervalsTime, mCurrentIntervalSpace - mCurrentIntervalTime,0);
         //TODO make notifications and show data to the interface
-        mIntervalServiceInterface.newNotification(mIntervalData);
+        mTrainingServiceInterface.newNotification(mIntervalData);
     }
 
     @Override

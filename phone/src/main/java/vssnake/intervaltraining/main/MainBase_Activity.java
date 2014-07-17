@@ -60,6 +60,7 @@ public abstract class MainBase_Activity extends Activity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        //Check if a notification launch a Key to open a fragment
         Intent i = getIntent();
         int fragmentKey = i.getIntExtra(MainBase_Activity.FRAGMENT_KEY,-1);
 

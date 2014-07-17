@@ -30,6 +30,9 @@ public class IntervalNotification {
      */
     private static final String NOTIFICATION_TAG = "Interval";
 
+
+    private static Notification mNotification = null;
+    private static RemoteViews mContentView = null;
     /**
      * Shows the notification, or updates a previously shown notification of
      * this type, with the given parameters.
@@ -70,52 +73,50 @@ public class IntervalNotification {
                                                   final String totalTime,PendingIntent showIntent,
                                                   PendingIntent closeIntent){
 
+        if (mNotification == null){
+            mContentView = new RemoteViews(context.getPackageName(),
+                    R.layout.notification_interval);
+
+            final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+
+                    // Set appropriate defaults for the notification light, SOUND,
+                    // and VIBRATION.
+                    .setDefaults(Notification.DEFAULT_LIGHTS)
+
+                            // Set required fields, including the small icon, the
+                            // notification title, and text.
+                    .setSmallIcon(R.drawable.hiit)
+                            //.setContentTitle(title)
+                            //.setContentText(text)
+
+                            // All fields below this line are optional.
+
+                            // Use a default priority (recognized on devices running Android
+                            // 4.1 or later)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
 
-        RemoteViews contentView = new RemoteViews(context.getPackageName(),
-                R.layout.notification_interval);
-        contentView.setTextViewText(R.id.notifIntervalName_TextView,intervalName);
-        contentView.setTextViewText(R.id.notifIntervalRound_TextView,numberInterval+ "/" + totalIntervals);
-        contentView.setTextViewText(R.id.notifIntervalState_TextView,stateInterval);
-        contentView.setTextViewText(R.id.notifIntervalTime_TextView,intervalTime);
-        contentView.setTextViewText(R.id.notifIntervalTotalTime_TextView,totalTime);
-        contentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button,closeIntent);
 
+                            // Automatically dismiss the notification when it is touched.
+                    .setAutoCancel(true);
 
+            mNotification = builder.build();
+            mNotification.defaults = Notification.DEFAULT_LIGHTS;
 
+            //   notification.contentView = contentView;
+            mNotification.bigContentView = mContentView;
+        }
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        mContentView.setTextViewText(R.id.notifIntervalName_TextView,intervalName);
+        mContentView.setTextViewText(R.id.notifIntervalRound_TextView,numberInterval+ "/" + totalIntervals);
+        mContentView.setTextViewText(R.id.notifIntervalState_TextView,stateInterval);
+        mContentView.setTextViewText(R.id.notifIntervalTime_TextView,intervalTime);
+        mContentView.setTextViewText(R.id.notifIntervalTotalTime_TextView,totalTime);
+        mContentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button,closeIntent);
 
-                // Set appropriate defaults for the notification light, SOUND,
-                // and VIBRATION.
-                .setDefaults(Notification.DEFAULT_LIGHTS)
+        mNotification.contentIntent = showIntent;
 
-                        // Set required fields, including the small icon, the
-                        // notification title, and text.
-                .setSmallIcon(R.drawable.hiit)
-                        //.setContentTitle(title)
-                        //.setContentText(text)
-
-                        // All fields below this line are optional.
-
-                        // Use a default priority (recognized on devices running Android
-                        // 4.1 or later)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-
-                .setContentIntent(showIntent)
-
-
-                        // Automatically dismiss the notification when it is touched.
-                .setAutoCancel(true);
-
-        Notification notification = builder.build();
-        notification.defaults = Notification.DEFAULT_LIGHTS;
-
-        //   notification.contentView = contentView;
-        notification.bigContentView = contentView;
-
-        return notification;
+        return mNotification;
 
 
     }

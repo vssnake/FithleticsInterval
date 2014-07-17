@@ -1,7 +1,5 @@
 package vssnake.intervaltraining.interval;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ServiceConnection;
@@ -25,15 +23,12 @@ import vssnake.intervaltraining.R;
  *
  */
 public class TabataTraining_Fragment extends TabataTrainingBase_Fragment implements
-        Interval_Service.IntervalServiceListener{
+        TrainingServicesConnectors.IntervalInterface {
+
+    private static final String TAG = "TabataFragment";
 
 
     Interval_Service.TabataServiceBinder binder;
-
-    //Color for Layout color transition
-    Integer colorFrom;
-    Integer colorTo;
-    ValueAnimator colorAnimation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,30 +47,24 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
         mSecondFrame.setOnClickListener(botonClick);
 
-        colorFrom = getResources().getColor(R.color.startInterval);
-        colorTo = getResources().getColor(R.color.rest_Interval);
 
-        colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
 
         return view;
 
     }
 
-    private ValueAnimator.AnimatorUpdateListener animationUpdate =new ValueAnimator.AnimatorUpdateListener(){
 
-
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            mIntervalClickView.setBackgroundColor((Integer)animation.getAnimatedValue());
-        }
-    };
 
 
     private Button.OnClickListener botonClick = new Button.OnClickListener(){
 
         @Override
         public void onClick(View v) {
+
             binder.runTabata();
+
+
+
         }
     };
 
@@ -102,10 +91,13 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     @Override
     public void onResume(){
         super.onResume();
-        if (binder != null) {
+        if (mBound) {
             binder.runBackground(false);
             Log.i("Background", "false");
 
+        }else {
+            getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
+            getActivity().startService(intent);
         }
 
 
@@ -117,7 +109,11 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
+            Log.d(TAG, "onServiceDisconnected " + arg0);
             mBound = false;
+            binder = null;
+            mService = null;
+
 
         }
 
@@ -125,13 +121,16 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d(TAG, "onServiceConnected " + name + " " + service);
             // We've bound to LocalService, cast the IBinder and get LocalService instance
             binder = (Interval_Service.TabataServiceBinder) service;
             mService = binder.getService();
             binder.setListener(TabataTraining_Fragment.this);
             mBound = true;
-            Log.i("Background", "false | OnSericeConnected");
+
             binder.runBackground(false);
+
+
 
         };
 
@@ -153,35 +152,40 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
         mInfoIntervalFragment.changeRound(numberInterval,totalInterval);
     }
 
+
+
+
+
     @Override
-    public void statusInterval(boolean status) {
-       /* if(isAdded()){
-            if (status){
-                mStartCountDownButton.setText(getResources().getString(R.string.stopCountDown));
-            }else{
-                mStartCountDownButton.setText( getResources().getString(R.string.startCountDown));
+    public void specialEvent(TrainingServicesConnectors.specialCommands commands) {
+        if (isAdded()){
+            switch (commands) {
+                case REST:
+                    mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.startInterval));
+                    mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shaw_frag_interval));
+                    mChronometerFragment.changeIntervalColor( getResources().getColor(R.color.numbers_interval_goo));
+                    break;
+                case RUN:
+                    mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.rest_Interval));
+                    mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shaw_frag_interval_inv));
+                    mChronometerFragment.changeIntervalColor( getResources().getColor(R.color.numbers_interval_rest));
+                    break;
+                case END_TRAINING:
+                    break;
             }
-        }*/
+        }
 
     }
+
 
     @Override
-    public void specialEvent(Interval_Service.specialCommands commands) {
-        switch (commands) {
-            case REST:
-                mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.startInterval));
-                mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shaw_frag_interval));
-                mChronometerFragment.changeIntervalColor( getResources().getColor(R.color.numbers_interval_goo));
-                break;
-            case RUN:
-                mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.rest_Interval));
-                mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shaw_frag_interval_inv));
-                mChronometerFragment.changeIntervalColor( getResources().getColor(R.color.numbers_interval_rest));
-                break;
-            case END_TRAINING:
-                break;
-        }
+    public void statusTrain(boolean status) {
+         /* if(isAdded()){
+                    if (status){
+                        mStartCountDownButton.setText(getResources().getString(R.string.stopCountDown));
+                    }else{
+                        mStartCountDownButton.setText( getResources().getString(R.string.startCountDown));
+                    }
+                }*/
     }
-
-
 }

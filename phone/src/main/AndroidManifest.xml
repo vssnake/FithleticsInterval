@@ -22,7 +22,16 @@
             android:enabled="true"
             android:exported="true" >
         </service>
-
+        <service
+            android:name=".services.GoogleApiService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".services.Listener"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />
