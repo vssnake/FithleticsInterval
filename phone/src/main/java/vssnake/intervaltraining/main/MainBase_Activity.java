@@ -5,8 +5,15 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,11 +22,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Button;
 import android.widget.TextView;
 
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.interval.TabataTraining_Fragment;
 import vssnake.intervaltraining.interval.TabataTrainingBase_Fragment;
+import vssnake.intervaltraining.services.GoogleApiService;
 
 
 public abstract class MainBase_Activity extends Activity
@@ -195,6 +204,7 @@ public abstract class MainBase_Activity extends Activity
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         TextView section_Number;
+        Button mTestButton;
 
         Integer _section_Number = 0;
         /**
@@ -206,6 +216,7 @@ public abstract class MainBase_Activity extends Activity
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
+
             return fragment;
         }
 
@@ -219,8 +230,43 @@ public abstract class MainBase_Activity extends Activity
             section_Number = (TextView)rootView.findViewById(R.id.section_label);
 
             section_Number.setText(_section_Number.toString());
+             section_Number = (Button)rootView.findViewById(R.id.TestingButton);
+            section_Number.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Message msg = Message.obtain(null, 0, 0, 0);
+                    try {
+                        mService.send(msg);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+            final Intent intent = new Intent(getActivity(),GoogleApiService.class);
+            Thread t = new Thread(){
+                public void run(){
+                    getActivity().startService(intent);
+                    getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
+                }
+            };
+           t.start();
+
             return rootView;
         }
+        Messenger mService = null;
+
+        private ServiceConnection mConnection  = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                mService = new Messenger(service);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mService = null;
+            }
+        };
 
         @Override
         public void onAttach(Activity activity) {
