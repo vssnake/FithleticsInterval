@@ -1,7 +1,9 @@
 package vssnake.intervaltraining.behaviours;
 
+import android.util.Log;
+
 import vssnake.intervaltraining.interval.IntervalBehaviour;
-import vssnake.intervaltraining.interval.IntervalData_Base;
+import vssnake.intervaltraining.interval.IntervalData;
 import vssnake.intervaltraining.interval.TrainingServiceInterface;
 
 /**
@@ -9,6 +11,7 @@ import vssnake.intervaltraining.interval.TrainingServiceInterface;
  */
 public class ImplIntervalBehaviour implements IntervalBehaviour {
 
+    static final String TAG ="Interval Behaviour";
     int mTotalIntervals = 0;
     long mTimeToRest = 0;
     long mTimeToExercise = 0;
@@ -20,9 +23,9 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
     long mCurrentIntervalSpace = 0;//The wide of the current part of interval in milliseconds
 
-    IntervalData_Base.eIntervalState intervalState = IntervalData_Base.eIntervalState.RUNNING;
+    IntervalData.eIntervalState intervalState = IntervalData.eIntervalState.RUNNING;
 
-    IntervalData_Base mIntervalData;
+    IntervalData mIntervalData;
 
     TrainingServiceInterface mTrainingServiceInterface;
 
@@ -50,7 +53,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
         this.mTemporalSoundArray = soundsTimeArray.clone();
 
-        mIntervalData = new IntervalData_Base();
+        mIntervalData = new IntervalData();
     }
 
     public static ImplIntervalBehaviour
@@ -84,23 +87,23 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
             mCurrentIntervalTime -= mCurrentIntervalSpace;
             mLastIntervalsTime = mTotalIntervalsTime - mCurrentIntervalTime;
-
-            mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.SOUND, 2);
+            Log.d(TAG, "Final Beep");
+           mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.SOUND, 2);
 
 
             if (mCurrentIntervalSpace == mTimeToRest){
                 //The user is going to REST
-                intervalState = IntervalData_Base.eIntervalState.RUNNING;
+                intervalState = IntervalData.eIntervalState.RUNNING;
                 mCurrentIntervalSpace = mTimeToExercise;
                 mCurrentInterval++;
 
                 //Send command to service to inform what the interval has changes the state to REST
-                mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.REST, null);
+              //  mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.REST, null);
 
 
             }else{
                 //Send command to service to inform what the interval has changes the state to RUN
-                mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.RUN, null);
+              // mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.RUN, null);
 
                 if (mCurrentInterval >= mTotalIntervals){
                     mFinish = true;
@@ -109,17 +112,22 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
                     return;
                 }
                 //The user is going to make exercise
-                intervalState = IntervalData_Base.eIntervalState.RESTING;
+                intervalState = IntervalData.eIntervalState.RESTING;
                 mCurrentIntervalSpace = mTimeToRest;
             }
         }else{
             if (mTemporalSoundArray.length != 0) {
-                int intervalTime =  (int)(mCurrentIntervalSpace - mCurrentIntervalTime);
+
+                int intervalTime = (int)(mCurrentIntervalSpace - (int)Math.round(mCurrentIntervalTime/1000f)*1000);
+                Log.d(TAG,mCurrentIntervalSpace +"");
+                Log.d(TAG,(int)Math.round(mCurrentIntervalTime/1000f)*1000 +"");
+                Log.d(TAG,intervalTime +"");
                 for (int i = 0; i < mTemporalSoundArray.length; i++) {
                     if (intervalTime <= mTemporalSoundArray[i]){
                         mTemporalSoundArray[i]=-1;
                         mTrainingServiceInterface.specialCommand(
                                 TrainingServiceInterface.specialsCommands.SOUND, 1);
+                        Log.d(TAG, "Beep");
                     }
                 }
 
@@ -145,7 +153,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
         mLastIntervalsTime = 0;
         mCurrentIntervalSpace = mTimeToExercise;
         mFinish = false;
-        intervalState = IntervalData_Base.eIntervalState.RUNNING;
+        intervalState = IntervalData.eIntervalState.RUNNING;
         return true;
     }
 }

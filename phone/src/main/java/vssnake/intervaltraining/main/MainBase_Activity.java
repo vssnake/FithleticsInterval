@@ -234,39 +234,18 @@ public abstract class MainBase_Activity extends Activity
             section_Number.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Message msg = Message.obtain(null, 0, 0, 0);
-                    try {
-                        mService.send(msg);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
+
+
 
                 }
             });
-            final Intent intent = new Intent(getActivity(),GoogleApiService.class);
-            Thread t = new Thread(){
-                public void run(){
-                    getActivity().startService(intent);
-                    getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
-                }
-            };
-           t.start();
+
 
             return rootView;
         }
-        Messenger mService = null;
 
-        private ServiceConnection mConnection  = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                mService = new Messenger(service);
-            }
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                mService = null;
-            }
-        };
+
 
         @Override
         public void onAttach(Activity activity) {

@@ -8,7 +8,7 @@ public interface TrainingServiceInterface {
     public enum specialsCommands {
         SOUND, VIBRATION, END_INTERVAL, RUN, REST
     }
-    void newNotification(IntervalData_Base intervalData);
+    void newNotification(IntervalData intervalData);
     void endTrain();
     void specialCommand(specialsCommands commands,Object adicionalData);
 }

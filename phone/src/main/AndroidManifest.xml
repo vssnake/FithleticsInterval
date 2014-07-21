@@ -40,6 +40,11 @@
     </application>
 
 
+    <service android:name=".WearableListenerService">
+        <intent-filter>
+            <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+        </intent-filter>
+    </service>
 
 
     <uses-permission android:name="android.permission.VIBRATE" />

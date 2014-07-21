@@ -1,9 +1,17 @@
-package vssnake.intervaltraining.interval;
+package com.example.unai.myapplication.model;
 
 /**
  * Created by unai on 04/07/2014.
  */
-public class IntervalData_Base {
+public class IntervalData {
+    public enum intervalDataKey{
+        INTERVAL_TIME,
+        TOTAL_INTERVAL_TIME,
+        NUMBER_INTERVAL,
+        TOTAL_INTERVALS,
+        INTERVAL_STATE,
+
+    }
 
     public int getNumberInterval() {
         return numberIntervals;
@@ -49,7 +57,7 @@ public class IntervalData_Base {
 
     private boolean intervalDone;
 
-    public IntervalData_Base(){   }
+    public IntervalData(){   }
 
     public void setIntervalData(int numberInterval, int totalIntervals,
                            eIntervalState intervalState,

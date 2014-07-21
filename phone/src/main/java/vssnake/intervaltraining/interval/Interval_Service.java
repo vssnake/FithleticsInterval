@@ -1,18 +1,30 @@
 package vssnake.intervaltraining.interval;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
+
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import vssnake.intervaltraining.customNotifications.IntervalNotification;
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.behaviours.ImplIntervalBehaviour;
 import vssnake.intervaltraining.main.MainBase_Activity;
 import vssnake.intervaltraining.main.Main_Activity;
+import vssnake.intervaltraining.services.GoogleApiService;
 import vssnake.intervaltraining.utils.Utils;
 
 /**
@@ -23,12 +35,19 @@ public class Interval_Service extends TrainingBase_Service {
     private static final String TAG = "IntervalService";
     //Timer mTimerHandler
     Handler mTimerHandler = new Handler();
+
+
+
     //The runnable of TabataTraining
     Runnable runnable;
 
     IntervalBehaviour intervalBehaviour;
     int SOUND1=1;
     int SOUND2=2;
+
+    ScheduledExecutorService scheduler;
+    ScheduledFuture beeperHandle;
+    protected PowerManager.WakeLock mWakeLock;
 
     //The Interface to TabataTraining_Fragment
     TrainingServicesConnectors.IntervalInterface mIntervalInterface;
@@ -58,6 +77,7 @@ public class Interval_Service extends TrainingBase_Service {
 
     TabataServiceBinder mBinder = new TabataServiceBinder();
 
+    DataMap mIntervalDataMap = new DataMap();
 
 
     @Override
@@ -74,10 +94,15 @@ public class Interval_Service extends TrainingBase_Service {
     @Override
     public void onCreate(){
         super.onCreate();
-
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
         //Start the sounds for interval
         mSoundsMap.put(SOUND1, mSoundPool.load(this, R.raw.sfx, 1));
         mSoundsMap.put(SOUND2, mSoundPool.load(this, R.raw.sfx2, 1));
+
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+
+      //  GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
     }
 
     @Override
@@ -103,6 +128,14 @@ public class Interval_Service extends TrainingBase_Service {
         mTimerHandler.removeCallbacks(runnable);
         mIntervalInterface = null;
         mTrainingInterface = null;
+        try{
+            beeperHandle.cancel(true);
+        }catch (Exception e){
+
+        }
+
+
+
         super.onDestroy();
 
     }
@@ -111,18 +144,38 @@ public class Interval_Service extends TrainingBase_Service {
 
 
         if (!mTrainingStart){
+
            startTrain();
         }else{
             endTrain();
+
         }
 
     }
-
+    static int count = 0; //Test
     @Override
-    public void newNotification(IntervalData_Base intervalData) {
+    public void newNotification(IntervalData intervalData) {
+
         long secondsTotal = (long) Math.ceil( intervalData.getTotalIntervalTime()/1000d);
 
         long secondsInterval = (long) Math.ceil( intervalData.getIntervalTime()/1000d);
+
+
+        mIntervalDataMap.putInt(IntervalData.intervalDataKey.NUMBER_INTERVAL.name(),
+                intervalData.getNumberInterval());
+        mIntervalDataMap.putInt(IntervalData.intervalDataKey.TOTAL_INTERVALS.name(),
+                intervalData.getTotalIntervals());
+        mIntervalDataMap.putString(IntervalData.intervalDataKey.INTERVAL_STATE.name(),
+                intervalData.getIntervalState().name());
+        mIntervalDataMap.putLong(IntervalData.intervalDataKey.INTERVAL_TIME.name(),
+                intervalData.getIntervalTime());
+        mIntervalDataMap.putLong(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME.name(),
+                intervalData.getTotalIntervalTime());
+
+        GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
+
+
+
 
         if (mBackground){
 
@@ -152,6 +205,8 @@ public class Interval_Service extends TrainingBase_Service {
                     showFragmentIntent,cancelIntervalIntent);
 
             mNotificationManager.notify(NOTIFICATION_ID,mNotification);
+
+
         }else{
             if (mIntervalInterface != null){
                 mIntervalInterface.changeInterval(intervalData.getNumberInterval(),
@@ -171,9 +226,13 @@ public class Interval_Service extends TrainingBase_Service {
 
     @Override
     public void endTrain() {
-        mTimerHandler.removeCallbacks(runnable);
-        IntervalData_Base intervalData = new IntervalData_Base();
-        intervalData.setIntervalData(0,0, IntervalData_Base.eIntervalState.NOTHING,0,0,0);
+
+        mWakeLock.release();
+
+       // mTimerHandler.removeCallbacks(runnable);
+        beeperHandle.cancel(true);
+        IntervalData intervalData = new IntervalData();
+        intervalData.setIntervalData(0,0, IntervalData.eIntervalState.NOTHING,0,0,0);
         mTrainingStart = false;
         newNotification(intervalData);
         setBackground(false);
@@ -189,6 +248,11 @@ public class Interval_Service extends TrainingBase_Service {
     void startTrain(){
 
 
+
+        mWakeLock.acquire();
+
+        GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
+
         if (intervalBehaviour == null)
             intervalBehaviour = ImplIntervalBehaviour.newInstance(8, 10000, 20000, this, new int[]{3000,
                     2000, 1000});
@@ -197,13 +261,18 @@ public class Interval_Service extends TrainingBase_Service {
         mNotification = IntervalNotification.createNotification(getApplicationContext(),getApplicationContext().
                 getResources().getString(R.string.tabata),0,0,"nothing","00:00","00:00",null,null);
 
+
+
+
         runnable = new Runnable() {
             @Override
             public void run() {
+                //mTimerHandler.postDelayed(this, 1000);
                 timeInMilliseconds = SystemClock.uptimeMillis() -  startTime;
 
-                mTimerHandler.postDelayed(this, 500);
-                intervalBehaviour.executeTime(timeInMilliseconds);
+
+                Log.d(TAG,timeInMilliseconds + "");
+               intervalBehaviour.executeTime(timeInMilliseconds);
 
             }
         };
@@ -214,7 +283,9 @@ public class Interval_Service extends TrainingBase_Service {
             mTrainingInterface.statusTrain(mTrainingStart);
         }
         intervalBehaviour.executeTime(0);
-        mTimerHandler.postDelayed(runnable, 500);
+
+        beeperHandle = scheduler.scheduleAtFixedRate(runnable, 0, 1000, TimeUnit.MILLISECONDS);
+       //mTimerHandler.postDelayed(runnable, 1000);
     }
 
 
