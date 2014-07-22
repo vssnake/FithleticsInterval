@@ -15,6 +15,7 @@ import android.widget.Button;
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.main.Main_Activity;
 import vssnake.intervaltraining.services.GoogleApiService;
+import vssnake.intervaltraining.services.WearableListenerService;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -40,6 +41,8 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
         super.onCreate(savedInstanceState);
         getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
         getActivity().startService(intent);
+
+
 
 
     }
@@ -105,6 +108,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
             getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
             getActivity().startService(intent);
         }
+        GoogleApiService.startNotification();
 
 
     }

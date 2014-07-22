@@ -195,8 +195,8 @@ public class Interval_Service extends TrainingBase_Service {
             cancelIntervalIntent = PendingIntent.getService(getBaseContext(),0,
                     intervalIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-            mNotification = IntervalNotification.createNotification(getApplicationContext(),getApplicationContext().
-                            getResources().getString(R.string.tabata),
+            mNotification = IntervalNotification.createNotification(getApplicationContext(),
+                    getApplicationContext().getResources().getString(R.string.tabata),
                     intervalData.getNumberInterval(),
                     intervalData.getTotalIntervals(),
                     intervalData.getIntervalState().name(),

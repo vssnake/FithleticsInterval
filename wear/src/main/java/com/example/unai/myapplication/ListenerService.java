@@ -1,10 +1,10 @@
 package com.example.unai.myapplication;
 
-import android.app.Service;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Binder;
-import android.os.Bundle;
-import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.unai.myapplication.model.IntervalData;
@@ -37,70 +37,33 @@ public static final String SEND_INTERVAL_DATA = "/send";
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents){
-        if (mGoogleApiClient == null){
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(Wearable.API)
-                    .build();
-        }
 
-        if (Log.isLoggable(TAG, Log.DEBUG)){
-            Log.d(TAG,"onDataChanged :" + dataEvents);
-        }
-
-        Log.d(TAG,"MEssage Received");
-        final List events = FreezableUtils.freezeIterable(dataEvents);
-
-        ConnectionResult connectionResult =
-                mGoogleApiClient.blockingConnect(30, TimeUnit.SECONDS);
-
-        if (!connectionResult.isSuccess()){
-            Log.e(TAG,"Failed to connect to GoogleApiClient");
-        }
-           for (DataEvent event: dataEvents){
-               switch (event.getType()){
-                   case DataEvent.TYPE_CHANGED:
-                      if (event.getDataItem().getUri().getPath().equals(SEND_INTERVAL_DATA)){
-                          DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
-                          DataMap dataMap = dataMapItem.getDataMap();
-
-                             IntervalData data = new IntervalData();
-                                  data.setIntervalData(
-                                  dataMap.getInt(IntervalData.intervalDataKey.NUMBER_INTERVAL
-                                          .name()),
-                                  dataMap.getInt(IntervalData.intervalDataKey.TOTAL_INTERVALS
-                                          .name()),
-                                  IntervalData.eIntervalState.RUNNING,
-                                  dataMap.getLong(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME
-                                          .name()),
-                                  dataMap.getLong(IntervalData.intervalDataKey.INTERVAL_TIME
-                                          .name()),
-                                  0);
-
-                          Log.d(TAG,data.getNumberInterval() + " " +data.getIntervalTime() + " " +
-                          data.getBpm() + " " + data.getTotalIntervals() + " " +
-                          data.getTotalIntervals() + " " + data.getIntervalState());
-
-                      }
-                       break;
-                   case DataEvent.TYPE_DELETED:
-                       break;
-                   default:
-                       break;
-               }
-           }
     }
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
 
+
+
         if (messageEvent.getPath().equals(PREPARATIVE_INTERVAL)) {
-            long token = Binder.clearCallingIdentity();
-            try {
-                Intent startIntent = new Intent(this, MyActivity.class);
-                startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startIntent);
-            } finally {
-                Binder.restoreCallingIdentity(token);
-            }
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,
+                    new Intent(this, MyActivity.class),0);
+            NotificationCompat.WearableExtender wearableExtender = new NotificationCompat
+                    .WearableExtender();
+
+
+            Notification notif = new NotificationCompat.Builder(getApplicationContext())
+                    .setContentTitle("Interval Ready")
+                    .setContentText("Interval Ready to start, push to run the app")
+                    .setSmallIcon(R.drawable.hiit)
+                    .extend(wearableExtender)
+                    .setContentIntent(pendingIntent)
+                    .build();
+
+            NotificationManagerCompat  notifManager = NotificationManagerCompat.from
+                    (getApplicationContext());
+
+            notifManager.notify(1,notif);
 
         }
     }
