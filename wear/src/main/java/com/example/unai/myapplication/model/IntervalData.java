@@ -47,6 +47,10 @@ public class IntervalData {
         NOTHING
     }
 
+    private void setState(String state){
+       intervalState =  eIntervalState.valueOf(state);
+    }
+
     private int numberIntervals;
     private int totalIntervals;
     private eIntervalState intervalState;
@@ -60,13 +64,26 @@ public class IntervalData {
     public IntervalData(){   }
 
     public void setIntervalData(int numberInterval, int totalIntervals,
-                           eIntervalState intervalState,
-                           long totalIntervalTime,
-                           long intervalTime,
-                           int bpm){
+                                 eIntervalState intervalState,
+                                 long totalIntervalTime,
+                                 long intervalTime,
+                                 int bpm){
         this.numberIntervals = numberInterval;
         this.totalIntervals = totalIntervals;
         this.intervalState = intervalState;
+        this.totalIntervalTime = totalIntervalTime;
+        this.intervalTime = intervalTime;
+        this.bpm = bpm;
+    }
+
+    public void setIntervalData(int numberInterval, int totalIntervals,
+                                String intervalState,
+                                long totalIntervalTime,
+                                long intervalTime,
+                                int bpm){
+        this.numberIntervals = numberInterval;
+        this.totalIntervals = totalIntervals;
+        setState(intervalState);
         this.totalIntervalTime = totalIntervalTime;
         this.intervalTime = intervalTime;
         this.bpm = bpm;

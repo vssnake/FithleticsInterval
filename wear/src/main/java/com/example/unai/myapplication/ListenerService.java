@@ -30,6 +30,7 @@ private static final String TAG = "WereableServiceWear";
 
 public static final String PREPARATIVE_INTERVAL = "/prepare/interval";
 public static final String SEND_INTERVAL_DATA = "/send";
+public static final String INTERVAL_VIBRATION = "/interval/vibration";
 
 
 

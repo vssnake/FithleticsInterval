@@ -10,15 +10,14 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import vssnake.intervaltraining.behaviours.IntervalBehaviour;
 import vssnake.intervaltraining.customNotifications.IntervalNotification;
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.behaviours.ImplIntervalBehaviour;
@@ -50,7 +49,7 @@ public class Interval_Service extends TrainingBase_Service {
     protected PowerManager.WakeLock mWakeLock;
 
     //The Interface to TabataTraining_Fragment
-    TrainingServicesConnectors.IntervalInterface mIntervalInterface;
+    TrainingServiceConnectors.IntervalInterface mIntervalInterface;
 
     /**
      * Class used for the client Binder.  Because we know this service always
@@ -62,7 +61,7 @@ public class Interval_Service extends TrainingBase_Service {
             return Interval_Service.this;
         }
 
-        public void setListener(TrainingServicesConnectors.IntervalInterface listener) {
+        public void setListener(TrainingServiceConnectors.IntervalInterface listener) {
             mIntervalInterface = listener;
             mTrainingInterface = mIntervalInterface;
 
@@ -123,6 +122,7 @@ public class Interval_Service extends TrainingBase_Service {
 
     @Override
     public void onDestroy(){
+        super.onDestroy();
         Log.i("Tabata_Service", "Destroy service");
         mTrainingStart = false;
         mTimerHandler.removeCallbacks(runnable);
@@ -168,9 +168,9 @@ public class Interval_Service extends TrainingBase_Service {
         mIntervalDataMap.putString(IntervalData.intervalDataKey.INTERVAL_STATE.name(),
                 intervalData.getIntervalState().name());
         mIntervalDataMap.putLong(IntervalData.intervalDataKey.INTERVAL_TIME.name(),
-                intervalData.getIntervalTime());
+                secondsInterval);
         mIntervalDataMap.putLong(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME.name(),
-                intervalData.getTotalIntervalTime());
+                secondsTotal);
 
         GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
 
@@ -238,7 +238,7 @@ public class Interval_Service extends TrainingBase_Service {
         setBackground(false);
 
         if (mTrainingInterface != null){
-            mTrainingInterface.specialEvent(TrainingServicesConnectors.specialCommands.END_TRAINING);
+            mTrainingInterface.specialEvent(TrainingServiceConnectors.specialCommands.END_TRAINING);
         }
     }
 
@@ -298,12 +298,14 @@ public class Interval_Service extends TrainingBase_Service {
                     playSound((Integer)adicionalData,1.0f);
                     break;
                 case VIBRATION:
+                    GoogleApiService.startNotification(GoogleApiService.TypeNotifications.
+                            VIBRATION_NOTIFICATION,(Integer)adicionalData);
                     break;
                 case RUN:
-                    mIntervalInterface.specialEvent(TrainingServicesConnectors.specialCommands.RUN);
+                    mIntervalInterface.specialEvent(TrainingServiceConnectors.specialCommands.RUN);
                     break;
                 case REST:
-                    mIntervalInterface.specialEvent(TrainingServicesConnectors.specialCommands.REST);
+                    mIntervalInterface.specialEvent(TrainingServiceConnectors.specialCommands.REST);
                     break;
             }
     }

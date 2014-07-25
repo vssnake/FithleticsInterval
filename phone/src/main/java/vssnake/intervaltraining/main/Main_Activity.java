@@ -8,7 +8,6 @@ import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.Messenger;
 
 import vssnake.intervaltraining.services.GoogleApiService;
@@ -19,6 +18,7 @@ public class Main_Activity extends MainBase_Activity {
     private Messenger mMessenger_GoogleApiService = null;
 
 
+    Intent googleServiceIntent;
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -28,14 +28,18 @@ public class Main_Activity extends MainBase_Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Intent intent = new Intent(this,GoogleApiService.class);
+        googleServiceIntent  = new Intent(this,GoogleApiService.class);
         Thread t = new Thread(){
             public void run(){
-                startService(intent);
-                bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
+                startService(googleServiceIntent);
+                bindService(googleServiceIntent, mGoolgleApiConnection, Context.BIND_ABOVE_CLIENT);
             }
         };
         t.start();
+    }
+    @Override
+    protected void onDestroy(){
+        unbindService(mGoolgleApiConnection);
     }
 
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
@@ -47,7 +51,7 @@ public class Main_Activity extends MainBase_Activity {
 
 
 
-    private ServiceConnection mConnection  = new ServiceConnection() {
+    private ServiceConnection mGoolgleApiConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mMessenger_GoogleApiService = new Messenger(service);

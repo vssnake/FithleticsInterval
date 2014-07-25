@@ -41,7 +41,7 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
     SoundPool mSoundPool;
     SparseArray<Integer> mSoundsMap;
 
-    TrainingServicesConnectors.TrainingInterface mTrainingInterface;
+    TrainingServiceConnectors.TrainingInterface mTrainingInterface;
 
     public TrainingBase_Service() {
     }

@@ -2,9 +2,9 @@ package vssnake.intervaltraining.behaviours;
 
 import android.util.Log;
 
-import vssnake.intervaltraining.interval.IntervalBehaviour;
 import vssnake.intervaltraining.interval.IntervalData;
 import vssnake.intervaltraining.interval.TrainingServiceInterface;
+import vssnake.intervaltraining.utils.StacData;
 
 /**
  * Created by unai on 04/07/2014.
@@ -88,7 +88,10 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
             mCurrentIntervalTime -= mCurrentIntervalSpace;
             mLastIntervalsTime = mTotalIntervalsTime - mCurrentIntervalTime;
             Log.d(TAG, "Final Beep");
+
            mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.SOUND, 2);
+           mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.
+                           VIBRATION,Integer.valueOf(StacData.Intervaldata.finalStateVibration));
 
 
             if (mCurrentIntervalSpace == mTimeToRest){
@@ -97,13 +100,7 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
                 mCurrentIntervalSpace = mTimeToExercise;
                 mCurrentInterval++;
 
-                //Send command to service to inform what the interval has changes the state to REST
-              //  mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.REST, null);
-
-
             }else{
-                //Send command to service to inform what the interval has changes the state to RUN
-              // mTrainingServiceInterface.specialCommand(TrainingServiceInterface.specialsCommands.RUN, null);
 
                 if (mCurrentInterval >= mTotalIntervals){
                     mFinish = true;
@@ -127,6 +124,9 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
                         mTemporalSoundArray[i]=-1;
                         mTrainingServiceInterface.specialCommand(
                                 TrainingServiceInterface.specialsCommands.SOUND, 1);
+                        mTrainingServiceInterface.specialCommand(TrainingServiceInterface.
+                                specialsCommands.VIBRATION,
+                                Integer.valueOf(StacData.Intervaldata.upComingStateVibration));
                         Log.d(TAG, "Beep");
                     }
                 }

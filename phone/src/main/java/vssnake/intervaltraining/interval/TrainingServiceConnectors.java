@@ -3,7 +3,7 @@ package vssnake.intervaltraining.interval;
 /**
  * Created by unai on 17/07/2014.
  */
-public class TrainingServicesConnectors {
+public class TrainingServiceConnectors {
 
     public enum  specialCommands {REST,RUN, END_TRAINING}
 

@@ -59,15 +59,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"/>
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/imageView2"
-        android:src="@drawable/heart"
-        android:layout_alignBottom="@+id/interval_round"
-        android:layout_toEndOf="@+id/interval_round"
-        android:layout_marginLeft="10dp" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,7 +67,17 @@
         android:id="@+id/interval_heartRate"
         android:layout_alignTop="@+id/imageView2"
         android:layout_alignEnd="@+id/interval_totalTime"
-        android:layout_toEndOf="@+id/imageView2"
         android:layout_alignParentBottom="true"
         android:gravity="center" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/heart"
+        android:layout_alignBottom="@+id/interval_round"
+        android:layout_toStartOf="@id/interval_heartRate"
+        android:layout_marginRight="10dp"/>
+
+
 </RelativeLayout>

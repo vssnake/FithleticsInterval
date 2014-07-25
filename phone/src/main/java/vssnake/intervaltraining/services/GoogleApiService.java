@@ -14,7 +14,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
@@ -23,20 +22,29 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
-import java.util.Map;
+
+import vssnake.intervaltraining.utils.Utils;
+
+import static vssnake.intervaltraining.services.GoogleApiService.TypeNotifications.*;
 
 public class GoogleApiService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = "WereableService";
     public static final String PREPARATIVE_INTERVAL = "/prepare/interval";
+    public static final String INTERVAL_VIBRATION = "/interval/vibration";
     public static final String SEND_INTERVAL_DATA = "/send";
 
     public static GoogleApiClient mGoogleApiClient;
     static ArrayList<String> nodes; // the connected device to send the message to
 
+    public enum TypeNotifications {
+        PREPARE_NOTIFICATION,
+        VIBRATION_NOTIFICATION,
+    }
 
     public GoogleApiService() {
+
     }
 
     class ServiceHandler extends Handler {
@@ -46,7 +54,7 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
                 case 0:
                     Message turur = Message.obtain(null,2,0,0,new Object());
 
-                    startNotification();
+                    startNotification(TypeNotifications.PREPARE_NOTIFICATION);
                     break;
                 case 2:
 
@@ -92,20 +100,50 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
         Log.d(TAG, "onConnectionFailed " + connectionResult);
     }
 
-    public static void startNotification(){
+    public static void startNotification(final TypeNotifications typeNotification){
         new Thread(){
                  public void run() {
+                     MessageApi.SendMessageResult result = null;
                      nodes = getNodes();
+                     switch (typeNotification){
+                         case PREPARE_NOTIFICATION:
+                             result = Wearable.MessageApi.sendMessage(mGoogleApiClient,
+                                     nodes.get(0),PREPARATIVE_INTERVAL,null).await();
+                             break;
+                     }
 
-                     MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(mGoogleApiClient,
-                             nodes.get(0),PREPARATIVE_INTERVAL,null).await();
-                     if (!result.getStatus().isSuccess()){
+
+
+                     if (result != null && !result.getStatus().isSuccess()){
                          Log.e(TAG, "ERROR: failed to send Message: " + result.getStatus());
                      }
                 }
             }.start();
 
 
+    }
+
+    public static void startNotification(final TypeNotifications typeNotification, final int intValue){
+        new Thread(){
+            public void run() {
+                MessageApi.SendMessageResult result = null;
+                nodes = getNodes();
+                switch (typeNotification){
+                    case VIBRATION_NOTIFICATION:
+                        result = Wearable.MessageApi.sendMessage(mGoogleApiClient,
+                                nodes.get(0),INTERVAL_VIBRATION, Utils.intToByte(intValue)).await();
+
+
+                        break;
+                }
+
+
+
+                if (result != null && !result.getStatus().isSuccess()){
+                    Log.e(TAG, "ERROR: failed to send Message: " + result.getStatus());
+                }
+            }
+        }.start();
     }
 
     public static void setDataMap(String patch, DataMap dataMap){

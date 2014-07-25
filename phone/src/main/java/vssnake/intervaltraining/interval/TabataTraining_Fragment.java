@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Messenger;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import vssnake.intervaltraining.R;
-import vssnake.intervaltraining.main.Main_Activity;
 import vssnake.intervaltraining.services.GoogleApiService;
-import vssnake.intervaltraining.services.WearableListenerService;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -27,7 +24,7 @@ import vssnake.intervaltraining.services.WearableListenerService;
  *
  */
 public class TabataTraining_Fragment extends TabataTrainingBase_Fragment implements
-        TrainingServicesConnectors.IntervalInterface {
+        TrainingServiceConnectors.IntervalInterface {
 
     private static final String TAG = "TabataFragment";
 
@@ -108,7 +105,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
             getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
             getActivity().startService(intent);
         }
-        GoogleApiService.startNotification();
+        GoogleApiService.startNotification(GoogleApiService.TypeNotifications.PREPARE_NOTIFICATION);
 
 
     }
@@ -186,7 +183,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
 
     @Override
-    public void specialEvent(final TrainingServicesConnectors.specialCommands commands) {
+    public void specialEvent(final TrainingServiceConnectors.specialCommands commands) {
         if (isAdded()){
             main_Activity.runOnUiThread(new Runnable() {
                 @Override

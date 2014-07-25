@@ -1,8 +1,7 @@
-package vssnake.intervaltraining.utils;
+package com.example.unai.myapplication.utils;
 
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
-import android.hardware.Camera;
 
 import java.nio.ByteBuffer;
 
@@ -48,10 +47,10 @@ public class Utils {
     }
 
     public static byte[] intToByte(int data){
-       return ByteBuffer.allocate(32).putInt(data).array();
+        return ByteBuffer.allocate(32).putInt(data).array();
     }
     public static int arrayBytesToInt(byte[] data){
-       return  ByteBuffer.wrap(data).getInt();
+        return  ByteBuffer.wrap(data).getInt();
     }
 
 
