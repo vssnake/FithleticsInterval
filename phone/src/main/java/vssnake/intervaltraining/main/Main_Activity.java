@@ -39,6 +39,7 @@ public class Main_Activity extends MainBase_Activity {
     }
     @Override
     protected void onDestroy(){
+        super.onDestroy();
         unbindService(mGoolgleApiConnection);
     }
 

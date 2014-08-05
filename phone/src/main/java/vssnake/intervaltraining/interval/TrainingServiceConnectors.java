@@ -5,11 +5,11 @@ package vssnake.intervaltraining.interval;
  */
 public class TrainingServiceConnectors {
 
-    public enum  specialCommands {REST,RUN, END_TRAINING}
+    public enum specialUICommands {REST,RUN, END_TRAINING}
 
     public interface TrainingInterface {
         public void statusTrain(boolean status);
-        public void specialEvent(specialCommands commands);
+        public void specialEvent(specialUICommands commands);
     }
 
     public interface IntervalInterface extends TrainingInterface {

@@ -70,7 +70,7 @@ public class Interval_Service extends TrainingBase_Service {
 
         public void runTabata(){startTabata();}
 
-        public void runBackground(boolean background){
+        public void runInbackground(boolean background){
             setBackground(background);}
     }
 
@@ -238,7 +238,7 @@ public class Interval_Service extends TrainingBase_Service {
         setBackground(false);
 
         if (mTrainingInterface != null){
-            mTrainingInterface.specialEvent(TrainingServiceConnectors.specialCommands.END_TRAINING);
+            mTrainingInterface.specialEvent(TrainingServiceConnectors.specialUICommands.END_TRAINING);
         }
     }
 
@@ -302,10 +302,10 @@ public class Interval_Service extends TrainingBase_Service {
                             VIBRATION_NOTIFICATION,(Integer)adicionalData);
                     break;
                 case RUN:
-                    mIntervalInterface.specialEvent(TrainingServiceConnectors.specialCommands.RUN);
+                    mIntervalInterface.specialEvent(TrainingServiceConnectors.specialUICommands.RUN);
                     break;
                 case REST:
-                    mIntervalInterface.specialEvent(TrainingServiceConnectors.specialCommands.REST);
+                    mIntervalInterface.specialEvent(TrainingServiceConnectors.specialUICommands.REST);
                     break;
             }
     }

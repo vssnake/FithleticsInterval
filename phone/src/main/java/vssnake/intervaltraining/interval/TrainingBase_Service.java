@@ -91,20 +91,20 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
     }
 
 
-    void setBackground(boolean mBackground){
+    void setBackground(boolean background){
 
         if (mTrainingStart){
-            if (mBackground){
+            if (background){
                 startForeground(NOTIFICATION_ID, mNotification);
             }
         }
-        if (!mBackground){
+        if (!background){
             stopForeground(true);
         }
         if (mTrainingInterface != null){
             mTrainingInterface.statusTrain(mTrainingStart);
         }
-        this.mBackground = mBackground;
+        this.mBackground = background;
 
 
     }

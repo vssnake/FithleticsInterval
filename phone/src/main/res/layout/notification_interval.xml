@@ -53,7 +53,8 @@
         android:layout_toEndOf="@+id/notifIntervalImage_Image"
         android:id="@+id/linearLayout"
         android:layout_below="@+id/notifIntervalName_TextView"
-        android:layout_alignEnd="@+id/notifIntervalClose_Button">
+        android:layout_alignEnd="@+id/notifIntervalClose_Button"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:orientation="horizontal"

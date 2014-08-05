@@ -88,7 +88,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     public void onPause(){
         super.onPause();
         if (binder != null) {
-            binder.runBackground(true);
+            binder.runInbackground(true);
             Log.i("Background","true");
         }
 
@@ -98,7 +98,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     public void onResume(){
         super.onResume();
         if (mBound) {
-            binder.runBackground(false);
+            binder.runInbackground(false);
             Log.i("Background", "false");
 
         }else {
@@ -135,7 +135,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
             binder.setListener(TabataTraining_Fragment.this);
             mBound = true;
 
-            binder.runBackground(false);
+            binder.runInbackground(false);
 
 
 
@@ -183,7 +183,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
 
     @Override
-    public void specialEvent(final TrainingServiceConnectors.specialCommands commands) {
+    public void specialEvent(final TrainingServiceConnectors.specialUICommands commands) {
         if (isAdded()){
             main_Activity.runOnUiThread(new Runnable() {
                 @Override

@@ -20,7 +20,7 @@
         android:layout_height="300dp"
         android:layout_alignParentStart="false"
         android:id="@+id/intervalFragment_FirstFrame"
-        android:layout_marginTop="-200dp"></FrameLayout>
+        android:layout_marginTop="-220dp"></FrameLayout>
     <View
         android:layout_below="@id/intervalFragment_FirstFrame"
         android:layout_width="fill_parent"
