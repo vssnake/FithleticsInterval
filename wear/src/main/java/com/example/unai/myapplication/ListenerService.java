@@ -59,7 +59,7 @@ public static final String INTERVAL_VIBRATION = "/interval/vibration";
                     .WearableExtender();
             wearableExtender.setHintHideIcon(true);
             wearableExtender.setBackground((BitmapFactory.decodeResource(getResources(),
-                    R.drawable.track)));
+                    R.drawable.a_track)));
 
 
             Notification notif = new NotificationCompat.Builder(getApplicationContext())
