@@ -4,5 +4,8 @@
     <string name="app_name">Interval Training</string>
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>
+    <string name="interval_ready">Interval Ready</string>
+    <string name="interval_ready_context">Interval Ready to start, swipe right to start
+        the app</string>
 
 </resources>

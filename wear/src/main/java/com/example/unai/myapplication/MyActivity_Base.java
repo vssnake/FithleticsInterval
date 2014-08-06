@@ -7,13 +7,15 @@ import android.os.PowerManager;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
 
+import com.example.unai.myapplication.utils.Utils;
+
 public class MyActivity_Base extends Activity {
 
     TextView mIntervalTime;
     TextView mIntervalTotalTime;
     TextView mIntervalState;
     TextView mIntervalRound;
-    TextView mIntervalHeartRate;
+    TextView mIntervalHeartRate; //Not implemented yet
 
 
     protected PowerManager.WakeLock mWakeLock;
@@ -30,7 +32,12 @@ public class MyActivity_Base extends Activity {
                 mIntervalTotalTime = (TextView) stub.findViewById(R.id.interval_totalTime);
                 mIntervalState = (TextView) stub.findViewById(R.id.interval_State);
                 mIntervalRound = (TextView) stub.findViewById(R.id.interval_round);
-                mIntervalHeartRate = (TextView) stub.findViewById(R.id.interval_heartRate);
+
+                mIntervalTime.setTypeface(Utils.getFontRoboto_black(getAssets()));
+                mIntervalTotalTime.setTypeface(Utils.getFontRoboto_black(getAssets()));
+                mIntervalState.setTypeface(Utils.getFontRoboto_black(getAssets()));
+                mIntervalRound.setTypeface(Utils.getFontRoboto_black(getAssets()));
+
             }
         });
 

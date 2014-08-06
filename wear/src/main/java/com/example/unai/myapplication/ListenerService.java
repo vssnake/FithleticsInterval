@@ -3,6 +3,7 @@ package com.example.unai.myapplication;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -47,18 +48,29 @@ public static final String INTERVAL_VIBRATION = "/interval/vibration";
 
         if (messageEvent.getPath().equals(PREPARATIVE_INTERVAL)) {
 
+            NotificationCompat.BigPictureStyle bigStyle = new NotificationCompat.BigPictureStyle();
+            bigStyle.bigPicture(BitmapFactory.decodeResource(getResources(),
+                    R.drawable.hiit));
+
+
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,
                     new Intent(this, MyActivity.class),0);
             NotificationCompat.WearableExtender wearableExtender = new NotificationCompat
                     .WearableExtender();
+            wearableExtender.setHintHideIcon(true);
+            wearableExtender.setBackground((BitmapFactory.decodeResource(getResources(),
+                    R.drawable.track)));
 
 
             Notification notif = new NotificationCompat.Builder(getApplicationContext())
-                    .setContentTitle("Interval Ready")
-                    .setContentText("Interval Ready to start, push to run the app")
+                    .setContentTitle(getResources().getString(R.string.interval_ready))
+                    .setContentText(getResources().getString(R.string.interval_ready_context))
                     .setSmallIcon(R.drawable.hiit)
                     .extend(wearableExtender)
-                    .setContentIntent(pendingIntent)
+                    //.setStyle(bigStyle)
+                    .addAction(R.drawable.hiit,
+                            "Run Tabata", pendingIntent)
+                   // .setContentIntent(pendingIntent)
                     .build();
 
             NotificationManagerCompat  notifManager = NotificationManagerCompat.from
