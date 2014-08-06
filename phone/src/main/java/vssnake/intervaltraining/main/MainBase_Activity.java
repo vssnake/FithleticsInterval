@@ -63,18 +63,20 @@ public abstract class MainBase_Activity extends Activity
 
 
 
-
+        /*
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        //Check if a notification launch a Key to open a fragment
+        //Check if a notification launch a Key to open a fragment*/
         Intent i = getIntent();
         int fragmentKey = i.getIntExtra(MainBase_Activity.FRAGMENT_KEY,-1);
 
         if (fragmentKey > -1){
             onNavigationDrawerItemSelected(fragmentKey);
+        }else{
+
         }
 
 
@@ -121,9 +123,9 @@ public abstract class MainBase_Activity extends Activity
        // if (fragmentManager.getBackStackEntryAt(getFragmentManager().getBackStackEntryCount()-1) != fragment){
             fragmentManager.beginTransaction()
 
-                    .setCustomAnimations(
+                   /* .setCustomAnimations(
                             R.animator.card_flip_right_in,R.animator.card_flip_right_out,
-                            R.animator.card_flip_left_in,R.animator.card_flip_left_out)
+                            R.animator.card_flip_left_in,R.animator.card_flip_left_out)*/
                     .replace(R.id.container, fragment)
                     .commit();
         //}
@@ -252,8 +254,8 @@ public abstract class MainBase_Activity extends Activity
             super.onAttach(activity);
 
             //Call to set the name of the section
-            ((MainBase_Activity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
+           /* ((MainBase_Activity) activity).onSectionAttached(
+                    getArguments().getInt(ARG_SECTION_NUMBER));*/
 
             _section_Number = getArguments().getInt(ARG_SECTION_NUMBER);
         }

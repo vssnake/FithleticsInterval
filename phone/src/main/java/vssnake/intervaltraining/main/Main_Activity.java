@@ -29,13 +29,9 @@ public class Main_Activity extends MainBase_Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         googleServiceIntent  = new Intent(this,GoogleApiService.class);
-        Thread t = new Thread(){
-            public void run(){
-                startService(googleServiceIntent);
-                bindService(googleServiceIntent, mGoolgleApiConnection, Context.BIND_ABOVE_CLIENT);
-            }
-        };
-        t.start();
+        startService(googleServiceIntent);
+        bindService(googleServiceIntent, mGoolgleApiConnection, Context.BIND_ABOVE_CLIENT);
+
     }
     @Override
     protected void onDestroy(){
@@ -56,6 +52,7 @@ public class Main_Activity extends MainBase_Activity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mMessenger_GoogleApiService = new Messenger(service);
+            onNavigationDrawerItemSelected(2); //HardCode
 
         }
 
