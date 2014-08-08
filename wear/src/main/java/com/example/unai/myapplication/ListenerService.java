@@ -37,6 +37,8 @@ public static final String INTERVAL_VIBRATION = "/interval/vibration";
 
     GoogleApiClient mGoogleApiClient;
 
+
+
     @Override
     public void onDataChanged(DataEventBuffer dataEvents){
 

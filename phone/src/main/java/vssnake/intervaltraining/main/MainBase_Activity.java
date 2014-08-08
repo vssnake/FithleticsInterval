@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ import vssnake.intervaltraining.interval.TabataTrainingBase_Fragment;
 import vssnake.intervaltraining.services.GoogleApiService;
 
 
-public abstract class MainBase_Activity extends Activity
+public abstract class MainBase_Activity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, TabataTrainingBase_Fragment.OnFragmentInteractionListener {
 
     /**
@@ -105,8 +106,8 @@ public abstract class MainBase_Activity extends Activity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment;
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.Fragment fragment;
         switch (position){
             case 2:
                 fragment = TabataTraining_Fragment.newInstance();
@@ -198,7 +199,7 @@ public abstract class MainBase_Activity extends Activity
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends android.support.v4.app.Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -231,16 +232,7 @@ public abstract class MainBase_Activity extends Activity
             View rootView = inflater.inflate(R.layout.fragment_welcome_, container, false);
             section_Number = (TextView)rootView.findViewById(R.id.section_label);
 
-            section_Number.setText(_section_Number.toString());
-             section_Number = (Button)rootView.findViewById(R.id.TestingButton);
-            section_Number.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-
-
-                }
-            });
 
 
             return rootView;

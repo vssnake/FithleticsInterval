@@ -1,4 +1,4 @@
-package vssnake.intervaltraining.services;
+package com.example.unai.myapplication;
 
 import android.app.Service;
 import android.content.Intent;
@@ -23,24 +23,21 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
 
-import vssnake.intervaltraining.utils.Utils;
-
-import static vssnake.intervaltraining.services.GoogleApiService.TypeNotifications.*;
-
+/**
+ * Created by unai on 06/08/2014.
+ */
 public class GoogleApiService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = "WereableService";
-    public static final String PREPARATIVE_INTERVAL = "/prepare/interval";
-    public static final String INTERVAL_VIBRATION = "/interval/vibration";
-    public static final String SEND_INTERVAL_DATA = "/send";
+    private static final String INTERVAL_ACTION = "interval/action";
+
 
     public static GoogleApiClient mGoogleApiClient;
     static ArrayList<String> nodes; // the connected device to send the message to
 
     public enum TypeNotifications {
-        PREPARE_NOTIFICATION,
-        VIBRATION_NOTIFICATION,
+        SEND_INTERVAL_ACTION;
     }
 
     public GoogleApiService() {
@@ -52,9 +49,7 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    Message turur = Message.obtain(null,2,0,0,new Object());
-
-                    startNotification(TypeNotifications.PREPARE_NOTIFICATION);
+                    startNotification(TypeNotifications.SEND_INTERVAL_ACTION);
                     break;
                 case 2:
 
@@ -72,6 +67,7 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
 
     @Override
     public void onCreate(){
+        Log.d(TAG,"StartService");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(this)
@@ -102,42 +98,13 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
 
     public static void startNotification(final TypeNotifications typeNotification){
         new Thread(){
-                 public void run() {
-                     MessageApi.SendMessageResult result = null;
-                     nodes = getNodes();
-                     switch (typeNotification){
-                         case PREPARE_NOTIFICATION:
-                             if (nodes.size() >= 1){
-                                 result = Wearable.MessageApi.sendMessage(mGoogleApiClient,
-                                         nodes.get(0),PREPARATIVE_INTERVAL,null).await();
-                                 break;
-                             }
-
-                     }
-
-
-
-                     if (result != null && !result.getStatus().isSuccess()){
-                         Log.e(TAG, "ERROR: failed to send Message: " + result.getStatus());
-                     }
-                }
-            }.start();
-
-
-    }
-
-    public static void startNotification(final TypeNotifications typeNotification, final int intValue){
-        new Thread(){
             public void run() {
                 MessageApi.SendMessageResult result = null;
                 nodes = getNodes();
                 switch (typeNotification){
-                    case VIBRATION_NOTIFICATION:
-                        if (nodes.size() >= 1) {
-                            result = Wearable.MessageApi.sendMessage(mGoogleApiClient,
-                                    nodes.get(0), INTERVAL_VIBRATION, Utils.intToByte(intValue)).await();
-                        }
-
+                    case SEND_INTERVAL_ACTION:
+                        result = Wearable.MessageApi.sendMessage(mGoogleApiClient,
+                                nodes.get(0),INTERVAL_ACTION,null).await();
                         break;
                 }
 
@@ -148,26 +115,10 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
                 }
             }
         }.start();
-    }
-
-    public static void setDataMap(String patch, DataMap dataMap){
-
-        PutDataMapRequest dataMapRequest = PutDataMapRequest.create(patch);
-
-        dataMapRequest.getDataMap().putAll(dataMap);
-
-        PutDataRequest request = dataMapRequest.asPutDataRequest();
-        PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(
-                mGoogleApiClient,request);
-
-               /* if (!pendingResult.await().getStatus().isSuccess()){
-                    Log.e(TAG, "ERROR: failed to send Message: " + pendingResult.await().getStatus().getStatus());
-                }*/
-
-
 
 
     }
+
 
     private static ArrayList<String> getNodes() {
         ArrayList<String> results= new ArrayList<String>();

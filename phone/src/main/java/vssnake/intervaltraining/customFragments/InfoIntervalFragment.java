@@ -20,7 +20,7 @@ import vssnake.intervaltraining.utils.Utils;
  * create an instance of this fragment.
  *
  */
-public class InfoIntervalFragment extends Fragment {
+public class InfoIntervalFragment extends android.support.v4.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,8 +45,16 @@ public class InfoIntervalFragment extends Fragment {
 
     onInfoIntervalFragmentListener mInfoFragmentListener;
 
-    private InfoIntervalFragment(onInfoIntervalFragmentListener infoFragmentListener){
+
+
+    private void  setIntervalFragmentListener(onInfoIntervalFragmentListener infoFragmentListener){
         mInfoFragmentListener = infoFragmentListener;
+    }
+
+
+
+    public InfoIntervalFragment() {
+        // Required empty public constructor
     }
 
     /**
@@ -57,14 +65,15 @@ public class InfoIntervalFragment extends Fragment {
      * @return A new instance of fragment InfoIntervalFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static InfoIntervalFragment newInstance(onInfoIntervalFragmentListener infoFragmentListener) {
-        InfoIntervalFragment fragment = new InfoIntervalFragment(infoFragmentListener);
+    public static InfoIntervalFragment newInstance(
+            onInfoIntervalFragmentListener infoFragmentListener) {
+        InfoIntervalFragment fragment = new InfoIntervalFragment();
+
+        fragment.setIntervalFragmentListener(infoFragmentListener);
 
         return fragment;
     }
-    public InfoIntervalFragment() {
-        // Required empty public constructor
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

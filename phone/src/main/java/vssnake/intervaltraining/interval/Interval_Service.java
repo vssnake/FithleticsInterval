@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -24,12 +25,14 @@ import vssnake.intervaltraining.behaviours.ImplIntervalBehaviour;
 import vssnake.intervaltraining.main.MainBase_Activity;
 import vssnake.intervaltraining.main.Main_Activity;
 import vssnake.intervaltraining.services.GoogleApiService;
+import vssnake.intervaltraining.services.WearableListenerConnector;
+import vssnake.intervaltraining.services.WearableListenerService;
 import vssnake.intervaltraining.utils.Utils;
 
 /**
  * Created by unai on 27/06/2014.
  */
-public class Interval_Service extends TrainingBase_Service {
+public class Interval_Service extends TrainingBase_Service implements WearableListenerConnector{
 
     private static final String TAG = "IntervalService";
     //Timer mTimerHandler
@@ -50,6 +53,15 @@ public class Interval_Service extends TrainingBase_Service {
 
     //The Interface to TabataTraining_Fragment
     TrainingServiceConnectors.IntervalInterface mIntervalInterface;
+
+    @Override
+    public void onMessageReceived(typeMessage message, Bundle data) {
+        switch (message) {
+            case action:
+                startTabata();
+                break;
+        }
+    }
 
     /**
      * Class used for the client Binder.  Because we know this service always
@@ -88,7 +100,7 @@ public class Interval_Service extends TrainingBase_Service {
         return true;
     }
 
-
+    int mWearableListenerConnectorID = -1;
 
     @Override
     public void onCreate(){
@@ -101,7 +113,29 @@ public class Interval_Service extends TrainingBase_Service {
 
         scheduler = Executors.newSingleThreadScheduledExecutor();
 
+        mWearableListenerConnectorID =  WearableListenerService.addListener(this);
+
       //  GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d(TAG, "Destroy service");
+        mTrainingStart = false;
+        mTimerHandler.removeCallbacks(runnable);
+        mIntervalInterface = null;
+        mTrainingInterface = null;
+
+        try{
+            beeperHandle.cancel(true); //Cancel the timer
+        }catch (Exception e){
+
+        }
+        //Destroy mWearableListener
+        WearableListenerService.removeListener(mWearableListenerConnectorID);
+
+        super.onDestroy();
     }
 
     @Override
@@ -120,25 +154,7 @@ public class Interval_Service extends TrainingBase_Service {
 
     }
 
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        Log.i("Tabata_Service", "Destroy service");
-        mTrainingStart = false;
-        mTimerHandler.removeCallbacks(runnable);
-        mIntervalInterface = null;
-        mTrainingInterface = null;
-        try{
-            beeperHandle.cancel(true);
-        }catch (Exception e){
 
-        }
-
-
-
-        super.onDestroy();
-
-    }
 
     void startTabata(){
 

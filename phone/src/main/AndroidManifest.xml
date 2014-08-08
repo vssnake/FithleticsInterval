@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="vssnake.intervaltraining" >
+    package="vssnake.intervaltraining" android:versionCode="2" android:versionName="1.0.1">
 
     <application
         android:allowBackup="true"
@@ -25,13 +25,15 @@
         <service android:name=".services.GoogleApiService"
             android:enabled="true"
             android:exported="false" >
+
+
+
+        </service>
+
+        <service android:name=".services.WearableListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-
-
-
         </service>
 
         <meta-data
@@ -40,11 +42,7 @@
     </application>
 
 
-    <service android:name=".WearableListenerService">
-        <intent-filter>
-            <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-        </intent-filter>
-    </service>
+
 
 
     <uses-permission android:name="android.permission.VIBRATE" />

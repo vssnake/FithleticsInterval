@@ -63,10 +63,12 @@ public class IntervalNotification {
 
        Notification notification = createNotification(context,intervalName,numberInterval,totalIntervals,
                stateInterval,intervalTime,totalTime,showIntent,closeIntent);
+
         notify(context, notification);
         return notification;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static Notification createNotification(final Context context,final String intervalName,
                                                   final int numberInterval, final int totalIntervals,
                                                   final String stateInterval,final String intervalTime,
@@ -74,8 +76,7 @@ public class IntervalNotification {
                                                   PendingIntent closeIntent){
 
         if (mNotification == null){
-            mContentView = new RemoteViews(context.getPackageName(),
-                    R.layout.notification_interval);
+
 
             final NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 
@@ -95,24 +96,45 @@ public class IntervalNotification {
                             // 4.1 or later)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
+                    //.setContent(mContentView)
+
+                    .setDefaults(Notification.DEFAULT_LIGHTS)
 
 
                             // Automatically dismiss the notification when it is touched.
                     .setAutoCancel(true);
 
-            mNotification = builder.build();
-            mNotification.defaults = Notification.DEFAULT_LIGHTS;
 
+            mNotification = builder.build();
+            //mNotification.defaults = Notification.DEFAULT_LIGHTS;
+            //mNotification.contentView = mContentView;
+           // mNotification.set
             //   notification.contentView = contentView;
+            //mNotification.bigContentView = mContentView;
+        }
+
+
+
+
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+            mContentView = new RemoteViews(context.getPackageName(),
+                    R.layout.notification_interval);
+            mContentView.setTextViewText(R.id.notifIntervalTotalTime_TextView,totalTime);
+            mContentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button,closeIntent);
+            mContentView.setTextViewText(R.id.notifIntervalTime_TextView,intervalTime);
             mNotification.bigContentView = mContentView;
+        }else{
+            mContentView = new RemoteViews(context.getPackageName(),
+                    R.layout.notification_interval_l);
+            mNotification.contentView = mContentView;
         }
 
         mContentView.setTextViewText(R.id.notifIntervalName_TextView,intervalName);
-        mContentView.setTextViewText(R.id.notifIntervalRound_TextView,numberInterval+ "/" + totalIntervals);
+        mContentView.setTextViewText(R.id.notifIntervalRound_TextView,
+                numberInterval+ "/" + totalIntervals);
         mContentView.setTextViewText(R.id.notifIntervalState_TextView,stateInterval);
-        mContentView.setTextViewText(R.id.notifIntervalTime_TextView,intervalTime);
-        mContentView.setTextViewText(R.id.notifIntervalTotalTime_TextView,totalTime);
-        mContentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button,closeIntent);
 
         mNotification.contentIntent = showIntent;
 

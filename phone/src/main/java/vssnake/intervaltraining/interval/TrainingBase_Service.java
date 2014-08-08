@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.IBinder;
+import android.support.v4.app.ServiceCompat;
 import android.util.SparseArray;
 
 public abstract class TrainingBase_Service extends Service implements TrainingServiceInterface{
@@ -56,6 +57,7 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
     public void onCreate(){
         //Set the flag to running
         serviceState = stateFlag.running;
+
         mNotificationManager = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
         mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 100);
@@ -95,7 +97,7 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
 
         if (mTrainingStart){
             if (background){
-                startForeground(NOTIFICATION_ID, mNotification);
+               startForeground(NOTIFICATION_ID, mNotification);
             }
         }
         if (!background){

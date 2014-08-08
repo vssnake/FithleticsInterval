@@ -1,9 +1,17 @@
 package com.example.unai.myapplication;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.View;
 
 import com.example.unai.myapplication.model.IntervalData;
 import com.example.unai.myapplication.utils.Utils;
@@ -33,23 +41,13 @@ public class MyActivity extends MyActivity_Base  implements
 
     public static final String TAG = "MainActivityWearable";
 
+    private Messenger mMessenger_GoogleApiService = null;
 
-
+    Intent intent;
 
     GoogleApiClient mGoogleApiClient;
 
-    protected void onCreate(Bundle savedInstance){
-        super.onCreate(savedInstance);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-
-
-                .addOnConnectionFailedListener(this)
-                .build();
-
-    }
     @Override
     public void onConnected(Bundle bundle) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
@@ -149,6 +147,46 @@ public class MyActivity extends MyActivity_Base  implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+    protected void onCreate(Bundle savedInstance){
+        super.onCreate(savedInstance);
+        intent = new Intent(getApplicationContext(),GoogleApiService.class);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+
+        Log.d(TAG,"StartService");
+        startService(intent);
+        bindService(intent,mGoolgleApiConnection,Context.BIND_AUTO_CREATE);
+
+
+        mWatchViewStub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //  if (mMessenger_GoogleApiService != null){
+                    //Second parameter is the code
+                    Message msg = Message.obtain(null, 0, 0, 0);
+
+                        GoogleApiService.startNotification(GoogleApiService.TypeNotifications.SEND_INTERVAL_ACTION);
+
+              //  }
+            }
+        });
+    }
+
+
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        unbindService(mGoolgleApiConnection);
+        stopService(intent);
+
+    }
+
 
     @Override
     protected void onResume() {
@@ -165,6 +203,24 @@ public class MyActivity extends MyActivity_Base  implements
         }
         super.onPause();
     }
+
+
+    private ServiceConnection mGoolgleApiConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d(TAG,"Service Connected");
+            mMessenger_GoogleApiService = new Messenger(service);
+
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d(TAG,"Service Disconnected");
+            mMessenger_GoogleApiService = null;
+
+        }
+    };
 
 
 }

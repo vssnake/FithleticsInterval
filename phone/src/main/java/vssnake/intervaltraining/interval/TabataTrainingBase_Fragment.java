@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +13,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.customFragments.ChronometerFragment;
+import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
 import vssnake.intervaltraining.main.Main_Activity;
 
 
-public abstract class TabataTrainingBase_Fragment extends Fragment
+public abstract class TabataTrainingBase_Fragment extends android.support.v4.app.Fragment
         implements InfoIntervalFragment.onInfoIntervalFragmentListener{
 
 
@@ -37,7 +38,7 @@ public abstract class TabataTrainingBase_Fragment extends Fragment
     FrameLayout mFirstFrame;
     FrameLayout mSecondFrame;
 
-    Main_Activity main_Activity;
+    FragmentActivity main_Activity;
 
     Intent intent;
 
@@ -62,7 +63,7 @@ public abstract class TabataTrainingBase_Fragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        main_Activity =(Main_Activity) getActivity();
+        main_Activity = getActivity();
         intent = new Intent(main_Activity,Interval_Service.class);
 
 
@@ -86,6 +87,7 @@ public abstract class TabataTrainingBase_Fragment extends Fragment
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,8 +95,6 @@ public abstract class TabataTrainingBase_Fragment extends Fragment
         //Create the Fragments and  push into the corresponds FrameLayouts
         mChronometerFragment = mChronometerFragment.newInstance("","");
         mInfoIntervalFragment = InfoIntervalFragment.newInstance(this);
-
-
 
         this.getChildFragmentManager().beginTransaction()
                 .replace(R.id.intervalFragment_FirstFrame, mInfoIntervalFragment)

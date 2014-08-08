@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import vssnake.intervaltraining.utils.Utils;
  * create an instance of this fragment.
  *
  */
-public class ChronometerFragment extends Fragment {
+public class ChronometerFragment extends android.support.v4.app.Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -102,18 +103,18 @@ public class ChronometerFragment extends Fragment {
      */
     private void changeFontsAndSize(){
 
-        mIntervalTime.setTextSize(140);
+        //mIntervalTime.setTextSize(TypedValue.COMPLEX_UNIT_SP,140);
         //getResources().getColor(R.color.greenDark);
        // mIntervalTime.setTextColor();
-        mIntervalTime.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
+       // mIntervalTime.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
 
-        mTotalTime.setTextSize(40);
+      //  mTotalTime.setTextSize(TypedValue.COMPLEX_UNIT_DIP,40);
        // mTotalTime.setTextColor(R.color.greenDark);
-        mTotalTime.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
+       // mTotalTime.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
 
         mTotalTimeText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
         mIntervalTimeText.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
-        mIntervalTimeText.setTextSize(50);
+      //  mIntervalTimeText.setTextSize(TypedValue.COMPLEX_UNIT_DIP,50);
     }
 
     public void changeTime(Long secondsTotal,Long secondsInterval){

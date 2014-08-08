@@ -5,7 +5,7 @@ android {
     buildToolsVersion '20.0.0'
     defaultConfig {
         applicationId 'vssnake.intervaltraining'
-        minSdkVersion 18
+        minSdkVersion 15
         targetSdkVersion 20
         versionCode 1
         versionName '1.0'
@@ -25,4 +25,5 @@ dependencies {
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:20.+'
     compile 'com.google.android.gms:play-services-wearable:+'
+    wearApp project(':wear')
 }
