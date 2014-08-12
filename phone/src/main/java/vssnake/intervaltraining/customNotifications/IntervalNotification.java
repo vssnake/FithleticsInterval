@@ -113,11 +113,6 @@ public class IntervalNotification {
             //mNotification.bigContentView = mContentView;
         }
 
-
-
-
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
             mContentView = new RemoteViews(context.getPackageName(),
                     R.layout.notification_interval);

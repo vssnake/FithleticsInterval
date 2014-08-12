@@ -58,8 +58,8 @@ public abstract class MainBase_Activity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+       /* mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getFragmentManager().findFragmentById(R.id.navigation_drawer);*/
         mTitle = getTitle();
 
 
@@ -93,10 +93,10 @@ public abstract class MainBase_Activity extends FragmentActivity
     @Override
     public boolean onKeyDown(int keyCode,KeyEvent e){
         if (keyCode == KeyEvent.KEYCODE_MENU){
-                if (mNavigationDrawerFragment.isDrawerOpen()) {
+              /*  if (mNavigationDrawerFragment.isDrawerOpen()) {
                     restoreActionBar();//Activate the default action bar title
                 }
-                mNavigationDrawerFragment.openDrawer();
+                mNavigationDrawerFragment.openDrawer();*/
 
         }
         return super.onKeyDown(keyCode,e);
@@ -168,15 +168,15 @@ public abstract class MainBase_Activity extends FragmentActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+//        if (!mNavigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             //getMenuInflater().inflate(R.menu.welcome_, menu);
             restoreActionBar();
             return true;
-        }
-        return false;
+       // }
+        //return false;
     }
 
 

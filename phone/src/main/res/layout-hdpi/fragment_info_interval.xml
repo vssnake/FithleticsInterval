@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    tools:context="vssnake.intervaltraining.customFragments.InfoIntervalFragment"
+    android:background="#ff5722">
+
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/infoInterval_move_View">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/linearLayout">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="50">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/Round"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:alpha="0.8"
+                    android:id="@+id/infoInterval_Rounds_Text" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="0/0"
+                    android:id="@+id/infoInterval_Rounds_TextView"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="-10dp"
+                    android:textSize="25dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0"
+                android:background="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/tabata"
+                android:id="@+id/infoInterval_Title_TextView"
+                android:gravity="center"
+                android:textSize="30dp"
+                android:textColor="@color/black"
+                android:layout_above="@+id/linearLayout"
+                android:layout_alignParentStart="true" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0"
+                android:background="@color/black"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="50">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/Mode"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:alpha="0.8"
+                    android:id="@+id/infoInterval_Mode_Text" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/nothing"
+                    android:id="@+id/infoInterval_Mode_TextView"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="-10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

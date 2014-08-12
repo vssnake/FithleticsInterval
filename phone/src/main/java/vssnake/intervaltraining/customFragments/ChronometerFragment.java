@@ -102,29 +102,18 @@ public class ChronometerFragment extends android.support.v4.app.Fragment {
      * Customieze the textViws of the Chronometer
      */
     private void changeFontsAndSize(){
-
-        //mIntervalTime.setTextSize(TypedValue.COMPLEX_UNIT_SP,140);
-        //getResources().getColor(R.color.greenDark);
-       // mIntervalTime.setTextColor();
-       // mIntervalTime.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
-
-      //  mTotalTime.setTextSize(TypedValue.COMPLEX_UNIT_DIP,40);
-       // mTotalTime.setTextColor(R.color.greenDark);
-       // mTotalTime.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
-
         mTotalTimeText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
         mIntervalTimeText.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
-      //  mIntervalTimeText.setTextSize(TypedValue.COMPLEX_UNIT_DIP,50);
     }
 
-    public void changeTime(Long secondsTotal,Long secondsInterval){
+    public void changeTime(int secondsTotal,int secondsInterval){
         if (isAdded()){
             //Reformat and convert of milliseconds to seconds
 
 
-            mIntervalTime.setText(Utils.formatIntervalTime(secondsInterval));
+            mIntervalTime.setText(Utils.formatTime(secondsInterval));
 
-            mTotalTime.setText(Utils.formatTotalIntervalTime(secondsTotal));
+            mTotalTime.setText(Utils.formatTime(secondsTotal));
         }
 
 

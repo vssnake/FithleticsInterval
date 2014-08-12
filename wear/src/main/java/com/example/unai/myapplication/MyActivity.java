@@ -101,9 +101,9 @@ public class MyActivity extends MyActivity_Base  implements
                                         .name()),
                                 dataMap.getString(IntervalData.intervalDataKey.INTERVAL_STATE
                                         .name()),
-                                dataMap.getLong(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME
+                                dataMap.getInt(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME
                                         .name()),
-                                dataMap.getLong(IntervalData.intervalDataKey.INTERVAL_TIME
+                                dataMap.getInt(IntervalData.intervalDataKey.INTERVAL_TIME
                                         .name()),
                                 0);
                         runOnUiThread(new Runnable() {

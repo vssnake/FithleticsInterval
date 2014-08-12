@@ -51,6 +51,14 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
     ScheduledFuture beeperHandle;
     protected PowerManager.WakeLock mWakeLock;
 
+    IntervalData mIntervalData;
+
+    Intent mMainActivityIntent;
+    PendingIntent mShowTabataFragmentIntent ;
+
+    Intent mIntervalServiceIntent;
+    PendingIntent mCancelIntervalIntent;
+
     //The Interface to TabataTraining_Fragment
     TrainingServiceConnectors.IntervalInterface mIntervalInterface;
 
@@ -103,6 +111,14 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
     int mWearableListenerConnectorID = -1;
 
     @Override
+    void setBackground(boolean background){
+        super.setBackground(background);
+        if (!background && mIntervalData!= null){
+            sendDataToActivity(); //If the app go to foreground send the last info of interval
+        }
+    }
+
+    @Override
     public void onCreate(){
         super.onCreate();
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -115,7 +131,23 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
 
         mWearableListenerConnectorID =  WearableListenerService.addListener(this);
 
-      //  GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
+        mMainActivityIntent = new Intent(getApplicationContext(),Main_Activity.class);
+
+        //Callback to show the intervalFragment
+        mMainActivityIntent.putExtra(MainBase_Activity.FRAGMENT_KEY,
+                MainBase_Activity.TABATA_FRAGMENT);
+
+        mShowTabataFragmentIntent= PendingIntent.getActivity(getApplicationContext(),0,
+                mMainActivityIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent.getActivity(getApplicationContext(),0,
+                mMainActivityIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        mIntervalServiceIntent = new Intent(this,Interval_Service.class);
+        mIntervalServiceIntent.setAction("STOP"); //Set Action to stop the Interval
+
+        mCancelIntervalIntent = PendingIntent.getService(getBaseContext(),0,
+                mIntervalServiceIntent,PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -160,7 +192,6 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
 
 
         if (!mTrainingStart){
-
            startTrain();
         }else{
             endTrain();
@@ -172,71 +203,25 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
     @Override
     public void newNotification(IntervalData intervalData) {
 
-        long secondsTotal = (long) Math.ceil( intervalData.getTotalIntervalTime()/1000d);
+        mIntervalData = intervalData;
 
-        long secondsInterval = (long) Math.ceil( intervalData.getIntervalTime()/1000d);
-
-
-        mIntervalDataMap.putInt(IntervalData.intervalDataKey.NUMBER_INTERVAL.name(),
-                intervalData.getNumberInterval());
-        mIntervalDataMap.putInt(IntervalData.intervalDataKey.TOTAL_INTERVALS.name(),
-                intervalData.getTotalIntervals());
-        mIntervalDataMap.putString(IntervalData.intervalDataKey.INTERVAL_STATE.name(),
-                intervalData.getIntervalState().name());
-        mIntervalDataMap.putLong(IntervalData.intervalDataKey.INTERVAL_TIME.name(),
-                secondsInterval);
-        mIntervalDataMap.putLong(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME.name(),
-                secondsTotal);
-
-        GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
-
-
-
+        sendDataToWearables();
 
         if (mBackground){
-
-            PendingIntent showFragmentIntent ;
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), Main_Activity.class);
-
-            //Callback to show the intervalFragment
-            intent.putExtra(MainBase_Activity.FRAGMENT_KEY,MainBase_Activity.TABATA_FRAGMENT);
-            showFragmentIntent = PendingIntent.getActivity(getApplicationContext(),0,
-                    intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-            //Callback to cancel the current Training
-            PendingIntent cancelIntervalIntent ;
-            Intent intervalIntent = new Intent(this,Interval_Service.class);
-            intervalIntent.setAction("STOP");
-            cancelIntervalIntent = PendingIntent.getService(getBaseContext(),0,
-                    intervalIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
             mNotification = IntervalNotification.createNotification(getApplicationContext(),
                     getApplicationContext().getResources().getString(R.string.tabata),
                     intervalData.getNumberInterval(),
                     intervalData.getTotalIntervals(),
                     intervalData.getIntervalState().name(),
-                    Utils.formatIntervalTime(secondsInterval),
-                    Utils.formatTotalIntervalTime(secondsTotal),
-                    showFragmentIntent,cancelIntervalIntent);
+                    Utils.formatTime(intervalData.getIntervalTimeSeconds()),
+                    Utils.formatTime(intervalData.getTotalIntervalTimeSeconds()),
+                    mShowTabataFragmentIntent,mCancelIntervalIntent);
 
             mNotificationManager.notify(NOTIFICATION_ID,mNotification);
 
-
         }else{
-            if (mIntervalInterface != null){
-                mIntervalInterface.changeInterval(intervalData.getNumberInterval(),
-                        intervalData.getTotalIntervals());
-
-                mIntervalInterface.changeIntervalMode(intervalData.getIntervalState().name());
-
-                mIntervalInterface.changeTime(secondsTotal,secondsInterval);
-
-
-
-            }else{
-                Log.e("IntervalService","Listener is null");
-            }
+            sendDataToActivity();
         }
     }
 
@@ -251,11 +236,13 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
         intervalData.setIntervalData(0,0, IntervalData.eIntervalState.NOTHING,0,0,0);
         mTrainingStart = false;
         newNotification(intervalData);
-        setBackground(false);
+
+        stopForeground(true);
 
         if (mTrainingInterface != null){
             mTrainingInterface.specialEvent(TrainingServiceConnectors.specialUICommands.END_TRAINING);
         }
+        mNotificationManager.cancel(NOTIFICATION_ID);
     }
 
     long timeInMilliseconds = 0L;
@@ -295,6 +282,8 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
         startTime = SystemClock.uptimeMillis();
 
         mTrainingStart = true;
+        setBackground(mBackground);
+
         if (mTrainingInterface != null){
             mTrainingInterface.statusTrain(mTrainingStart);
         }
@@ -304,6 +293,38 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
        //mTimerHandler.postDelayed(runnable, 1000);
     }
 
+
+    private void sendDataToActivity(){
+        if (mIntervalInterface != null){
+            mIntervalInterface.changeInterval(mIntervalData.getNumberInterval(),
+                    mIntervalData.getTotalIntervals());
+
+            mIntervalInterface.changeIntervalMode(mIntervalData.getIntervalState().name());
+
+            mIntervalInterface.changeTime(
+                    mIntervalData.getTotalIntervalTimeSeconds(),
+                    mIntervalData.getIntervalTimeSeconds());
+        }else{
+            Log.e("IntervalService","Listener is null");
+        }
+    }
+
+
+    private void sendDataToWearables(){
+
+        mIntervalDataMap.putInt(IntervalData.intervalDataKey.NUMBER_INTERVAL.name(),
+                mIntervalData.getNumberInterval());
+        mIntervalDataMap.putInt(IntervalData.intervalDataKey.TOTAL_INTERVALS.name(),
+                mIntervalData.getTotalIntervals());
+        mIntervalDataMap.putString(IntervalData.intervalDataKey.INTERVAL_STATE.name(),
+                mIntervalData.getIntervalState().name());
+        mIntervalDataMap.putInt(IntervalData.intervalDataKey.INTERVAL_TIME.name(),
+                mIntervalData.getIntervalTimeSeconds());
+        mIntervalDataMap.putInt(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME.name(),
+                mIntervalData.getTotalIntervalTimeSeconds());
+
+        GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
+    }
 
 
     @Override

@@ -32,35 +32,47 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Remaining:"
-
-        android:layout_alignTop="@+id/interval_totalTime"
-        android:layout_alignParentStart="true"
-        android:textSize="25dp"
-        android:id="@+id/textView2"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="00:00"
-        android:id="@+id/interval_totalTime"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_below="@+id/interval_time"
-        android:layout_alignParentEnd="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="0 of 0"
         android:id="@+id/interval_round"
+        android:textSize="20dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:textSize="20dp"/>
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/interval_round"
+        android:layout_alignStart="@+id/interval_State"
+        android:layout_below="@+id/interval_time"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Remaining:"
+
+            android:layout_alignTop="@+id/interval_totalTime"
+            android:layout_alignParentStart="true"
+            android:textSize="20dp"
+            android:id="@+id/textView2"
+            android:layout_weight="50"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="00:00"
+            android:id="@+id/interval_totalTime"
+            android:textSize="30dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:layout_below="@+id/interval_time"
+            android:layout_alignParentEnd="true"
+            android:layout_weight="50"
+            android:gravity="center"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

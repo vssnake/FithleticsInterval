@@ -1,9 +1,12 @@
 package vssnake.intervaltraining.interval;
 
+import vssnake.intervaltraining.utils.Utils;
+
 /**
  * Created by unai on 04/07/2014.
  */
 public class IntervalData {
+
     public enum intervalDataKey{
         INTERVAL_TIME,
         TOTAL_INTERVAL_TIME,
@@ -12,6 +15,14 @@ public class IntervalData {
         INTERVAL_STATE,
 
     }
+    public int getTotalIntervalTimeSeconds() {
+        return totalIntervalTimeSeconds;
+    }
+
+    public int getIntervalTimeSeconds() {
+        return intervalTimeSeconds;
+    }
+
 
     public int getNumberInterval() {
         return numberIntervals;
@@ -29,12 +40,12 @@ public class IntervalData {
         return bpm;
     }
 
-    public long getTotalIntervalTime() {
-        return totalIntervalTime;
+    public long getTotalIntervalTimeMilliseconds() {
+        return totalIntervalTimeMilliseconds;
     }
 
-    public long getIntervalTime() {
-        return intervalTime;
+    public long getIntervalTimeMilliseconds() {
+        return intervalTimeMilliseconds;
     }
 
     public boolean isIntervalDone() {
@@ -50,8 +61,11 @@ public class IntervalData {
     private int numberIntervals;
     private int totalIntervals;
     private eIntervalState intervalState;
-    private long totalIntervalTime;
-    private long intervalTime;
+    private long totalIntervalTimeMilliseconds;
+    private long intervalTimeMilliseconds;
+
+    private int totalIntervalTimeSeconds;
+    private int intervalTimeSeconds;
     //Beats per minute
     private int bpm;
 
@@ -67,8 +81,10 @@ public class IntervalData {
         this.numberIntervals = numberInterval;
         this.totalIntervals = totalIntervals;
         this.intervalState = intervalState;
-        this.totalIntervalTime = totalIntervalTime;
-        this.intervalTime = intervalTime;
+        this.totalIntervalTimeMilliseconds = totalIntervalTime;
+        this.intervalTimeMilliseconds = intervalTime;
+        this.totalIntervalTimeSeconds = Utils.convertMillisecondsToSeconds(totalIntervalTime);
+        this.intervalTimeSeconds = Utils.convertMillisecondsToSeconds(intervalTime);
         this.bpm = bpm;
     }
     public void intervalDone(){

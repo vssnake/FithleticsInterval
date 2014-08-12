@@ -6,10 +6,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".main.Main_Activity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,9 +26,6 @@
         <service android:name=".services.GoogleApiService"
             android:enabled="true"
             android:exported="false" >
-
-
-
         </service>
 
         <service android:name=".services.WearableListenerService">

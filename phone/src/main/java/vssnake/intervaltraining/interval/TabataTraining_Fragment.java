@@ -156,11 +156,11 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     }
 
     @Override
-    public void changeTime(final long secondsTotal,final long secondInterval) {
+    public void changeTime(final int secondsTotal,final int secondsInterval) {
         main_Activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mChronometerFragment.changeTime(secondsTotal,secondInterval);
+                mChronometerFragment.changeTime(secondsTotal,secondsInterval);
             }
         });
 

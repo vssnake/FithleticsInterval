@@ -6,8 +6,8 @@
     android:background="#ffd8460f">
 
     <ImageButton
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="X"
         android:id="@+id/notifIntervalClose_Button"
@@ -19,7 +19,8 @@
         android:textSize="20dp"
         android:layout_marginRight="0dp"
         android:gravity="center"
-        android:clickable="true" />
+        android:clickable="true"
+        android:src="@drawable/cross"/>
 
     <ImageView android:id="@+id/notifIntervalImage_Image"
         android:layout_width="90dp"

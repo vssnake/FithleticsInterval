@@ -15,7 +15,7 @@ public class TrainingServiceConnectors {
     public interface IntervalInterface extends TrainingInterface {
 
         public void changeIntervalMode(String mode);
-        public void changeTime(long secondsTotal,long secondInterval);
+        public void changeTime(int secondsTotal,int secondsInterval);
         public void changeInterval(int numberInterval,int totalInterval);
 
 

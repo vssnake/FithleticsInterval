@@ -33,7 +33,7 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
     boolean mTrainingStart = false;
 
     //The mBackground of the application
-    boolean mBackground = false;
+    boolean mBackground = true;
 
     static final int NOTIFICATION_ID = 1024;
 
@@ -102,6 +102,7 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
         }
         if (!background){
             stopForeground(true);
+
         }
         if (mTrainingInterface != null){
             mTrainingInterface.statusTrain(mTrainingStart);
