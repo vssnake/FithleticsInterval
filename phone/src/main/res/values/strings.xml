@@ -22,6 +22,8 @@
     <!-- Main Fragment -->
     <string name="last_intervals">Last Intervals</string>
     <string name="interval">Interval</string>
+    <string name="active_sound">Sound Activated</string>
+    <string name="vibration_activate">Vibration Activated</string>
 
     <!-- Chronometer Fragment -->
     <string name="chronometer_total">Total</string>

@@ -20,7 +20,8 @@
         app:customFont="roboto_black.ttf"
         android:textColor="@color/numbers_interval_goo"
         android:layout_below="@+id/chronomterTextInterval_TextView"
-        android:layout_marginTop="-20dp" />
+        android:layout_marginTop="-20dp"
+        android:textIsSelectable="false"/>
 
     <vssnake.intervaltraining.utils.TextViewPlus
         android:layout_width="fill_parent"

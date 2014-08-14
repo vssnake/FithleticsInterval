@@ -335,6 +335,7 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
                     playSound((Integer)adicionalData,1.0f);
                     break;
                 case VIBRATION:
+                    vibration((Integer)adicionalData);
                     GoogleApiService.startNotification(GoogleApiService.TypeNotifications.
                             VIBRATION_NOTIFICATION,(Integer)adicionalData);
                     break;

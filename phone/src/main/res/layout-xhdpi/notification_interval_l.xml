@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="64dp"
+    android:id="@+id/intervalNotification"
+    android:background="#ffd8460f">
+
+    <ImageView android:id="@+id/notifIntervalImage_Image"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/hiit"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="37dp"
+        android:layout_toEndOf="@+id/notifIntervalImage_Image"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout"
+        android:layout_marginLeft="5dp">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/notification_Round"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:alpha="0.6" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="2/8"
+                android:id="@+id/notifIntervalRound_TextView"
+                android:textColor="@color/white"
+                android:layout_marginLeft="0dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Running"
+                android:id="@+id/notifIntervalState_TextView"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:alpha="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/notifIntervalImage_Image"
+        android:id="@+id/linearLayout"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:layout_width="269dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Tabata"
+            android:id="@+id/notifIntervalName_TextView"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:typeface="monospace"
+            android:gravity="left"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/notifIntervalImage_Image"
+            android:layout_toEndOf="@+id/notifIntervalImage_Image"
+            />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="X"
+            android:id="@+id/imageButton"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:layout_weight="20"
+            android:background="#00fffffb"
+            android:src="@drawable/cross"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="5dp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

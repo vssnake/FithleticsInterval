@@ -120,6 +120,8 @@ public class IntervalNotification {
             mContentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button,closeIntent);
             mContentView.setTextViewText(R.id.notifIntervalTime_TextView,intervalTime);
             mNotification.bigContentView = mContentView;
+            mNotification.contentView = new RemoteViews(context.getPackageName(),
+                    R.layout.notification_interval_l);
         }else{
             mContentView = new RemoteViews(context.getPackageName(),
                     R.layout.notification_interval_l);

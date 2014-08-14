@@ -1,8 +1,8 @@
 package vssnake.intervaltraining.interval;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,13 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.customFragments.ChronometerFragment;
 import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
-import vssnake.intervaltraining.main.Main_Activity;
+import vssnake.intervaltraining.utils.StacData;
 
 
 public abstract class TabataTrainingBase_Fragment extends android.support.v4.app.Fragment
@@ -43,6 +44,11 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
     Intent intent;
 
     View mShadowFrame2;
+
+    CheckBox mCBVibration;
+    CheckBox mCBSound;
+
+    SharedPreferences mSharedPreferences;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -65,6 +71,8 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
 
         main_Activity = getActivity();
         intent = new Intent(main_Activity,Interval_Service.class);
+
+        mSharedPreferences = getActivity().getSharedPreferences(StacData.BASIC_CONFIG_PREFS,0);
 
 
     }
@@ -116,6 +124,15 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
 
         mShadowFrame2 = (View) view.findViewById(R.id.intervalFragment_shadowFrame2);
 
+        mCBSound = (CheckBox) view.findViewById(R.id.intervalFragment_checkBox_ActiveSound);
+        mCBVibration = (CheckBox) view.findViewById(R.id.intervalFragment_checkBox_ActiveVibration);
+
+
+        mCBVibration.setChecked(mSharedPreferences.getBoolean(StacData.PREFS_VIBRATION_KEY,true));
+        mCBSound.setChecked(mSharedPreferences.getBoolean(StacData.PREFS_SOUND_KEY,true));
+
+        mCBSound.setOnClickListener(mCBActiveSoundListener);
+        mCBVibration.setOnClickListener(mCBActiveVibrationListener);
 
         return view;
     }
@@ -149,6 +166,31 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
     protected  TrainingBase_Service.stateFlag checkIsServiceisRunning(){
        return  TrainingBase_Service.getStateService();
     }
+
+    private View.OnClickListener mCBActiveSoundListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            if (((CheckBox)v).isChecked()){
+                 editor.putBoolean(StacData.PREFS_SOUND_KEY,true);
+            }else{
+                editor.putBoolean(StacData.PREFS_SOUND_KEY,false);
+            }
+            editor.commit();
+        }
+    };
+    private View.OnClickListener mCBActiveVibrationListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            if (((CheckBox)v).isChecked()){
+                editor.putBoolean(StacData.PREFS_VIBRATION_KEY,true);
+            }else{
+                editor.putBoolean(StacData.PREFS_VIBRATION_KEY,false);
+            }
+            editor.commit();
+        }
+    };
 
 
 

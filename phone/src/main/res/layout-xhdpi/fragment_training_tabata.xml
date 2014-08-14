@@ -1,12 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="vssnake.intervaltraining.interval.TabataTrainingBase_Fragment"
-                android:id="@+id/intervalFragment_Parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="vssnake.intervaltraining.interval.TabataTrainingBase_Fragment"
+    android:id="@+id/intervalFragment_Parent"
     >
 
-
+    <!-- TODO: Update blank fragment layout -->
 
     <View
         android:layout_width="fill_parent"
@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
     </View>
-    <fragment
+    <FrameLayout
 
         android:layout_width="fill_parent"
         android:layout_height="80dp"
@@ -27,7 +27,7 @@
         tools:layout="@layout/fragment_info_interval"
         android:visibility="visible">
 
-    </fragment>
+    </FrameLayout>
     <View
         android:layout_below="@id/intervalFragment_FirstFrame"
         android:layout_width="fill_parent"
@@ -46,7 +46,7 @@
         android:layout_below="@+id/intervalFragment_shadowFrame2"
         android:id="@+id/intervalFragment_clickView">
 
-        <fragment
+        <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="300dp"
             android:layout_below="@+id/intervalFragment_FirstFrame"
@@ -58,7 +58,21 @@
             >
 
 
-        </fragment>
+        </FrameLayout>
+
+        <CheckBox
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="@string/active_sound"
+            android:id="@+id/intervalFragment_checkBox_ActiveSound"
+            android:layout_gravity="center_horizontal"/>
+
+        <CheckBox
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="@string/vibration_activate"
+            android:id="@+id/intervalFragment_checkBox_ActiveVibration"/>
+
     </LinearLayout>
 
 </RelativeLayout>
