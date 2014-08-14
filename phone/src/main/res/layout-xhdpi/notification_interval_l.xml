@@ -110,7 +110,7 @@
             android:clickable="true"
             android:layout_weight="20"
             android:background="#00fffffb"
-            android:src="@drawable/cross"
+            android:src="@drawable/close"
             android:scaleType="fitCenter"
             android:layout_marginTop="5dp"/>
     </LinearLayout>
