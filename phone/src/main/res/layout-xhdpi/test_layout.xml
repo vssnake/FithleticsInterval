@@ -39,7 +39,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentStart="true"
         android:gravity="center"
         android:background="@color/startInterval"
@@ -48,7 +48,7 @@
 
         <fragment
             android:layout_width="fill_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/intervalFragment_FirstFrame"
             android:layout_alignParentEnd="true"
             android:id="@+id/intervalFragment_SecondFrame"
@@ -59,6 +59,20 @@
 
 
         </fragment>
+
+        <CheckBox
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="@string/active_sound"
+            android:id="@+id/intervalFragment_checkBox_ActiveSound"
+            android:layout_gravity="center_horizontal"/>
+
+        <CheckBox
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="@string/vibration_activate"
+            android:id="@+id/intervalFragment_checkBox_ActiveVibration"/>
+
     </LinearLayout>
 
 </RelativeLayout>

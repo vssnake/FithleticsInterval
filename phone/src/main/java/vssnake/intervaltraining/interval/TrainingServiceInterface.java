@@ -1,5 +1,7 @@
 package vssnake.intervaltraining.interval;
 
+import com.vssnake.intervaltraining.shared.model.IntervalData;
+
 /**
  * Created by unai on 04/07/2014.
  */

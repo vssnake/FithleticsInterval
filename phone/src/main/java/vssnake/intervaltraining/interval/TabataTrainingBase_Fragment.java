@@ -3,16 +3,21 @@ package vssnake.intervaltraining.interval;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import com.vssnake.utils.SlidingMenu;
 
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.customFragments.ChronometerFragment;
@@ -21,7 +26,7 @@ import vssnake.intervaltraining.utils.StacData;
 
 
 public abstract class TabataTrainingBase_Fragment extends android.support.v4.app.Fragment
-        implements InfoIntervalFragment.onInfoIntervalFragmentListener{
+implements  InfoIntervalFragment.onInfoIntervalFragmentListener{
 
 
     OnFragmentInteractionListener mListener;
@@ -29,6 +34,7 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
     View mIntervalClickView;
 
 
+    Resources mRes;
 
     ChronometerFragment mChronometerFragment;
 
@@ -49,6 +55,8 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
     CheckBox mCBSound;
 
     SharedPreferences mSharedPreferences;
+
+    SlidingMenu mSliding;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -84,6 +92,7 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
     public void onResume(){
 
         super.onResume();
+
     }
 
 
@@ -95,6 +104,10 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
     }
 
 
+    private int _xDelta;
+    private int _yDelta;
+
+    private int basicHeight;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,6 +117,9 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
         mChronometerFragment = mChronometerFragment.newInstance("","");
         mInfoIntervalFragment = InfoIntervalFragment.newInstance(this);
 
+
+        View view = inflater.inflate(R.layout.fragment_training_tabata, container, false);
+
         this.getChildFragmentManager().beginTransaction()
                 .replace(R.id.intervalFragment_FirstFrame, mInfoIntervalFragment)
                 .commit();
@@ -111,12 +127,12 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
                 .replace(R.id.intervalFragment_SecondFrame, mChronometerFragment)
                 .commit();
 
-        View view = inflater.inflate(R.layout.fragment_training_tabata, container, false);
+
 
         mFirstFrame = (FrameLayout)view.findViewById(R.id.intervalFragment_FirstFrame);
         mSecondFrame = (FrameLayout)view.findViewById(R.id.intervalFragment_SecondFrame);
 
-
+        basicHeight = mFirstFrame.getHeight();
         mParent = (RelativeLayout)view.findViewById(R.id.intervalFragment_Parent);
 
 
@@ -134,8 +150,41 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
         mCBSound.setOnClickListener(mCBActiveSoundListener);
         mCBVibration.setOnClickListener(mCBActiveVibrationListener);
 
+
+        //Set the  top menu. The fragment is not yet inflated and need work around :-(
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mFirstFrame.getHeight() == 0){
+                    handler.postDelayed(this,10);
+
+                }else{
+
+
+                   mSliding = SlidingMenu.newInstance(getActivity(),mFirstFrame,
+                            SlidingMenu.MaxSliding.ALL_FRAME,0,
+                            (int)TypedValue.applyDimension(TypedValue
+                            .COMPLEX_UNIT_DIP,80,mRes.getDisplayMetrics()));
+                    mSliding.setEvents(new SlidingMenu.SlidingEvents() {
+                        @Override
+                        public void onMovementFinished(boolean slideOpen) {
+                            mInfoIntervalFragment.menuHide(slideOpen);
+                        }
+                    });
+
+                }
+
+            }
+        },10);
+
+
+
+
+
         return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -149,6 +198,9 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+
+            mRes = getResources();
+
 
 
         } catch (ClassCastException e) {
@@ -195,6 +247,8 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
 
 
 
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -210,18 +264,9 @@ public abstract class TabataTrainingBase_Fragment extends android.support.v4.app
         public void onFragmentInteraction(Uri uri);
     }
 
-    int anterior = 0;
 
-    @Override
-    public void moveInfoIntervalFragment(float x, float y) {
 
-        ViewGroup.MarginLayoutParams layoutParams =  (ViewGroup.MarginLayoutParams)mFirstFrame.getLayoutParams();
-        Log.i("Margin", y +" " + anterior);
-        layoutParams.topMargin += (int)y - anterior;
-        anterior = (int)y;
-        mParent.invalidate();
 
-    }
 
 
 

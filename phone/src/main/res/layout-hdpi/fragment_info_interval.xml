@@ -1,116 +1,124 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="80dp"
-    tools:context="vssnake.intervaltraining.customFragments.InfoIntervalFragment"
-    android:background="#ff5722">
+                xmlns:tools="http://schemas.android.com/tools"
+
+                tools:context="vssnake.intervaltraining.customFragments.InfoIntervalFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/infoInterval_move_View"
+                android:background="#ff5722">
 
 
 
-    <RelativeLayout
+
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
+        android:id="@+id/linearLayout"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/infoInterval_move_View">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="80dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/linearLayout">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="50">
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/Round"
-                    android:layout_weight="50"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:alpha="0.8"
-                    android:id="@+id/infoInterval_Rounds_Text" />
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="0/0"
-                    android:id="@+id/infoInterval_Rounds_TextView"
-                    android:layout_weight="50"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="-10dp"
-                    android:textSize="25dp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="0"
-                android:background="@color/black"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp" />
+            android:layout_height="fill_parent"
+            android:layout_weight="50">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/tabata"
-                android:id="@+id/infoInterval_Title_TextView"
-                android:gravity="center"
-                android:textSize="30dp"
-                android:textColor="@color/black"
-                android:layout_above="@+id/linearLayout"
-                android:layout_alignParentStart="true" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="0"
-                android:background="@color/black"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp" />
-
-            <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="50">
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/Round"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:alpha="0.8"
+                android:id="@+id/infoInterval_Rounds_Text" />
 
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/Mode"
-                    android:layout_weight="50"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:alpha="0.8"
-                    android:id="@+id/infoInterval_Mode_Text" />
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/nothing"
-                    android:id="@+id/infoInterval_Mode_TextView"
-                    android:layout_weight="50"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:layout_marginTop="-10dp" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="0/0"
+                android:id="@+id/infoInterval_Rounds_TextView"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginTop="-10dp"
+                android:textSize="25dp" />
         </LinearLayout>
-    </RelativeLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0"
+            android:background="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/infoInterval_tick_image"
+            android:layout_weight="50"
+            android:src="@drawable/downtick"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="0"
+            android:background="@color/black"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="50">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/Mode"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:alpha="0.8"
+                android:id="@+id/infoInterval_Mode_Text" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/nothing"
+                android:id="@+id/infoInterval_Mode_TextView"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginTop="-10dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/infoInterval_list_name"
+        android:layout_above="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
+        android:headerDividersEnabled="false"
+        android:footerDividersEnabled="false"
+        android:background="@android:color/white"/>
+
 
 </RelativeLayout>

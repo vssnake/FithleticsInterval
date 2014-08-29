@@ -31,13 +31,15 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
 
     private static final String TAG = "WereableService";
     private static final String INTERVAL_ACTION = "interval/action";
+    private static final String INTERVAL_REQUEST_DEFAULT = "interval/request/default";
 
 
     public static GoogleApiClient mGoogleApiClient;
     static ArrayList<String> nodes; // the connected device to send the message to
 
     public enum TypeNotifications {
-        SEND_INTERVAL_ACTION;
+        SEND_INTERVAL_ACTION,
+        SEND_REQUEST_DEFAULT_DATA;
     }
 
     public GoogleApiService() {
@@ -51,6 +53,8 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
                 case 0:
                     startNotification(TypeNotifications.SEND_INTERVAL_ACTION);
                     break;
+                case 1:
+                    startNotification(TypeNotifications.SEND_REQUEST_DEFAULT_DATA);
                 case 2:
 
                 default:
@@ -106,6 +110,11 @@ public class GoogleApiService extends Service implements GoogleApiClient.Connect
                         result = Wearable.MessageApi.sendMessage(mGoogleApiClient,
                                 nodes.get(0),INTERVAL_ACTION,null).await();
                         break;
+                    case SEND_REQUEST_DEFAULT_DATA:
+                        result = Wearable.MessageApi.sendMessage(mGoogleApiClient,
+                                nodes.get(0),INTERVAL_REQUEST_DEFAULT,null).await();
+                        break;
+
                 }
 
 

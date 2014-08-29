@@ -3,18 +3,19 @@ package vssnake.intervaltraining.customFragments;
 
 
 import android.app.Fragment;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.vssnake.intervaltraining.shared.Utils;
+
 import vssnake.intervaltraining.R;
-import vssnake.intervaltraining.utils.Utils;
+import vssnake.intervaltraining.model.IntervalStaticData;
+import vssnake.intervaltraining.utils.StacData;
+
 
 
 /**
@@ -33,6 +34,8 @@ public class ChronometerFragment extends android.support.v4.app.Fragment {
     private TextView mTotalTime;
     private TextView mIntervalTimeText;
     private TextView mTotalTimeText;
+
+    private SharedPreferences mSharedPreferences;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -90,6 +93,9 @@ public class ChronometerFragment extends android.support.v4.app.Fragment {
         mIntervalTimeText = (TextView)view.findViewById(R.id.chronomterTextInterval_TextView);
         mTotalTimeText  = (TextView)view.findViewById(R.id.chronometerTotalText_TextView);
 
+        mSharedPreferences = getActivity().getSharedPreferences(StacData.BASIC_CONFIG_PREFS,0);
+        int ID =mSharedPreferences.getInt(StacData.PREFS_TRAIN_KEY,0);
+        changeTitle(IntervalStaticData.intervalData.get(ID).getmName());
 
         changeFontsAndSize();
 
@@ -117,6 +123,12 @@ public class ChronometerFragment extends android.support.v4.app.Fragment {
         }
 
 
+    }
+
+    public void changeTitle(String text){
+        if (isAdded()){
+            mIntervalTimeText.setText(text);
+        }
     }
 
     public void changeIntervalColor(int color){

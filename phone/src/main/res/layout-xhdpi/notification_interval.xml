@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="124dp"
+    android:layout_width="match_parent" android:layout_height="130dp"
     android:id="@+id/intervalNotification"
     android:background="#ffd8460f"
     >
@@ -61,7 +61,6 @@
         android:layout_below="@+id/notifIntervalImage_Image"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/notifIntervalName_TextView"
         android:layout_alignRight="@+id/notifIntervalImage_Image"
         android:layout_alignEnd="@+id/notifIntervalImage_Image"
         android:background="@android:color/holo_red_dark"/>
@@ -77,7 +76,7 @@
         android:layout_alignStart="@+id/linearLayout3"
         android:layout_alignBottom="@+id/notifIntervalState_TextView">
 
-        <LinearLayout
+         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
@@ -162,8 +161,7 @@
             android:id="@+id/notifIntervalName_TextView"
             android:layout_gravity="center_horizontal"
             android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:typeface="monospace"
+            android:textSize="18dp"
             android:layout_toStartOf="@+id/notifIntervalClose_Button"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/notifIntervalImage_Image"

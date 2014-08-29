@@ -7,4 +7,5 @@ public interface IntervalBehaviour {
     void executeTime(long time);
     boolean stopInterval();
     boolean resetInterval();
+    boolean changeTraining(long id);
 }

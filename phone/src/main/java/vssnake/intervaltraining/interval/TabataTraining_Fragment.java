@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import vssnake.intervaltraining.R;
-import vssnake.intervaltraining.services.GoogleApiService;
+import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
+import vssnake.intervaltraining.model.IntervalStaticData;
+import vssnake.intervaltraining.utils.StacData;
+import vssnake.intervaltraining.wearable.WearableService;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -38,6 +41,9 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
         super.onCreate(savedInstanceState);
         getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
         getActivity().startService(intent);
+
+
+
 
 
 
@@ -105,7 +111,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
             getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
             getActivity().startService(intent);
         }
-        GoogleApiService.startNotification(GoogleApiService.TypeNotifications.PREPARE_NOTIFICATION);
+        WearableService.startNotification(WearableService.TypeNotifications.PREPARE_NOTIFICATION);
 
 
     }
@@ -219,5 +225,14 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
                         mStartCountDownButton.setText( getResources().getString(R.string.startCountDown));
                     }
                 }*/
+    }
+
+    @Override
+    public void trainSelected(long idTrain) {
+        //Change training name
+        mChronometerFragment.changeTitle(IntervalStaticData.intervalData.get((int)idTrain).getmName
+                ());
+        binder.changeTrain(idTrain);
+        mSliding.openCloseMenu(false);
     }
 }

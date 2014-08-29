@@ -5,11 +5,9 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
@@ -32,7 +30,8 @@ public class IntervalNotification {
 
 
     private static Notification mNotification = null;
-    private static RemoteViews mContentView = null;
+    private static RemoteViews mBigContentView = null;
+    private static RemoteViews mSmallContentView = null;
     /**
      * Shows the notification, or updates a previously shown notification of
      * this type, with the given parameters.
@@ -96,7 +95,7 @@ public class IntervalNotification {
                             // 4.1 or later)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-                    //.setContent(mContentView)
+                    //.setContent(mBigContentView)
 
                     .setDefaults(Notification.DEFAULT_LIGHTS)
 
@@ -107,31 +106,38 @@ public class IntervalNotification {
 
             mNotification = builder.build();
             //mNotification.defaults = Notification.DEFAULT_LIGHTS;
-            //mNotification.contentView = mContentView;
+            //mNotification.contentView = mBigContentView;
            // mNotification.set
             //   notification.contentView = contentView;
-            //mNotification.bigContentView = mContentView;
+            //mNotification.bigContentView = mBigContentView;
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-            mContentView = new RemoteViews(context.getPackageName(),
+            mBigContentView = new RemoteViews(context.getPackageName(),
                     R.layout.notification_interval);
-            mContentView.setTextViewText(R.id.notifIntervalTotalTime_TextView,totalTime);
-            mContentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button,closeIntent);
-            mContentView.setTextViewText(R.id.notifIntervalTime_TextView,intervalTime);
-            mNotification.bigContentView = mContentView;
-            mNotification.contentView = new RemoteViews(context.getPackageName(),
+            mBigContentView.setTextViewText(R.id.notifIntervalTotalTime_TextView,totalTime);
+            mBigContentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button, closeIntent);
+           mBigContentView.setTextViewText(R.id.notifIntervalTime_TextView, intervalTime);
+            mNotification.bigContentView = mBigContentView;
+            mSmallContentView = new RemoteViews(context.getPackageName(),
                     R.layout.notification_interval_l);
+            mSmallContentView.setTextViewText(R.id.notifIntervalName_TextView, intervalName);
+            mSmallContentView.setOnClickPendingIntent(R.id.notifInterval_S_Close_Button,closeIntent);
+            mNotification.contentView = mSmallContentView;
+
         }else{
-            mContentView = new RemoteViews(context.getPackageName(),
+
+            mSmallContentView = new RemoteViews(context.getPackageName(),
                     R.layout.notification_interval_l);
-            mNotification.contentView = mContentView;
+            mSmallContentView.setTextViewText(R.id.notifIntervalName_TextView, intervalName);
+            mSmallContentView.setOnClickPendingIntent(R.id.notifInterval_S_Close_Button, closeIntent);
+            mNotification.contentView = mBigContentView;
         }
 
-        mContentView.setTextViewText(R.id.notifIntervalName_TextView,intervalName);
-        mContentView.setTextViewText(R.id.notifIntervalRound_TextView,
-                numberInterval+ "/" + totalIntervals);
-        mContentView.setTextViewText(R.id.notifIntervalState_TextView,stateInterval);
+        mBigContentView.setTextViewText(R.id.notifIntervalName_TextView, intervalName);
+        mBigContentView.setTextViewText(R.id.notifIntervalRound_TextView,
+                numberInterval + "/" + totalIntervals);
+        mBigContentView.setTextViewText(R.id.notifIntervalState_TextView, stateInterval);
 
         mNotification.contentIntent = showIntent;
 

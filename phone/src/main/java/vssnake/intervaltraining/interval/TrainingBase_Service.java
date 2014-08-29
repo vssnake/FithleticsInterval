@@ -81,22 +81,25 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
 
         mSoundEnabled = mSharedPreference.
                 getBoolean(StacData.PREFS_SOUND_KEY,true);
-        mSharedPreference.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-                if (key == StacData.PREFS_VIBRATION_KEY){
-                    mVibrationEnabled = sharedPreferences.
-                            getBoolean(StacData.PREFS_VIBRATION_KEY, true);
-
-                }else if (key == StacData.PREFS_SOUND_KEY){
-                    mSoundEnabled = sharedPreferences.
-                            getBoolean(StacData.PREFS_SOUND_KEY, true);
-                }
-                Log.d(TAG,key + " Changed");
-            }
-        });
+        mSharedPreference.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener
+            = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key == StacData.PREFS_VIBRATION_KEY){
+                mVibrationEnabled = sharedPreferences.
+                        getBoolean(StacData.PREFS_VIBRATION_KEY, true);
+
+            }else if (key == StacData.PREFS_SOUND_KEY){
+                mSoundEnabled = sharedPreferences.
+                        getBoolean(StacData.PREFS_SOUND_KEY, true);
+            }
+            Log.d(TAG,key + " Changed");
+        }
+    };
+
 
     @Override
     public int onStartCommand(Intent intent,int flags,int startId){
@@ -106,7 +109,7 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
     public void onDestroy(){
         //Set the flag to Stop
         serviceState = stateFlag.stop;
-
+        mSharedPreference.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
 
     }
 

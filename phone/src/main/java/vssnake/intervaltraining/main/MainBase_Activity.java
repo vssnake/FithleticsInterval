@@ -3,17 +3,8 @@ package vssnake.intervaltraining.main;
 import android.app.Activity;
 
 import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,14 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.Button;
 import android.widget.TextView;
 
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.interval.TabataTraining_Fragment;
 import vssnake.intervaltraining.interval.TabataTrainingBase_Fragment;
-import vssnake.intervaltraining.services.GoogleApiService;
 
 
 public abstract class MainBase_Activity extends FragmentActivity

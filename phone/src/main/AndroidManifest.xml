@@ -23,12 +23,12 @@
             android:enabled="true"
             android:exported="true" >
         </service>
-        <service android:name=".services.GoogleApiService"
+        <service android:name=".wearable.WearableService"
             android:enabled="true"
             android:exported="false" >
         </service>
 
-        <service android:name=".services.WearableListenerService">
+        <service android:name=".wearable.WearableListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>

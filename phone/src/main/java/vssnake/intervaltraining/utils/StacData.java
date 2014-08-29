@@ -8,6 +8,7 @@ public  class StacData {
     public static final String BASIC_CONFIG_PREFS = "DefaultPrefsFile";
     public static final String PREFS_VIBRATION_KEY = "vibration";
     public static final String PREFS_SOUND_KEY = "sound";
+    public static final String PREFS_TRAIN_KEY = "training";
 
     public static class Intervaldata{
         //Vibration in Miliseconds

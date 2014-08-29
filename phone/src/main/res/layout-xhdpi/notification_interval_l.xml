@@ -84,26 +84,25 @@
 
         <TextView
             android:layout_width="269dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Tabata"
             android:id="@+id/notifIntervalName_TextView"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/white"
-            android:textSize="25dp"
-            android:typeface="monospace"
-            android:gravity="left"
+            android:textSize="18dp"
+            android:gravity="left|center_vertical"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/notifIntervalImage_Image"
             android:layout_toEndOf="@+id/notifIntervalImage_Image"
-            />
+            android:layout_weight="80"/>
 
         <ImageButton
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="X"
-            android:id="@+id/imageButton"
+            android:id="@+id/notifInterval_S_Close_Button"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:gravity="center"

@@ -5,18 +5,22 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Messenger;
 
-import vssnake.intervaltraining.services.GoogleApiService;
+import vssnake.intervaltraining.model.IntervalStaticData;
+import vssnake.intervaltraining.utils.StacData;
+import vssnake.intervaltraining.wearable.WearableService;
 
 
 public class Main_Activity extends MainBase_Activity {
 
     private Messenger mMessenger_GoogleApiService = null;
 
+    SharedPreferences mSharedPreferences;
 
     Intent googleServiceIntent;
     @Override
@@ -27,10 +31,12 @@ public class Main_Activity extends MainBase_Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initialize();
         super.onCreate(savedInstanceState);
-        googleServiceIntent  = new Intent(this,GoogleApiService.class);
+        googleServiceIntent  = new Intent(this,WearableService.class);
         startService(googleServiceIntent);
         bindService(googleServiceIntent, mGoolgleApiConnection, Context.BIND_ABOVE_CLIENT);
+
 
     }
     @Override
@@ -68,4 +74,13 @@ public class Main_Activity extends MainBase_Activity {
     }
 
 
+    void initialize(){
+       mSharedPreferences = getSharedPreferences(StacData.BASIC_CONFIG_PREFS, 0);
+       IntervalStaticData.createData(this);
+       int idTraining =  mSharedPreferences.getInt(StacData.PREFS_TRAIN_KEY,-1);
+        if (idTraining== -1){
+            mSharedPreferences.edit().putInt(StacData.PREFS_TRAIN_KEY,0).commit();
+
+        }
+    }
 }

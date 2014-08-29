@@ -4,14 +4,18 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.vssnake.intervaltraining.shared.Utils;
+
 import vssnake.intervaltraining.R;
-import vssnake.intervaltraining.utils.Utils;
+import vssnake.intervaltraining.interval.ListIntervalAdapter;
+import vssnake.intervaltraining.model.IntervalStaticData;
 
 
 /**
@@ -26,11 +30,13 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    public static final String TAG = "InfoIntervalFragment";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    TextView mInfoIntervalTitle;
+
     TextView mInfoIntervalRound;
     TextView mInfoIntervalMode;
 
@@ -39,17 +45,20 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
 
     View mInfoIntervalMoveView;
 
+    ListView mLVIntervals;
+
+    ImageView mArrowImage;
+
     public interface onInfoIntervalFragmentListener{
-        void moveInfoIntervalFragment(float x, float y);
+        void trainSelected(long idTrain);
     }
 
     onInfoIntervalFragmentListener mInfoFragmentListener;
 
 
 
-    private void  setIntervalFragmentListener(onInfoIntervalFragmentListener infoFragmentListener){
-        mInfoFragmentListener = infoFragmentListener;
-    }
+
+
 
 
 
@@ -57,20 +66,17 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param infoFragmentListener Parameter 1.
      * @return A new instance of fragment InfoIntervalFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static InfoIntervalFragment newInstance(
-            onInfoIntervalFragmentListener infoFragmentListener) {
+    public static InfoIntervalFragment newInstance(onInfoIntervalFragmentListener parentListener) {
         InfoIntervalFragment fragment = new InfoIntervalFragment();
-
-        fragment.setIntervalFragmentListener(infoFragmentListener);
-
+        fragment.mInfoFragmentListener = parentListener;
         return fragment;
     }
 
@@ -82,10 +88,9 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
-    private int _xDelta;
-    private int _yDelta;
 
 
     @Override
@@ -96,8 +101,7 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
 
         // Inflate the layout for this fragment
         //Reference the textViews to modify the data in runtime
-        mInfoIntervalTitle = (TextView) view.findViewById
-                (R.id.infoInterval_Title_TextView);
+
         mInfoIntervalRound = (TextView) view.findViewById
                 (R.id.infoInterval_Rounds_TextView);
         mInfoIntervalMode = (TextView) view.findViewById
@@ -110,42 +114,39 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
                 R.id.infoInterval_Mode_Text);
 
 
-        /*
-        mInfoIntervalMoveView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+        mLVIntervals = (ListView) view.findViewById
+                (R.id.infoInterval_list_name);
 
-                final int X = (int) event.getRawX();
-                final int Y = (int) event.getRawY();
-
-                switch (event.getAction() & MotionEvent.ACTION_MASK){
-                    case MotionEvent.ACTION_DOWN:
-                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-                        _xDelta = X - lParams.leftMargin;
-                        _yDelta = Y - lParams.topMargin;
-                        Log.i("InfoIntervalMove",  "Action Down");
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) v.getLayoutParams();
-
-                        v.setLayoutParams(layoutParams);
-                        if (mInfoFragmentListener != null) {
-                           /// Log.i("InfoIntervalMove", event.getX() + " " + event.getY());
-                            mInfoFragmentListener.moveInfoIntervalFragment(X - _xDelta, Y - _yDelta);
-                        }
-                        break;
-                    default:
-                }
+        mArrowImage = (ImageView) view.findViewById(R.id.infoInterval_tick_image);
 
 
-                //v.invalidate();
-                return true;
-            }
-        });*/
-        mInfoIntervalTitle.setTypeface(Utils.getFontRoboto_black(getActivity().getAssets()));
         mInfoIntervalModeText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
         mInfoIntervalRoundText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
 
+
+        ListIntervalAdapter adapter = new ListIntervalAdapter(getActivity(),
+                IntervalStaticData.toList(getActivity().getApplicationContext()));
+        mLVIntervals.setAdapter(adapter);
+
+
+        mLVIntervals.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object intervalData = parent.getItemAtPosition(position);
+                if (intervalData!= null){
+                    long ID = ((IntervalStaticData.ListIntervalData)intervalData).getID();
+                    if (mInfoFragmentListener != null){
+                        mInfoFragmentListener.trainSelected(ID);
+                        Log.d(TAG,"on mLVIntervals on setOnclickListener | ID-> " + ID);
+                    }else{
+                        Log.e(TAG,"on mLVIntervals on setOnclickListener | mInfoFragmentListener " +
+                                "null");
+                    }
+
+
+                }
+            }
+        });
 
         return view;
 
@@ -163,7 +164,7 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
 
     public void changeTitle(String title){
         if (isAdded()){
-            mInfoIntervalTitle.setText(title);
+          //  mInfoIntervalTitle.setText(title);
         }
 
     }
@@ -177,6 +178,17 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
         if (isAdded()){
             mInfoIntervalMode.setText(mode);
         }
+
+    }
+
+    public void menuHide(boolean menuOpen){
+
+
+            if (menuOpen){
+                mArrowImage.setRotation(180);
+            }else{
+                mArrowImage.setRotation(360);
+            }
 
     }
 }

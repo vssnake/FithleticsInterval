@@ -1,16 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MyActivity"
-    tools:deviceIds="wear_round">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                tools:context=".MyActivity"
+                tools:deviceIds="wear_round">
 
     <TextView
-        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="NOTHING"
+        android:id="@+id/interval_State"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@color/grey"
+        android:layout_below="@+id/interval_round"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="00:00"
+        android:id="@+id/interval_time"
+        android:gravity="center"
+        android:textSize="50dp"
+        android:textColor="@color/white"
         android:layout_centerVertical="true"
-        android:text="@string/hello_round" />
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="0 of 0"
+        android:id="@+id/interval_round"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:background="#ffff0002"
+        android:layout_alignBottom="@+id/interval_totalTime"
+        android:layout_marginBottom="6dp"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/interval_totalTime"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="00:00"
+        android:id="@+id/interval_totalTime"
+        android:textSize="30dp"
+        android:layout_weight="50"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_below="@+id/interval_time"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="41dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/interval_Name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/white"
+        android:background="#ffff0300"
+        android:layout_above="@+id/interval_time"
+        android:text="Hiit Alacted Iterm- Advanced"
+        android:gravity="bottom|center_horizontal"/>
+
+
 </RelativeLayout>

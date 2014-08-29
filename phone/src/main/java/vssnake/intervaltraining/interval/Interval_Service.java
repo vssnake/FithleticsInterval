@@ -12,6 +12,8 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.android.gms.wearable.DataMap;
+import com.vssnake.intervaltraining.shared.Utils;
+import com.vssnake.intervaltraining.shared.model.IntervalData;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,15 +26,16 @@ import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.behaviours.ImplIntervalBehaviour;
 import vssnake.intervaltraining.main.MainBase_Activity;
 import vssnake.intervaltraining.main.Main_Activity;
-import vssnake.intervaltraining.services.GoogleApiService;
-import vssnake.intervaltraining.services.WearableListenerConnector;
-import vssnake.intervaltraining.services.WearableListenerService;
-import vssnake.intervaltraining.utils.Utils;
+import vssnake.intervaltraining.model.IntervalStaticData;
+import vssnake.intervaltraining.utils.StacData;
+import vssnake.intervaltraining.wearable.WearableService;
+import vssnake.intervaltraining.wearable.WearableListenerInterface;
+import vssnake.intervaltraining.wearable.WearableListenerService;
 
 /**
  * Created by unai on 27/06/2014.
  */
-public class Interval_Service extends TrainingBase_Service implements WearableListenerConnector{
+public class Interval_Service extends TrainingBase_Service implements WearableListenerInterface {
 
     private static final String TAG = "IntervalService";
     //Timer mTimerHandler
@@ -43,7 +46,7 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
     //The runnable of TabataTraining
     Runnable runnable;
 
-    IntervalBehaviour intervalBehaviour;
+    IntervalBehaviour mIntervalBehaviour;
     int SOUND1=1;
     int SOUND2=2;
 
@@ -62,11 +65,22 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
     //The Interface to TabataTraining_Fragment
     TrainingServiceConnectors.IntervalInterface mIntervalInterface;
 
+
+
+    int IDTrain;
+
     @Override
     public void onMessageReceived(typeMessage message, Bundle data) {
         switch (message) {
             case action:
                 startTabata();
+
+            case request_data:
+
+                getDefaultIntervalData();
+                mIntervalDataMap.clear();
+                WearableService.setDataMap(WearableService.SEND_INTERVAL_DATA, mIntervalDataMap);
+                sendDataToWearables();
                 break;
         }
     }
@@ -90,8 +104,16 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
 
         public void runTabata(){startTabata();}
 
-        public void runInbackground(boolean background){
-            setBackground(background);}
+        public void runInbackground(boolean background) {
+            setBackground(background);
+        }
+
+        public void changeTrain(long IDTraining){
+            mSharedPreference.edit().putInt(StacData.PREFS_TRAIN_KEY,(int)IDTraining).commit();
+            endTrain();
+            mIntervalBehaviour.changeTraining(IDTraining);
+        }
+
     }
 
     TabataServiceBinder mBinder = new TabataServiceBinder();
@@ -121,6 +143,7 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
     @Override
     public void onCreate(){
         super.onCreate();
+
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
         //Start the sounds for interval
@@ -148,6 +171,15 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
 
         mCancelIntervalIntent = PendingIntent.getService(getBaseContext(),0,
                 mIntervalServiceIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        IDTrain = mSharedPreference.getInt(StacData.PREFS_TRAIN_KEY,0);
+        if (mIntervalBehaviour == null)
+            mIntervalBehaviour = ImplIntervalBehaviour.newInstance(IDTrain, this,
+                    new int[]{3000,
+                    2000, 1000});
+
+
+
     }
 
     @Override
@@ -210,7 +242,7 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
         if (mBackground){
 
             mNotification = IntervalNotification.createNotification(getApplicationContext(),
-                    getApplicationContext().getResources().getString(R.string.tabata),
+                    intervalData.getName(),
                     intervalData.getNumberInterval(),
                     intervalData.getTotalIntervals(),
                     intervalData.getIntervalState().name(),
@@ -225,17 +257,42 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
         }
     }
 
+
+    void getDefaultIntervalData(){
+        if (mIntervalData== null){
+            mIntervalData = new IntervalData();
+        }
+        int keyData = mSharedPreference.getInt(StacData.PREFS_TRAIN_KEY,0);
+        IntervalStaticData.IntervalData intervalData = IntervalStaticData.intervalData.get(keyData);
+        mIntervalData.setIntervalData(1,intervalData.getmTotalIntervals(),
+                IntervalData.eIntervalState.NOTHING,0,0,0);
+
+        mIntervalData.setName(intervalData.getmName());
+    }
+
     @Override
     public void endTrain() {
 
-        mWakeLock.release();
+
+        if (mWakeLock.isHeld()){
+            mWakeLock.release();
+        }
+
 
        // mTimerHandler.removeCallbacks(runnable);
-        beeperHandle.cancel(true);
-        IntervalData intervalData = new IntervalData();
-        intervalData.setIntervalData(0,0, IntervalData.eIntervalState.NOTHING,0,0,0);
+        if (beeperHandle != null){
+            beeperHandle.cancel(true);
+        }
+
+
+
+        getDefaultIntervalData();
+
+
+
+
         mTrainingStart = false;
-        newNotification(intervalData);
+        newNotification(mIntervalData);
 
         stopForeground(true);
 
@@ -248,19 +305,19 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
     long timeInMilliseconds = 0L;
     long startTime = 0L;
 
-    void startTrain(){
+    private void startTrain(){
 
 
 
         mWakeLock.acquire();
 
-        GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
+        WearableService.setDataMap(WearableService.SEND_INTERVAL_DATA, mIntervalDataMap);
 
-        if (intervalBehaviour == null)
-            intervalBehaviour = ImplIntervalBehaviour.newInstance(8, 10000, 20000, this, new int[]{3000,
+        if (mIntervalBehaviour == null)
+            mIntervalBehaviour = ImplIntervalBehaviour.newInstance(IDTrain, this, new int[]{3000,
                     2000, 1000});
 
-        intervalBehaviour.resetInterval();
+        mIntervalBehaviour.resetInterval();
         mNotification = IntervalNotification.createNotification(getApplicationContext(),getApplicationContext().
                 getResources().getString(R.string.tabata),0,0,"nothing","00:00","00:00",null,null);
 
@@ -275,7 +332,7 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
 
 
                 Log.d(TAG,timeInMilliseconds + "");
-               intervalBehaviour.executeTime(timeInMilliseconds);
+               mIntervalBehaviour.executeTime(timeInMilliseconds);
 
             }
         };
@@ -287,7 +344,7 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
         if (mTrainingInterface != null){
             mTrainingInterface.statusTrain(mTrainingStart);
         }
-        intervalBehaviour.executeTime(0);
+        mIntervalBehaviour.executeTime(0);
 
         beeperHandle = scheduler.scheduleAtFixedRate(runnable, 0, 1000, TimeUnit.MILLISECONDS);
        //mTimerHandler.postDelayed(runnable, 1000);
@@ -312,18 +369,20 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
 
     private void sendDataToWearables(){
 
+        mIntervalDataMap.putString(IntervalData.intervalDataKey.INTERVAL_NAME.name(),
+                mIntervalData.getName());
         mIntervalDataMap.putInt(IntervalData.intervalDataKey.NUMBER_INTERVAL.name(),
                 mIntervalData.getNumberInterval());
         mIntervalDataMap.putInt(IntervalData.intervalDataKey.TOTAL_INTERVALS.name(),
                 mIntervalData.getTotalIntervals());
         mIntervalDataMap.putString(IntervalData.intervalDataKey.INTERVAL_STATE.name(),
                 mIntervalData.getIntervalState().name());
-        mIntervalDataMap.putInt(IntervalData.intervalDataKey.INTERVAL_TIME.name(),
-                mIntervalData.getIntervalTimeSeconds());
-        mIntervalDataMap.putInt(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME.name(),
-                mIntervalData.getTotalIntervalTimeSeconds());
+        mIntervalDataMap.putLong(IntervalData.intervalDataKey.INTERVAL_TIME.name(),
+                mIntervalData.getIntervalTimeMilliseconds());
+        mIntervalDataMap.putLong(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME.name(),
+                mIntervalData.getTotalIntervalTimeMilliseconds());
 
-        GoogleApiService.setDataMap(GoogleApiService.SEND_INTERVAL_DATA, mIntervalDataMap);
+        WearableService.setDataMap(WearableService.SEND_INTERVAL_DATA, mIntervalDataMap);
     }
 
 
@@ -336,8 +395,8 @@ public class Interval_Service extends TrainingBase_Service implements WearableLi
                     break;
                 case VIBRATION:
                     vibration((Integer)adicionalData);
-                    GoogleApiService.startNotification(GoogleApiService.TypeNotifications.
-                            VIBRATION_NOTIFICATION,(Integer)adicionalData);
+                    WearableService.startNotification(WearableService.TypeNotifications.
+                            VIBRATION_NOTIFICATION, (Integer) adicionalData);
                     break;
                 case RUN:
                     mIntervalInterface.specialEvent(TrainingServiceConnectors.specialUICommands.RUN);

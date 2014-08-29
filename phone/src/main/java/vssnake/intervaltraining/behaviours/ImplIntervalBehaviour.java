@@ -2,8 +2,10 @@ package vssnake.intervaltraining.behaviours;
 
 import android.util.Log;
 
-import vssnake.intervaltraining.interval.IntervalData;
+import com.vssnake.intervaltraining.shared.model.IntervalData;
+
 import vssnake.intervaltraining.interval.TrainingServiceInterface;
+import vssnake.intervaltraining.model.IntervalStaticData;
 import vssnake.intervaltraining.utils.StacData;
 
 /**
@@ -36,16 +38,15 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
     long mMillisecondsTotal;
 
-    private ImplIntervalBehaviour(int totalIntervals, long timeToRest,
-                                  long timeToExercise,TrainingServiceInterface iIntervalService,
+    private ImplIntervalBehaviour(int IDTraining,TrainingServiceInterface iIntervalService,
                                   int[] soundsTimeArray){
-        this.mTotalIntervals = totalIntervals;
-        this.mTimeToRest = timeToRest;
-        this.mTimeToExercise = timeToExercise;
-        mCurrentIntervalSpace = timeToExercise;
+        mIntervalData = new IntervalData();
+
+        changeTraining(IDTraining);
+
         this.mTrainingServiceInterface = iIntervalService;
 
-        mMillisecondsTotal = (totalIntervals * timeToExercise) + ((totalIntervals-1) * timeToRest);
+
 
 
 
@@ -53,15 +54,14 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
         this.mTemporalSoundArray = soundsTimeArray.clone();
 
-        mIntervalData = new IntervalData();
+
     }
 
     public static ImplIntervalBehaviour
-                    newInstance (int totalIntervals, int timeToRest,
-                    int timeToExercise,TrainingServiceInterface iIntervalService,
+                    newInstance (int IDTraining,
+                                 TrainingServiceInterface iIntervalService,
                     int[] soundsTimeArray){
-        return new ImplIntervalBehaviour(totalIntervals,
-                timeToRest,timeToExercise,iIntervalService,soundsTimeArray);
+        return new ImplIntervalBehaviour(IDTraining,iIntervalService,soundsTimeArray);
     }
 
     /***
@@ -155,5 +155,21 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
         mFinish = false;
         intervalState = IntervalData.eIntervalState.RUNNING;
         return true;
+    }
+
+    @Override
+    public boolean changeTraining(long id) {
+        IntervalStaticData.IntervalData intervalData = IntervalStaticData.intervalData.get((int)id);
+        if (intervalData!=null){
+            this.mTotalIntervals = intervalData.getmTotalIntervals();
+            this.mTimeToRest = intervalData.getmTimeResting()*1000;
+            this.mTimeToExercise = intervalData.getmTimeDoing()*1000;
+            mCurrentIntervalSpace = intervalData.getmTimeDoing()*1000;
+            mMillisecondsTotal = (mTotalIntervals * mTimeToExercise) + ((mTotalIntervals-1) * mTimeToRest);
+
+            mIntervalData.setName(intervalData.getmName());
+        }
+
+        return false;
     }
 }

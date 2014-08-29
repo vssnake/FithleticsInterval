@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
@@ -13,7 +14,6 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 
-import com.example.unai.myapplication.model.IntervalData;
 import com.example.unai.myapplication.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -26,6 +26,8 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
+import com.vssnake.intervaltraining.shared.model.IntervalData;
+
 
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -40,6 +42,7 @@ public class MyActivity extends MyActivity_Base  implements
         MessageApi.MessageListener{
 
     public static final String TAG = "MainActivityWearable";
+    public static final String SEND_INTERVAL_DATA = "/send";
 
     private Messenger mMessenger_GoogleApiService = null;
 
@@ -54,7 +57,8 @@ public class MyActivity extends MyActivity_Base  implements
             Log.d(TAG, "Connected to Google Api Service");
         }
         Wearable.DataApi.addListener(mGoogleApiClient, this);
-        Wearable.MessageApi.addListener(mGoogleApiClient,this);
+        Wearable.MessageApi.addListener(mGoogleApiClient, this);
+        GoogleApiService.startNotification(GoogleApiService.TypeNotifications.SEND_REQUEST_DEFAULT_DATA);
 
 
     }
@@ -70,6 +74,7 @@ public class MyActivity extends MyActivity_Base  implements
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Wearable.API)
                     .build();
+
         }
 
         if (Log.isLoggable(TAG, Log.DEBUG)){
@@ -99,27 +104,32 @@ public class MyActivity extends MyActivity_Base  implements
                                         .name()),
                                 dataMap.getInt(IntervalData.intervalDataKey.TOTAL_INTERVALS
                                         .name()),
-                                dataMap.getString(IntervalData.intervalDataKey.INTERVAL_STATE
+
+                                IntervalData.eIntervalState.valueOf(
+                                        dataMap.getString(IntervalData.intervalDataKey.INTERVAL_STATE
+                                        .name())),
+                                dataMap.getLong(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME
                                         .name()),
-                                dataMap.getInt(IntervalData.intervalDataKey.TOTAL_INTERVAL_TIME
-                                        .name()),
-                                dataMap.getInt(IntervalData.intervalDataKey.INTERVAL_TIME
+                                dataMap.getLong(IntervalData.intervalDataKey.INTERVAL_TIME
                                         .name()),
                                 0);
+                        data.setName(dataMap.getString(IntervalData.intervalDataKey.INTERVAL_NAME
+                                .name()));
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 mIntervalRound.setText(data.getNumberInterval() + " of " + data
                                         .getTotalIntervals());
                                 mIntervalTime.setText(Utils.formatIntervalTime(data.
-                                        getIntervalTime()));
+                                        getIntervalTimeSeconds()));
                                 mIntervalTotalTime.setText(Utils.formatIntervalTime(data
-                                        .getTotalIntervalTime()));
+                                        .getTotalIntervalTimeSeconds()));
                                 mIntervalState.setText(data.getIntervalState().name());
+                                mIntervalName.setText(data.getName());
                             }
                         });
 
-                        Log.d(TAG,data.getNumberInterval() + " " +data.getIntervalTime() + " " +
+                        Log.d(TAG,data.getNumberInterval() + " " +data.getTotalIntervalTimeSeconds() + " " +
                                 data.getBpm() + " " + data.getTotalIntervals() + " " +
                                 data.getTotalIntervals() + " " + data.getIntervalState());
 
@@ -199,11 +209,23 @@ public class MyActivity extends MyActivity_Base  implements
         if (null != mGoogleApiClient && mGoogleApiClient.isConnected()) {
             Wearable.DataApi.removeListener(mGoogleApiClient, this);
             Wearable.MessageApi.removeListener(mGoogleApiClient,this);
+
             mGoogleApiClient.disconnect();
+
         }
         super.onPause();
+
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     private ServiceConnection mGoolgleApiConnection = new ServiceConnection() {
         @Override

@@ -16,63 +16,86 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
     </View>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/shaw_frag_interval"
+        android:id="@+id/intervalFragment_shadowFrame2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="80dp"
+        android:layout_alignParentTop="true">
+    </View>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignTop="@+id/intervalFragment_shadowFrame2">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentStart="false"
+            android:gravity="center"
+            android:background="@color/startInterval"
+            android:id="@+id/intervalFragment_clickView"
+            android:layout_below="@+id/intervalFragment_FirstFrame"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="false">
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/intervalFragment_FirstFrame"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/intervalFragment_SecondFrame"
+                android:layout_marginBottom="20dp"
+                tools:layout="@layout/fragment_chronometer"
+
+                >
+
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/active_sound"
+                    android:id="@+id/intervalFragment_checkBox_ActiveSound"
+                    android:layout_gravity="center_horizontal"
+                    />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vibration_activate"
+                    android:id="@+id/intervalFragment_checkBox_ActiveVibration"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
     <FrameLayout
 
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentStart="false"
+        android:layout_height="wrap_content"
         android:id="@+id/intervalFragment_FirstFrame"
 
 
         tools:layout="@layout/fragment_info_interval"
-        android:visibility="visible">
+        android:visibility="visible"
+        >
 
     </FrameLayout>
-    <View
-        android:layout_below="@id/intervalFragment_FirstFrame"
-        android:layout_width="fill_parent"
-        android:layout_height="8dp"
-        android:background="@drawable/shaw_frag_interval"
-        android:id="@+id/intervalFragment_shadowFrame2">
-    </View>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentStart="true"
-        android:gravity="center"
-        android:background="@color/startInterval"
-        android:layout_below="@+id/intervalFragment_shadowFrame2"
-        android:id="@+id/intervalFragment_clickView">
-
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="300dp"
-            android:layout_below="@+id/intervalFragment_FirstFrame"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/intervalFragment_SecondFrame"
-            android:layout_marginBottom="20dp"
-            tools:layout="@layout/fragment_chronometer"
-
-            >
-
-
-        </FrameLayout>
-
-        <CheckBox
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:text="@string/active_sound"
-            android:id="@+id/intervalFragment_checkBox_ActiveSound"
-            android:layout_gravity="center_horizontal"/>
-
-        <CheckBox
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:text="@string/vibration_activate"
-            android:id="@+id/intervalFragment_checkBox_ActiveVibration"/>
-
-    </LinearLayout>
-
 </RelativeLayout>

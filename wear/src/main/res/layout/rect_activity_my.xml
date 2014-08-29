@@ -5,7 +5,9 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context=".MyActivity"
-    tools:deviceIds="wear_square">
+    tools:deviceIds="wear_square"
+    android:background="@color/black"
+    android:paddingTop="1dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -13,9 +15,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="NOTHING"
         android:id="@+id/interval_State"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="40dp" />
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@color/grey"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -23,10 +29,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="00:00"
         android:id="@+id/interval_time"
-        android:layout_below="@+id/interval_State"
-        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:textSize="50dp" />
+        android:textSize="50dp"
+        android:textColor="@color/white"
+        android:layout_below="@+id/interval_Name"
+        android:layout_alignParentStart="true"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,44 +43,36 @@
         android:text="0 of 0"
         android:id="@+id/interval_round"
         android:textSize="20dp"
-        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:layout_above="@+id/interval_State"
+        android:layout_alignParentEnd="true"
+        android:background="#ffff0002"
+        android:layout_marginBottom="1dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="00:00"
+        android:id="@+id/interval_totalTime"
+        android:textSize="30dp"
+        android:layout_weight="50"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_above="@+id/interval_round"
         android:layout_centerHorizontal="true"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <TextView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/interval_round"
-        android:layout_alignStart="@+id/interval_State"
-        android:layout_below="@+id/interval_time"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Remaining:"
-
-            android:layout_alignTop="@+id/interval_totalTime"
-            android:layout_alignParentStart="true"
-            android:textSize="20dp"
-            android:id="@+id/textView2"
-            android:layout_weight="50"
-            android:gravity="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="00:00"
-            android:id="@+id/interval_totalTime"
-            android:textSize="30dp"
-            android:layout_toEndOf="@+id/textView2"
-            android:layout_below="@+id/interval_time"
-            android:layout_alignParentEnd="true"
-            android:layout_weight="50"
-            android:gravity="center"/>
-    </LinearLayout>
+        android:layout_height="45dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/interval_Name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/white"
+        android:background="#ffff0300"
+        android:gravity="center"
+        android:layout_marginBottom="1dp"/>
 
 
 </RelativeLayout>

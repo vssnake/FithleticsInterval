@@ -1,13 +1,14 @@
-package vssnake.intervaltraining.services;
+package vssnake.intervaltraining.wearable;
 
 import android.os.Bundle;
 
 /**
  * Created by unai on 06/08/2014.
  */
-public interface WearableListenerConnector {
+public interface WearableListenerInterface {
     public enum typeMessage{
-        action;
+        action,
+        request_data;
     }
 
     void onMessageReceived(typeMessage message, Bundle data);
