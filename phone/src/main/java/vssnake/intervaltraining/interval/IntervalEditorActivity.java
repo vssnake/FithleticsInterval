@@ -84,7 +84,7 @@ public class IntervalEditorActivity extends Activity {
     }
 
     private boolean check(){
-        boolean checked = true;
+        boolean checked= true;
         String name = txtName.getText().toString();
         String description = txtDescription.getText().toString();
         String effort = txtEffortTime.getText().toString();

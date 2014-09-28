@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name_menu_title">Ludus XII</string>
+    <string name="app_name_menu_subtitle">HiiT</string>
+    <string name="app_name">FiThletics Interval</string>
+    <string name="tabata">Tabata</string>
+
+    <!-- Sections name -->
+    <string name="title_section1">Last Intervals</string>
+    <string name="title_section2">Selection Intervals</string>
+    <string name="title_section3">Statistics</string>
+    <string name="title_section4">Options</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="startCountDown">Start CountDown</string>
+    <string name="stopCountDown">Stop CountDown</string>
+
+    <!-- Main Fragment -->
+    <string name="last_intervals">Last Intervals</string>
+    <string name="interval">Interval</string>
+    <string name="active_sound">Sound</string>
+    <string name="vibration_activate">Vibration</string>
+
+    <!-- Chronometer Fragment -->
+    <string name="chronometer_total">Total</string>
+    <string name="seconds">Seconds</string>
+    <string name="interval_timer">Interval Timer</string>
+    <string name="total_remaining">Remaining</string>
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
+
+    <!--Info Interval Fragment -->
+    <string name="Round">Round</string>
+    <string name="Mode">Mode</string>
+    <string name="Resting">Resting</string>
+    <string name="Running">Running</string>
+    <string name="nothing">Nothing</string>
+
+    <!--NotificationInterval -->
+    <string name="Pause">Pause</string>
+    <string name="Resume">Pause</string>
+    <string name="Cancel">Cancel</string>
+    <string name="notification_Round">Round:</string>
+    <string name="notification_Interval_time">Interval Time:</string>
+    <string name="notification_Total_time">Total Time:</string>
+
+    <!--Intervals Types -->
+    <string name="interval_30secondSprint_name">30 Seconds Sprint</string>
+    <string name="interval_30secondSprint_description"> 30 seconds of sprint
+        \n 2 Minutes of rest
+        \n 4 Times</string>
+
+    <string name="interval_tabata_name">Tabata</string>
+    <string name="interval_tabata_description">20 seconds of intense training\n
+        10 Seconds of rest\n
+         8 Times</string>
+
+    <string name="interval_HiitSprint_Beginner_name">Hiit Sprint Beginner</string>
+    <string name="interval_HiitSprint_Beginner_description">10 seconds of effort\n
+        30 Seconds of rest\n
+        3 Times</string>
+
+    <string name="interval_HiitSprint_Begin_Intermediate_name">Hiit Sprint
+        Begin-Intermediate</string>
+    <string name="interval_HiitSprint_Begin_Intermediate_description">10 seconds of effort\n
+        30 Seconds of rest\n
+        5 Times</string>
+
+    <string name="interval_HiitSprint_Intermediate_name">Hiit Sprint Intermediate</string>
+    <string name="interval_HiitSprint_Intermediate_description">10 seconds of effort\n
+        30 Seconds of rest\n
+        7 Times</string>
+
+    <string name="interval_HiitSprint_Inter_Advanced_name">Hiit Sprint Inter-Advanced</string>
+    <string name="interval_HiitSprint_Inter_Advanced_description">10 seconds of effort\n
+        30 Seconds of rest\n
+        9 Times</string>
+
+    <string name="interval_HiitSprint_Advanced_name">Hiit Sprint Advanced</string>
+    <string name="interval_HiitSprint_Advanced_description">10 seconds of effort\n
+        30 Seconds of rest\n
+        11 Times</string>
+ <!--Alactic-->
+    <string name="interval_HiitAlactic_Beginner_name">Hiit Alactic Beginner</string>
+    <string name="interval_HiitAlactic_Beginner_description">20 seconds of effort\n
+        90 Seconds of rest\n
+        3 Times</string>
+
+    <string name="interval_HiitAlactic_Begin_Intermediate_name">Hiit Alactic
+        Begin-Intermediate</string>
+    <string name="interval_HiitAlactic_Begin_Intermediate_description">20 seconds of effort\n
+        90 Seconds of rest\n
+        6 Times</string>
+
+    <string name="interval_HiitAlactic_Intermediate_name">Hiit Alactic Intermediate</string>
+    <string name="interval_HiitAlactic_Intermediate_description">20 seconds of effort\n
+        60 Seconds of rest\n
+        6 Times</string>
+
+    <string name="interval_HiitAlactic_Inter_Advanced_name">Hiit Alactic Inter-Advanced</string>
+    <string name="interval_HiitAlactic_Inter_Advanced_description">20 seconds of effort\n
+        30 Seconds of rest\n
+        5 Times</string>
+
+    <string name="interval_HiitAlactic_Advanced_name">Hiit Alactic Advanced</string>
+    <string name="interval_HiitAlactic_Advanced_description">20 seconds of effort\n
+        30 Seconds of rest\n
+        8 Times</string>
+
+    <!--Power-->
+    <string name="interval_HiitPower_Beginner_name">Hiit Power Beginner</string>
+    <string name="interval_HiitPower_Beginner_description">5 seconds of effort\n
+        30 Seconds of rest\n
+        3 Times</string>
+
+    <string name="interval_HiitPower_Begin_Intermediate_name">Hiit Power
+        Begin-Intermediate</string>
+    <string name="interval_HiitPower_Begin_Intermediate_description">5 seconds of effort\n
+        30 Seconds of rest\n
+        5 Times</string>
+
+    <string name="interval_HiitPower_Intermediate_name">Hiit Power Intermediate</string>
+    <string name="interval_HiitPower_Intermediate_description">5 seconds of effort\n
+        30 Seconds of rest\n
+        9 Times</string>
+
+    <string name="interval_HiitPower_Inter_Advanced_name">Hiit Power Inter-Advanced</string>
+    <string name="interval_HiitPower_Inter_Advanced_description">5 seconds of effort\n
+        30 Seconds of rest\n
+        12 Times</string>
+
+    <string name="interval_HiitPower_Advanced_name">Hiit Power Advanced</string>
+    <string name="interval_HiitPower_Advanced_description">5 seconds of effort\n
+        30 Seconds of rest\n
+        15 Times</string>
+
+    <!--Endurance-->
+    <string name="interval_HiitEndurance_Beginner_name">Hiit Endurance Beginner</string>
+    <string name="interval_HiitEndurance_Beginner_description">50 seconds of effort\n
+        90 Seconds of rest\n
+        3 Times</string>
+
+    <string name="interval_HiitEndurance_Begin_Intermediate_name">Hiit Endurance
+        Begin-Intermediate</string>
+    <string name="interval_HiitEndurance_Begin_Intermediate_description">50 seconds of effort\n
+        90 Seconds of rest\n
+        6 Times</string>
+
+    <string name="interval_HiitEndurance_Intermediate_name">Hiit Endurance Intermediate</string>
+    <string name="interval_HiitEndurance_Intermediate_description">50 seconds of effort\n
+        60 Seconds of rest\n
+        6 Times</string>
+
+    <string name="interval_HiitEndurance_Inter_Advanced_name">Hiit Endurance Inter-Advanced</string>
+    <string name="interval_HiitEndurance_Inter_Advanced_description">50 seconds of effort\n
+        60 Seconds of rest\n
+        9 Times</string>
+
+    <string name="interval_HiitEndurance_Advanced_name">Hiit Endurance Advanced</string>
+    <string name="interval_HiitEndurance_Advanced_description">50 seconds of effort\n
+        60 Seconds of rest\n
+        12 Times</string>
+
+
+
+</resources>

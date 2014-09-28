@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/IntervalTraining.iml" filepath="$PROJECT_DIR$/IntervalTraining.iml" />
       <module fileurl="file://$PROJECT_DIR$/ludux-xii-hiit.iml" filepath="$PROJECT_DIR$/ludux-xii-hiit.iml" />
       <module fileurl="file://$PROJECT_DIR$/phone/phone.iml" filepath="$PROJECT_DIR$/phone/phone.iml" />
-      <module fileurl="file://$PROJECT_DIR$/shared/shared.iml" filepath="$PROJECT_DIR$/shared/shared.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shared_lib/shared_lib.iml" filepath="$PROJECT_DIR$/shared_lib/shared_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" />
       <module fileurl="file://$PROJECT_DIR$/wear/wear.iml" filepath="$PROJECT_DIR$/wear/wear.iml" />
     </modules>

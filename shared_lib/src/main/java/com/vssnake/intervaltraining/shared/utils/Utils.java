@@ -1,7 +1,8 @@
-package com.example.unai.myapplication.utils;
+package com.vssnake.intervaltraining.shared.utils;
 
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.hardware.Camera;
 
 import java.nio.ByteBuffer;
 
@@ -37,20 +38,31 @@ public class Utils {
         return null;
     }
 
+    public static String formatTime(int seconds){
+
+       return String.format("%02d",seconds/60) + ":"
+               +  String.format("%02d",seconds%60);
+    }
+    public static int convertMillisecondsToSeconds(long milliseconds){
+        return (int)Math.ceil(milliseconds/1000d);
+    }
+
     public static String formatIntervalTime(long secondsInterval){
-       return String.format("%02d",secondsInterval/60) + ":"
-               +  String.format("%02d",secondsInterval%60);
+        return String.format("%02d",secondsInterval/60) + ":"
+                +  String.format("%02d",secondsInterval%60);
     }
     public static String formatTotalIntervalTime(long secondsTotal){
         return String.format("%02d",secondsTotal/60) + ":"
                 +  String.format("%02d",secondsTotal%60);
     }
 
+
+
     public static byte[] intToByte(int data){
-        return ByteBuffer.allocate(32).putInt(data).array();
+       return ByteBuffer.allocate(32).putInt(data).array();
     }
     public static int arrayBytesToInt(byte[] data){
-        return  ByteBuffer.wrap(data).getInt();
+       return  ByteBuffer.wrap(data).getInt();
     }
 
 

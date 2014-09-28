@@ -82,7 +82,7 @@
     <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-wearable-5.0.77" level="project" />
-    <orderEntry type="module" module-name="shared" exported="" />
+    <orderEntry type="module" module-name="shared_lib" exported="" />
     <orderEntry type="module" module-name="utils" exported="" />
   </component>
 </module>
