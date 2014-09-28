@@ -11,11 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.vssnake.intervaltraining.shared.interval.Interval_Service;
+import com.vssnake.intervaltraining.shared.interval.TrainingServiceConnectors;
+
 import vssnake.intervaltraining.R;
-import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
-import vssnake.intervaltraining.model.IntervalStaticData;
-import vssnake.intervaltraining.utils.StacData;
-import vssnake.intervaltraining.wearable.WearableService;
+import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
+import com.vssnake.intervaltraining.shared.wearable.WearableService;
 
 /**
  * A simple {@link android.app.Fragment} subclass.
@@ -32,7 +33,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     private static final String TAG = "TabataFragment";
 
 
-    Interval_Service.TabataServiceBinder binder;
+    IntervalPhoneService.TabataServiceBinder binder;
 
 
 
@@ -136,7 +137,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d(TAG, "onServiceConnected " + name + " " + service);
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            binder = (Interval_Service.TabataServiceBinder) service;
+            binder = (IntervalPhoneService.TabataServiceBinder) service;
             mService = binder.getService();
             binder.setListener(TabataTraining_Fragment.this);
             mBound = true;
@@ -196,14 +197,18 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
                 public void run() {
                     switch (commands) {
                         case REST:
-                            mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.startInterval));
+                           /* mIntervalClickView.setBackgroundColor(getResources().getColor(R
+                                .color.startInterval));
                             mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shaw_frag_interval));
-                            mChronometerFragment.changeIntervalColor(getResources().getColor(R.color.numbers_interval_goo));
+                            mChronometerFragment.changeIntervalColor(getResources().getColor(R
+                            .color.numbers_interval_goo));*/
                             break;
                         case RUN:
-                            mIntervalClickView.setBackgroundColor(getResources().getColor(R.color.rest_Interval));
+                          /*  mIntervalClickView.setBackgroundColor(getResources().getColor(R
+                                .color.rest_Interval));
                             mShadowFrame2.setBackground(getResources().getDrawable(R.drawable.shaw_frag_interval_inv));
-                            mChronometerFragment.changeIntervalColor(getResources().getColor(R.color.numbers_interval_rest));
+                            mChronometerFragment.changeIntervalColor(getResources().getColor(R
+                            .color.numbers_interval_rest));*/
                             break;
                         case END_TRAINING:
                             break;

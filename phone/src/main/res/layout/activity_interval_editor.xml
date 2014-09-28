@@ -1,0 +1,167 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="vssnake.intervaltraining.interval.IntervalEditorActivity">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/IE_nameInterval"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/interval_editor_name"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:maxLength="30"
+                android:singleLine="true"
+                />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/interval_editor_name"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/greenDark"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/IE_description"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/interval_editor_description"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:maxLength="120"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/interval_editor_name"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/greenDark"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/IE_secondsEffort"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:inputType="numberSigned"
+                android:ems="10"
+                android:id="@+id/intervalEditor_secondsEffort"
+                android:layout_gravity="center"
+                android:maxLength="3"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/interval_editor_name"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/greenDark"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/IE_secondsRest"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:inputType="numberSigned"
+                android:ems="10"
+                android:layout_gravity="center"
+                android:maxLength="3"
+                android:id="@+id/intervalEditor_secondsRest"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/interval_editor_name"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/greenDark"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/IE_back"
+                    android:id="@+id/intervalEditor_btnBack"
+                    android:layout_weight="50"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/IE_save"
+                    android:id="@+id/intervalEditor_btnOK"
+                    android:layout_weight="50"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

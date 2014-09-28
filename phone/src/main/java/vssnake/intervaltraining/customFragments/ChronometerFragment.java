@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.vssnake.intervaltraining.shared.Utils;
+import com.vssnake.intervaltraining.shared.utils.Utils;
 
 import vssnake.intervaltraining.R;
-import vssnake.intervaltraining.model.IntervalStaticData;
-import vssnake.intervaltraining.utils.StacData;
+import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
+import com.vssnake.intervaltraining.shared.utils.StacData;
 
 
 

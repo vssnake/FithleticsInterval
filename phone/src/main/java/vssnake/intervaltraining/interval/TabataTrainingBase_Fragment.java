@@ -14,15 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.vssnake.intervaltraining.shared.interval.TrainingBase_Service;
 import com.vssnake.utils.SlidingMenu;
 
 import vssnake.intervaltraining.R;
 import vssnake.intervaltraining.customFragments.ChronometerFragment;
 import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
-import vssnake.intervaltraining.utils.StacData;
+import com.vssnake.intervaltraining.shared.utils.StacData;
 
 
 public abstract class TabataTrainingBase_Fragment extends android.support.v4.app.Fragment
@@ -78,9 +78,11 @@ implements  InfoIntervalFragment.onInfoIntervalFragmentListener{
         super.onCreate(savedInstanceState);
 
         main_Activity = getActivity();
-        intent = new Intent(main_Activity,Interval_Service.class);
+       // intent = new Intent(main_Activity,Interval_Service.class);
 
         mSharedPreferences = getActivity().getSharedPreferences(StacData.BASIC_CONFIG_PREFS,0);
+
+        intent = new Intent(getActivity(),IntervalPhoneService.class);
 
 
     }

@@ -1,21 +1,14 @@
 package vssnake.intervaltraining.utils;
 
 /**
- * Created by unai on 25/07/2014.
+ * Created by unai on 06/09/2014.
  */
-public  class StacData {
+public class StacData {
 
-    public static final String BASIC_CONFIG_PREFS = "DefaultPrefsFile";
-    public static final String PREFS_VIBRATION_KEY = "vibration";
-    public static final String PREFS_SOUND_KEY = "sound";
-    public static final String PREFS_TRAIN_KEY = "training";
-
-    public static class Intervaldata{
-        //Vibration in Miliseconds
-        public static final  short upComingStateVibration = 100;
-        public static final  short finalStateVibration = 800;
-
-
+    public static class IntervalEditor{
+        public static final String nameKey= "name";
+        public static final String descriptionKey = "description";
+        public static final String secondsEffortKey = "effort";
+        public static final String secondsRestKey = "rest";
     }
-
 }

@@ -2,8 +2,10 @@ package vssnake.intervaltraining.wearable;
 
 import android.os.Bundle;
 
+
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.MessageEvent;
+import com.vssnake.intervaltraining.shared.wearable.WearableListenerInterface;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -12,7 +14,8 @@ import java.util.List;
 /**
  * Created by unai on 21/07/2014.
  */
-public class WearableListenerService extends com.google.android.gms.wearable.WearableListenerService {
+public class WearableListenerService extends com.google.android.gms.wearable
+        .WearableListenerService {
 
     private static final String TAG = "WereableServicePhone";
 

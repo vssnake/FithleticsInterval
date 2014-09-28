@@ -1,5 +1,6 @@
 package vssnake.intervaltraining.customFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -7,15 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.vssnake.intervaltraining.shared.Utils;
+import com.vssnake.intervaltraining.shared.utils.Utils;
 
 import vssnake.intervaltraining.R;
+import vssnake.intervaltraining.interval.IntervalEditorActivity;
 import vssnake.intervaltraining.interval.ListIntervalAdapter;
-import vssnake.intervaltraining.model.IntervalStaticData;
+
+import com.vssnake.intervaltraining.shared.interval.ListIntervalAdapterShared;
+import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
 
 
 /**
@@ -48,6 +53,8 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
     ListView mLVIntervals;
 
     ImageView mArrowImage;
+
+    Button btnAdd;
 
     public interface onInfoIntervalFragmentListener{
         void trainSelected(long idTrain);
@@ -117,6 +124,8 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
         mLVIntervals = (ListView) view.findViewById
                 (R.id.infoInterval_list_name);
 
+        btnAdd = (Button) view.findViewById(R.id.infoInterval_AddButton);
+
         mArrowImage = (ImageView) view.findViewById(R.id.infoInterval_tick_image);
 
 
@@ -124,7 +133,7 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
         mInfoIntervalRoundText.setTypeface(Utils.getFontRoboto_regular(getActivity().getAssets()));
 
 
-        ListIntervalAdapter adapter = new ListIntervalAdapter(getActivity(),
+        ListIntervalAdapterShared adapter = new ListIntervalAdapter(getActivity(),
                 IntervalStaticData.toList(getActivity().getApplicationContext()));
         mLVIntervals.setAdapter(adapter);
 
@@ -145,6 +154,14 @@ public class InfoIntervalFragment extends android.support.v4.app.Fragment {
 
 
                 }
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), IntervalEditorActivity.class);
+                getActivity().startActivityForResult(intent,0);
             }
         });
 

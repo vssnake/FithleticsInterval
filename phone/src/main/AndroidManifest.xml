@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="vssnake.intervaltraining" android:versionCode="2" android:versionName="1.0.1">
+    package="vssnake.intervaltraining"
+    android:versionCode="2"
+    android:versionName="1.1.2" >
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".main.Main_Activity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,16 +21,16 @@
         </activity>
 
         <service
-            android:name=".interval.Interval_Service"
+            android:name=".interval.IntervalPhoneService"
             android:enabled="true"
             android:exported="true" >
         </service>
-        <service android:name=".wearable.WearableService"
+        <service
+            android:name="com.vssnake.intervaltraining.shared.wearable.WearableService"
             android:enabled="true"
             android:exported="false" >
         </service>
-
-        <service android:name=".wearable.WearableListenerService">
+        <service android:name=".wearable.WearableListenerService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
@@ -37,11 +39,12 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".interval.IntervalEditorActivity"
+            android:label="@string/title_activity_interval_editor" >
+        </activity>
     </application>
-
-
-
-
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />

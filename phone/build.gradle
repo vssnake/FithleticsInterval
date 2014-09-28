@@ -1,14 +1,14 @@
 apply plugin: 'android'
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 19
     buildToolsVersion '20.0.0'
     defaultConfig {
         applicationId 'vssnake.intervaltraining'
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 1
-        versionName '1.0'
+        versionCode 3
+        versionName '1.12'
     }
     buildTypes {
         release {
@@ -28,5 +28,4 @@ dependencies {
     wearApp project(':wear')
     compile project(':utils')
     compile project(':shared')
-
 }

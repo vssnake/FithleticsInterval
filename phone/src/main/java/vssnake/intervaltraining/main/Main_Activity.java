@@ -11,9 +11,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Messenger;
 
-import vssnake.intervaltraining.model.IntervalStaticData;
-import vssnake.intervaltraining.utils.StacData;
-import vssnake.intervaltraining.wearable.WearableService;
+import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
+import com.vssnake.intervaltraining.shared.utils.StacData;
+import com.vssnake.intervaltraining.shared.wearable.WearableService;
 
 
 public class Main_Activity extends MainBase_Activity {
@@ -76,7 +76,7 @@ public class Main_Activity extends MainBase_Activity {
 
     void initialize(){
        mSharedPreferences = getSharedPreferences(StacData.BASIC_CONFIG_PREFS, 0);
-       IntervalStaticData.createData(this);
+       IntervalStaticData.getIntervalData(this);
        int idTraining =  mSharedPreferences.getInt(StacData.PREFS_TRAIN_KEY,-1);
         if (idTraining== -1){
             mSharedPreferences.edit().putInt(StacData.PREFS_TRAIN_KEY,0).commit();
