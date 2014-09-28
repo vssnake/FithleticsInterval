@@ -1,4 +1,4 @@
-package com.example.unai.myapplication;
+package com.vssnake.intervaltraining.wear;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -6,21 +6,12 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
+import com.example.unai.intervaltraining.R;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.data.FreezableUtils;
-import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
-import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class ListenerService extends WearableListenerService{
 
@@ -55,7 +46,7 @@ public static final String INTERVAL_VIBRATION = "/interval/vibration";
 
 
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,
-                    new Intent(this, MyActivity.class),0);
+                    new Intent(this, IntervalActivityListener.class),0);
             NotificationCompat.WearableExtender wearableExtender = new NotificationCompat
                     .WearableExtender();
             wearableExtender.setHintHideIcon(true);

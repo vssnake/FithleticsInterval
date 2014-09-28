@@ -1,16 +1,17 @@
-package com.example.unai.myapplication;
+package com.vssnake.intervaltraining.wear;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
 
-import com.example.unai.myapplication.utils.Utils;
+import com.example.unai.intervaltraining.R;
+import com.vssnake.intervaltraining.shared.utils.Utils;
 
-public class MyActivity_Base extends Activity {
+
+public abstract class IntervalActivity_Base extends Activity {
 
     WatchViewStub mWatchViewStub;
     TextView mIntervalTime;
@@ -36,12 +37,12 @@ public class MyActivity_Base extends Activity {
                 mIntervalState = (TextView) stub.findViewById(R.id.interval_State);
                 mIntervalRound = (TextView) stub.findViewById(R.id.interval_round);
                 mIntervalName = (TextView) stub.findViewById(R.id.interval_Name);
-
                 mIntervalTime.setTypeface(Utils.getFontRoboto_black(getAssets()));
                 mIntervalTotalTime.setTypeface(Utils.getFontRoboto_black(getAssets()));
                 mIntervalState.setTypeface(Utils.getFontRoboto_black(getAssets()));
                 mIntervalRound.setTypeface(Utils.getFontRoboto_black(getAssets()));
                 mIntervalName.setTypeface(Utils.getFontRoboto_black(getAssets()));
+                finished();
 
             }
         });
@@ -56,6 +57,7 @@ public class MyActivity_Base extends Activity {
 
 
     }
+    public abstract void finished();
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

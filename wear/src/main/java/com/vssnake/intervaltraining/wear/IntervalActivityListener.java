@@ -1,20 +1,17 @@
-package com.example.unai.myapplication;
+package com.vssnake.intervaltraining.wear;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 
-import com.example.unai.myapplication.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.data.FreezableUtils;
@@ -27,16 +24,16 @@ import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.vssnake.intervaltraining.shared.model.IntervalData;
+import com.vssnake.intervaltraining.shared.utils.Utils;
 
 
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by unai on 22/07/2014.
  */
-public class MyActivity extends MyActivity_Base  implements
+public class IntervalActivityListener extends IntervalActivity_Base implements
         DataApi.DataListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         MessageApi.MessageListener{
@@ -187,6 +184,8 @@ public class MyActivity extends MyActivity_Base  implements
         });
     }
 
+    @Override
+    public void finished() { }
 
 
     @Override

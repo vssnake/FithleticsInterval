@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight">
+
+    <ImageView
+        android:id="@+id/list_intervals_icon"
+        android:layout_width="60dp"
+        android:layout_height="fill_parent"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_launcher"
+        android:layout_alignParentStart="false"
+        android:scaleType="fitXY"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignWithParentIfMissing="false"
+        android:text="Name of the Interval"
+        android:textSize="18sp"
+        android:id="@+id/list_intervals_name"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/list_intervals_icon"
+        android:layout_toEndOf="@+id/list_intervals_icon"
+        android:textStyle="bold"
+        android:textIsSelectable="false"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"/>
+
+</LinearLayout>
