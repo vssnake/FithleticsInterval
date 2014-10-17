@@ -9,6 +9,7 @@ import android.os.IBinder;
 import com.google.android.gms.wearable.DataMap;
 import com.vssnake.intervaltraining.shared.interval.Interval_Service;
 import com.vssnake.intervaltraining.shared.interval.TrainingServiceConnectors;
+import com.vssnake.intervaltraining.shared.interval.TrainingServiceInterface;
 import com.vssnake.intervaltraining.shared.model.IntervalData;
 import com.vssnake.intervaltraining.shared.utils.StacData;
 import com.vssnake.intervaltraining.shared.utils.Utils;
@@ -63,6 +64,8 @@ public class IntervalPhoneService extends Interval_Service implements
 
 
         }
+        public boolean isTrainRunning(){
+            return isTrainStarted();}
 
         public void runTabata(){
             startTabata();
@@ -76,6 +79,7 @@ public class IntervalPhoneService extends Interval_Service implements
             mSharedPreference.edit().putInt(StacData.PREFS_TRAIN_KEY,(int)IDTraining).commit();
             endTrain();
             mIntervalBehaviour.changeTraining(IDTraining);
+
         }
 
     }
@@ -192,9 +196,21 @@ public class IntervalPhoneService extends Interval_Service implements
         }
     }
 
+    @Override
+    public void specialCommand(TrainingServiceInterface.specialsCommands commands, Object aditionalData) {
+        super.specialCommand(commands,aditionalData);
+        switch (commands) {
+            case SOUND:
+                playSound((Integer)aditionalData,1.0f);
+                break;
+
+        }
+    }
+
 
 
     private void sendDataToWearables(){
+
 
        mIntervalDataMap.putString(IntervalData.intervalDataKey.INTERVAL_NAME.name(),
                 mIntervalData.getName());

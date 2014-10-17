@@ -217,6 +217,15 @@ implements  InfoIntervalFragment.onInfoIntervalFragmentListener{
         mListener = null;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        //Found the parent activity but not the nested fragment, therefore we need
+        //redirection for it.
+        mInfoIntervalFragment.onActivityResult(requestCode,resultCode,data);
+
+    }
+
     protected  TrainingBase_Service.stateFlag checkIsServiceisRunning(){
        return  TrainingBase_Service.getStateService();
     }

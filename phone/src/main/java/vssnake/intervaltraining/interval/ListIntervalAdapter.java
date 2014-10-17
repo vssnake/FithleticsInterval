@@ -1,6 +1,7 @@
 package vssnake.intervaltraining.interval;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +40,6 @@ public class ListIntervalAdapter extends ListIntervalAdapterShared {
 
             holder = new ViewHolder();
 
-
-
-            holder.imgIcon = (ImageView)convertView.
-                    findViewById(R.id.list_intervals_icon);
             holder.txtName = (TextView) convertView.
                     findViewById(R.id.list_intervals_name);
             holder.txtDescription = (TextView) convertView.
@@ -54,8 +51,17 @@ public class ListIntervalAdapter extends ListIntervalAdapterShared {
         holder = (ViewHolder) convertView.getTag();
         IntervalStaticData.ListIntervalData data = getItem(position);
         holder.txtName.setText(data.getName());
-        holder.txtDescription.setText(data.getDescription());
-        holder.imgIcon.setImageResource(data.getIcon());
+
+        StringBuilder builder = new StringBuilder();
+
+        Resources resources = convertView.getResources();
+
+        //Custom description  with interval Primary data
+        holder.txtDescription.setText(
+        String.format(resources.getString(R.string.interval_effort),data.getTimeEffort())+
+        String.format(resources.getString(R.string.interval_rest),data.getTimeRest())+
+        String.format(resources.getString(R.string.interval_rounds),data.getIntervals()));
+
 
         return convertView;
     }

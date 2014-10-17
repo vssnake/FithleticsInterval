@@ -3,5 +3,7 @@
 
     <string name="app_name">Utils</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_activity_spinner_selection">Select Number</string>
+    <string name="APS_Save">Save</string>
 
 </resources>

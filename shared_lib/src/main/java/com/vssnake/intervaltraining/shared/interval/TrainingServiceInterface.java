@@ -13,4 +13,5 @@ public interface TrainingServiceInterface {
     void newNotification(IntervalData intervalData);
     void endTrain();
     void specialCommand(specialsCommands commands,Object adicionalData);
+    boolean isTrainStarted();
 }

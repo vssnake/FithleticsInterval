@@ -1,14 +1,17 @@
 package com.vssnake.intervaltraining.shared.model;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.util.Log;
 
+import com.google.android.gms.wearable.DataMap;
 import com.vssnake.intervaltraining.shared.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+
 /**
  * Created by unai on 27/08/2014.
  */
@@ -30,6 +35,10 @@ public class IntervalStaticData {
 
     private static String TAG = "intervalStaticData";
     private static String keyFile = "intervalData";
+
+    //for communication for android wear
+    public static final String INTERVAL_RAW_KEY = "intervalrawkey";
+
     private static IntervalDataManager intervalDataManager;
 
     public static List<IntervalData> intervalData;
@@ -53,13 +62,11 @@ public class IntervalStaticData {
         intervalData = new ArrayList<IntervalData>();
 
 
+       // String tabataName = context.getResources().getString(R.string.interval_tabata_name);
         intervalData.add(new IntervalData(
-                R.drawable.tabata,
-                context.getString(R.string.interval_tabata_name),
-                context.getString(R.string.interval_tabata_description),
-                8,20,10));
+                "Tabata",8,20,10));
 
-        intervalData.add(new IntervalData(
+       /* intervalData.add(new IntervalData(
                 R.drawable.hiitalactic_easy,
                 context.getString(R.string.interval_HiitAlactic_Beginner_name),
                 context.getString(R.string.interval_HiitAlactic_Beginner_description),
@@ -166,34 +173,111 @@ public class IntervalStaticData {
                 R.drawable.hiitsprint_hard,
                 context.getString(R.string.interval_HiitSprint_Advanced_name),
                 context.getString(R.string.interval_HiitSprint_Advanced_description),
-                11,10,30));
-
-
-
-
-
-
-
-
-
-
+                11,10,30));*/
 
     }
 
-    public static ArrayList<ListIntervalData> toList(Context context){
-        if (intervalData== null){
-            createPrimaryData(context);
+   public static void addInterval(String name,int secondsEffor,int secondsRest,int times){
+       if (name == null | secondsEffor == 0 | secondsRest == 0 | times == 0){
+           Log.e(TAG,"onAddInterval some values to addInterval is 0");
+       }else{
+           intervalData.add(new IntervalData(name,times,secondsEffor,secondsRest));
+           intervalDataManager.setIntervalData(intervalData);
+       }
+
+
+    }
+    public static void replaceInterval(int id,String name,int secondsEffor,int secondsRest,
+                                       int times){
+        intervalData.set(id,new IntervalData(name,times,secondsEffor,secondsRest));
+        intervalDataManager.setIntervalData(intervalData);
+    }
+
+    public static boolean deleteInterval(int id){
+        if (intervalData.size() == 1){
+            return false;
         }
+        intervalData.remove(id);
+        intervalDataManager.setIntervalData(intervalData);
+        return true;
+
+    }
+
+    public static void replaceAllIntervals(DataMap datamap){
+       List<IntervalData> listInterval =  WearableUtils.convertToList(datamap);
+        if (listInterval != null){
+            intervalData = listInterval;
+            intervalDataManager.setIntervalData(intervalData);
+        }
+    }
+
+    /**{}
+     * Convert the IntervalData to to a ListAdapter Friendly
+     * @param context of the app
+     * @return Converted ArrayList
+     */
+    public static ArrayList<ListIntervalData> toList(Context context){
         ArrayList<ListIntervalData> data = new ArrayList<ListIntervalData>();
 
         for (int i = 0;i<intervalData.size();i++){
             IntervalData inter = intervalData.get(i);
-            data.add(new ListIntervalData(i,inter.getIcon(),inter.getmName(),
-                    inter.getmDescription()));
+            //TODO redo description
+            data.add(new ListIntervalData(i,
+                    inter.getmName(),
+                    inter.getmTimeDoing(),
+                    inter.getmTimeResting(),
+                    inter.getmTotalIntervals()));
         }
 
        return data;
     }
+
+    public static class WearableUtils{
+        private static String INTERVAL_ID = "intervalID";
+        private static String INTERVAL_NAME = "intervalNAME";
+        private static String INTERVAL_EFFORT = "intervalEFFORT";
+        private static String INTERVAL_REST = "intervalREST";
+        private static String INTERVAL_CYCLES = "intervalCYCLES";
+        private static String INTERVAL_COUNT = "intervalCount";
+        public static DataMap convertToDataMap(){
+            DataMap dataMap = new DataMap();
+            for (int i = 0; i<intervalData.size();i++){
+                IntervalData interval = intervalData.get(i);
+                DataMap subDataMap = new DataMap();
+                subDataMap.putInt(INTERVAL_ID, i);
+                subDataMap.putString(INTERVAL_NAME, interval.getmName());
+                subDataMap.putInt(INTERVAL_REST,interval.getmTimeResting());
+                subDataMap.putInt(INTERVAL_EFFORT,interval.getmTimeDoing());
+                subDataMap.putInt(INTERVAL_CYCLES,interval.getmTotalIntervals());
+                dataMap.putDataMap(INTERVAL_ID + i, subDataMap);
+            }
+            dataMap.putInt(INTERVAL_COUNT,intervalData.size());
+            return dataMap;
+        }
+
+        public static List<IntervalData> convertToList(DataMap dataMap){
+            List<IntervalData> intervalData = new ArrayList<IntervalData>();
+            int count = dataMap.getInt(INTERVAL_COUNT);
+            if (count == 0) return null;
+
+            for (int i = 0; i< count; i++){
+                DataMap subDataMap = dataMap.getDataMap(INTERVAL_ID + i);
+                if (subDataMap == null) return null;
+                String name = subDataMap.getString(INTERVAL_NAME);
+                int timeEffort = subDataMap.getInt(INTERVAL_EFFORT);
+                int timeRest = subDataMap.getInt(INTERVAL_REST);
+                int cycles = subDataMap.getInt(INTERVAL_CYCLES);
+                IntervalData interval = new IntervalData(name,cycles,timeEffort,timeRest);
+                intervalData.add(interval);
+            }
+            return intervalData;
+        }
+    }
+
+
+
+
+
      static class IntervalDataManager{
         private String mNameFile;
         private File mFile;
@@ -225,6 +309,7 @@ public class IntervalStaticData {
 
             }
         }
+
 
 
         public List<IntervalData> ReadData(){
@@ -286,8 +371,6 @@ public class IntervalStaticData {
                     name = jsonReader.nextString();
                 }else if (headerName.equals("keyDescription")){
                     description = jsonReader.nextString();
-                }else if (headerName.equals("keyIcon")){
-                    icon = jsonReader.nextInt();
                 }else if (headerName.equals("keyTimeDoing")){
                     timeDoing = jsonReader.nextInt();
                 }else if (headerName.equals("keyTimeResting")){
@@ -300,7 +383,7 @@ public class IntervalStaticData {
             }
             jsonReader.endObject();
 
-            IntervalData interval = new IntervalData(icon,name,description,totalIntervals,timeDoing,
+            IntervalData interval = new IntervalData(name,totalIntervals,timeDoing,
                     timeResting);
             Log.d(TAG,"onReadObject"  + name);
             return interval;
@@ -352,8 +435,6 @@ public class IntervalStaticData {
         private void writeObject(IntervalData intervalData,JsonWriter jsonWriter) throws IOException {
             jsonWriter.beginObject();
             jsonWriter.name("keyName").value(intervalData.getmName());
-            jsonWriter.name("keyDescription").value(intervalData.getmDescription());
-            jsonWriter.name("keyIcon").value(intervalData.getIcon());
             jsonWriter.name("keyTimeDoing").value(intervalData.getmTimeDoing());
             jsonWriter.name("keyTimeResting").value(intervalData.getmTimeResting());
             jsonWriter.name("keyTotalIntervals").value(intervalData.getmTotalIntervals());
@@ -361,19 +442,16 @@ public class IntervalStaticData {
         }
     }
     public static class IntervalData{
-        private int mIcon;
         private String mName;
         private String mDescription;
         private int mTotalIntervals;
         private int mTimeDoing;
         private int mTimeResting;
 
-        public IntervalData(int icon, String name,String description,int totalIntervals,
+        public IntervalData(String name,int totalIntervals,
                             int timeDoing,
                              int timeResting){
-            mIcon = icon;
             mName = name;
-            mDescription = description;
             mTotalIntervals = totalIntervals;
             mTimeDoing = timeDoing;
             mTimeResting = timeResting;
@@ -381,10 +459,6 @@ public class IntervalStaticData {
 
         public String getmName() {
             return mName;
-        }
-
-        public String getmDescription() {
-            return mDescription;
         }
 
         public int getmTotalIntervals() {
@@ -399,9 +473,8 @@ public class IntervalStaticData {
             return mTimeResting;
         }
 
-        public int getIcon() {
-            return mIcon;
-        }
+
+
     }
 
     /**
@@ -411,20 +484,24 @@ public class IntervalStaticData {
 
         private int mIcon;
         private String mName;
-        private String mDescription;
+        private int mTimeEffort;
+        private int mTimeRest;
+        private int mIntervals;
         private long mID;
 
-        public ListIntervalData(int ID,int icon, String name, String description){
+        public ListIntervalData(int ID,String name, int timeEffort, int timeRest,int intervals){
             setID(ID);
-            setIcon(icon);
             setName(name);
-            setDescription(description);
+            setTimeEffort(timeEffort);
+            setTimeRest(timeRest);
+            setIntervals(intervals);
         }
         public ListIntervalData(Parcel in){
             setID(in.readLong());
-            setIcon(in.readInt());
             setName(in.readString());
-            setDescription(in.readString());
+            setTimeEffort(in.readInt());
+            setTimeRest(in.readInt());
+            setIntervals(in.readInt());
         }
 
         @Override
@@ -436,9 +513,11 @@ public class IntervalStaticData {
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeLong(getID());
-            dest.writeInt(getIcon());
             dest.writeString(getName());
-            dest.writeString(getDescription());
+            dest.writeInt(getTimeEffort());
+            dest.writeInt(getTimeRest());
+            dest.writeInt(getIntervals());
+
 
         }
 
@@ -454,13 +533,6 @@ public class IntervalStaticData {
                     }
                 };
 
-        public int getIcon() {
-            return mIcon;
-        }
-
-        public void setIcon(int mIcon) {
-            this.mIcon = mIcon;
-        }
 
         public String getName() {
             return mName;
@@ -470,20 +542,36 @@ public class IntervalStaticData {
             this.mName = mName;
         }
 
-        public String getDescription() {
-            return mDescription;
-        }
-
-        public void setDescription(String mDescription) {
-            this.mDescription = mDescription;
-        }
-
         public long getID() {
             return mID;
         }
 
         public void setID(long mID) {
             this.mID = mID;
+        }
+
+        public int getTimeEffort() {
+            return mTimeEffort;
+        }
+
+        public void setTimeEffort(int timeEffort) {
+            this.mTimeEffort = timeEffort;
+        }
+
+        public int getTimeRest() {
+            return mTimeRest;
+        }
+
+        public void setTimeRest(int timeRest) {
+            this.mTimeRest = timeRest;
+        }
+
+        public int getIntervals() {
+            return mIntervals;
+        }
+
+        public void setIntervals(int intervals) {
+            this.mIntervals = intervals;
         }
     }
 }

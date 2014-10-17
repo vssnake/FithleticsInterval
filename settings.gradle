@@ -1,1 +1,1 @@
-include ':phone', ':wear', ':utils', ':shared'
+include ':phone', ':wear', ':utils', ':shared_lib', ':spinnerWheel'

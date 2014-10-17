@@ -9,6 +9,12 @@
             android:name=".MainActivity"
             android:label="@string/app_name" >
         </activity>
+
+        <activity
+            android:name="com.vssnake.utils.ActivitySpinnerSelection"
+            android:label="@string/title_activity_activity_spinner_selection"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 
 </manifest>

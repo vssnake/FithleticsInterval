@@ -21,12 +21,8 @@ import java.util.List;
 
 public class ListTrainActivity extends Activity {
 
-    /*WatchViewStub mWatchViewStub;
-    ImageView mIcon;
-    TextView mName;
-    TextView mDescription;
-    Button mButton;
-    */
+    WatchViewStub mWatchViewStub;
+
     ListView listView;
     ListIntervalAdapter listIntervalAdapter;
     @Override
@@ -34,43 +30,35 @@ public class ListTrainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_train);
 
-       listView = (ListView) findViewById(R.id.listViewTraining);
-       /* mWatchViewStub = (WatchViewStub) findViewById(R.id.watch_view_stub);
+        mWatchViewStub = (WatchViewStub) findViewById(R.id.activity_list_train_view_stub);
         mWatchViewStub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
-                mIcon = (ImageView) stub.findViewById(R.id.train_descrip_icon);
-                mName = (TextView) stub.findViewById(R.id.train_descrip_name);
-                mDescription = (TextView) stub.findViewById(R.id.train_descrip_description);
-                mButton = (Button) stub.findViewById(R.id.train_descrip_button_start);
+                listView = (ListView) stub.findViewById(R.id.listViewTraining);
+                listView.setAdapter(listIntervalAdapter);
 
-                mName.setTypeface(Utils.getFontRoboto_black(getAssets()));
-                mDescription.setTypeface(Utils.getFontRoboto_black(getAssets()));
-                mButton.setTypeface(Utils.getFontRoboto_black(getAssets()));
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Object intervalData = parent.getItemAtPosition(position);
+                        if (intervalData!= null) {
+                            long ID = ((IntervalStaticData.ListIntervalData) intervalData).getID();
+                            Intent intent = new Intent(ListTrainActivity.this,
+                                    TrainDescriptionActivity.class);
+                            intent.putExtra("trainID",ID);
+                            startActivity(intent);
 
-
+                        }
+                    }
+                });
             }
-        });*/
+        });
 
+        IntervalStaticData.getIntervalData(this);
         listIntervalAdapter = new ListIntervalAdapter(this,
                 IntervalStaticData.toList(this));
 
-        listView.setAdapter(listIntervalAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object intervalData = parent.getItemAtPosition(position);
-                if (intervalData!= null) {
-                    long ID = ((IntervalStaticData.ListIntervalData) intervalData).getID();
-                    Intent intent = new Intent(ListTrainActivity.this,
-                            TrainDescriptionActivity.class);
-                    intent.putExtra("trainID",ID);
-                    startActivity(intent);
-
-                }
-            }
-        });
 
     }
 }

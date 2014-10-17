@@ -35,6 +35,7 @@ public class WearableService extends Service implements GoogleApiClient.Connecti
     private static final String TAG = "WereableService";
     public static final String PREPARATIVE_INTERVAL = "/prepare/interval";
     public static final String INTERVAL_VIBRATION = "/interval/vibration";
+    public static final String INTERVAL_DATA = "/interval/data";
     public static final String SEND_INTERVAL_DATA = "/send";
 
     public static GoogleApiClient mGoogleApiClient;

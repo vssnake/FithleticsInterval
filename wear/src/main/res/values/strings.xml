@@ -7,10 +7,17 @@
     <string name="interval_ready">Interval Ready</string>
     <string name="interval_ready_context">Interval Ready to start, swipe right to start
         the app</string>
-    <string name="title_activity_list_train">ListTrainActivity</string>
+    <string name="title_activity_list_train">Fithletics Interval Wear</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_train_description">TrainDescription</string>
     <string name="go_train">Start!</string>
+    <string name="intervals">Intervals</string>
+
+
+    <!-- Intervals List -->
+    <string name="interval_effort">Effort: %1$s \n</string>
+    <string name="interval_rest">Rest: %1$s \n</string>
+    <string name="interval_rounds">Rounds: %1$s </string>
 
 </resources>

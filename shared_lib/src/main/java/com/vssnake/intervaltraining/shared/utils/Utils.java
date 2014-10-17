@@ -1,5 +1,6 @@
 package com.vssnake.intervaltraining.shared.utils;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.hardware.Camera;
@@ -39,22 +40,21 @@ public class Utils {
     }
 
     public static String formatTime(int seconds){
-
-       return String.format("%02d",seconds/60) + ":"
-               +  String.format("%02d",seconds%60);
+        String result ="";
+        int hours = seconds /60/60;
+        if (hours != 0){
+           result += String.format("%02d",hours) + ":";
+            seconds = seconds - hours*3600;
+        }
+      result += String.format("%02d",seconds/60) + ":"
+              +  String.format("%02d",seconds%60);
+       return result;
     }
     public static int convertMillisecondsToSeconds(long milliseconds){
         return (int)Math.ceil(milliseconds/1000d);
     }
 
-    public static String formatIntervalTime(long secondsInterval){
-        return String.format("%02d",secondsInterval/60) + ":"
-                +  String.format("%02d",secondsInterval%60);
-    }
-    public static String formatTotalIntervalTime(long secondsTotal){
-        return String.format("%02d",secondsTotal/60) + ":"
-                +  String.format("%02d",secondsTotal%60);
-    }
+
 
 
 
@@ -66,4 +66,8 @@ public class Utils {
     }
 
 
+    public static int getPixels(Context context,int dps){
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dps * scale + 0.5f);
+    }
 }

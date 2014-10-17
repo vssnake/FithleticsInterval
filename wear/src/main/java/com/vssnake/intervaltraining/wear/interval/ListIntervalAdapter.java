@@ -12,6 +12,7 @@ import com.vssnake.intervaltraining.shared.interval.ListIntervalAdapterShared;
 import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by unai on 05/09/2014.
@@ -20,7 +21,7 @@ public class ListIntervalAdapter extends ListIntervalAdapterShared{
 
     private static final String TAG = "ListIntervalAdapterWear";
 
-    public ListIntervalAdapter(Context c, ArrayList<IntervalStaticData.ListIntervalData> d) {
+    public ListIntervalAdapter(Context c, List<IntervalStaticData.ListIntervalData> d) {
         super(c, d);
     }
 
@@ -42,8 +43,7 @@ public class ListIntervalAdapter extends ListIntervalAdapterShared{
 
 
 
-            holder.imgIcon = (ImageView)convertView.
-                    findViewById(R.id.list_intervals_icon);
+
             holder.txtName = (TextView) convertView.
                     findViewById(R.id.list_intervals_name);
 
@@ -55,8 +55,6 @@ public class ListIntervalAdapter extends ListIntervalAdapterShared{
         IntervalStaticData.ListIntervalData data = getItem(position);
 
         holder.txtName.setText(data.getName());
-       // holder.txtDescription.setText(data.getDescription());
-        holder.imgIcon.setImageResource(data.getIcon());
 
         return convertView;
     }

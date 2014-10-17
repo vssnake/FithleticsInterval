@@ -2,6 +2,7 @@ package com.vssnake.intervaltraining.wear.interval;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
@@ -17,7 +18,6 @@ import com.vssnake.intervaltraining.shared.utils.StacData;
 import com.vssnake.intervaltraining.shared.utils.Utils;
 import com.vssnake.intervaltraining.wear.IntervalActivity;
 
-import vssnake.intervaltraining.TrainDescription;
 
 /**
  * Created by unai on 05/09/2014.
@@ -25,7 +25,6 @@ import vssnake.intervaltraining.TrainDescription;
 public class TrainDescriptionActivity extends Activity {
 
     WatchViewStub mWatchViewStub;
-    ImageView mIcon;
     TextView mName;
     TextView mDescription;
     Button mButton;
@@ -35,14 +34,17 @@ public class TrainDescriptionActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_train_description);
 
+        mWatchViewStub = new WatchViewStub(this);
 
-        mWatchViewStub = (WatchViewStub) findViewById(R.id.activity_train_description_view_stub);
+      //  mWatchViewStub = (WatchViewStub) findViewById(R.id.activity_train_description_view_stub);
+
+        mWatchViewStub.setRoundLayout(R.layout.activity_train_description_round);
+        mWatchViewStub.setRectLayout(R.layout.activity_train_description_rect);
+
         mWatchViewStub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
-                mIcon = (ImageView) stub.findViewById(R.id.train_descrip_icon);
                 mName = (TextView) stub.findViewById(R.id.train_descrip_name);
                 mDescription = (TextView) stub.findViewById(R.id.train_descrip_description);
                 mButton = (Button) stub.findViewById(R.id.train_descrip_button_start);
@@ -55,12 +57,23 @@ public class TrainDescriptionActivity extends Activity {
                 IntervalStaticData.IntervalData data = IntervalStaticData.intervalData.get((int)ID);
               //  mIcon.setImageResource(data.getIcon());
                 mName.setText(data.getmName());
-                mDescription.setText(data.getmDescription());
+
+
+                Resources resources = getResources();
+
+                mDescription.setText(
+                    String.format(resources.getString(R.string.interval_effort),data.getmTimeDoing())+
+                    String.format(resources.getString(R.string.interval_rest),data.getmTimeResting())+
+                    String.format(resources.getString(R.string.interval_rounds),
+                            data.getmTotalIntervals()));
+
                 mButton.setOnClickListener(TrainDescriptionActivity.this.buttonListener);
 
 
             }
         });
+
+        setContentView(mWatchViewStub);
 
     }
     private View.OnClickListener buttonListener = new View.OnClickListener() {

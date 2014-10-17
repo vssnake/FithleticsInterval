@@ -95,6 +95,10 @@ public class ChronometerFragment extends android.support.v4.app.Fragment {
 
         mSharedPreferences = getActivity().getSharedPreferences(StacData.BASIC_CONFIG_PREFS,0);
         int ID =mSharedPreferences.getInt(StacData.PREFS_TRAIN_KEY,0);
+
+        if (IntervalStaticData.intervalData.size() <= ID){
+
+        }
         changeTitle(IntervalStaticData.intervalData.get(ID).getmName());
 
         changeFontsAndSize();

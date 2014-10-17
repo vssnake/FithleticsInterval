@@ -117,9 +117,9 @@ public class IntervalActivityListener extends IntervalActivity_Base implements
                             public void run() {
                                 mIntervalRound.setText(data.getNumberInterval() + " of " + data
                                         .getTotalIntervals());
-                                mIntervalTime.setText(Utils.formatIntervalTime(data.
+                                mIntervalTime.setText(Utils.formatTime(data.
                                         getIntervalTimeSeconds()));
-                                mIntervalTotalTime.setText(Utils.formatIntervalTime(data
+                                mIntervalTotalTime.setText(Utils.formatTime(data
                                         .getTotalIntervalTimeSeconds()));
                                 mIntervalState.setText(data.getIntervalState().name());
                                 mIntervalName.setText(data.getName());

@@ -7,8 +7,8 @@ android {
         applicationId 'vssnake.intervaltraining'
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 3
-        versionName '1.12'
+        versionCode 5
+        versionName '1.31'
     }
     buildTypes {
         release {
@@ -25,7 +25,9 @@ dependencies {
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:20.+'
     compile 'com.google.android.gms:play-services-wearable:+'
+    compile 'uk.me.lewisdeane.ldialogs:ldialogs@aar'
     wearApp project(':wear')
     compile project(':utils')
-    compile project(':shared')
+    compile project(':shared_lib')
+    compile project(':spinnerWheel')
 }

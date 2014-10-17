@@ -162,4 +162,9 @@ public abstract class TrainingBase_Service extends Service implements TrainingSe
 
 
     }
+
+    @Override
+    public boolean isTrainStarted(){
+        return mTrainingStart;
+    }
 }

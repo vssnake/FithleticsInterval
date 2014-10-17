@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
@@ -24,7 +24,6 @@ public abstract  class ListIntervalAdapterShared extends BaseAdapter {
     public static class ViewHolder{
         public TextView txtName;
         public TextView txtDescription;
-        public ImageView imgIcon;
 
 
     }
@@ -33,11 +32,11 @@ public abstract  class ListIntervalAdapterShared extends BaseAdapter {
 
     protected static int convertViewCounter = 0;
 
-    protected  ArrayList<IntervalStaticData.ListIntervalData> data;
+    protected  List<IntervalStaticData.ListIntervalData> data;
     protected LayoutInflater inflater = null;
 
 
-    public ListIntervalAdapterShared(Context c, ArrayList<IntervalStaticData.ListIntervalData> d)
+    public ListIntervalAdapterShared(Context c, List<IntervalStaticData.ListIntervalData> d)
     {
         Log.v(TAG, "Building ListIntervalAdapter");
 

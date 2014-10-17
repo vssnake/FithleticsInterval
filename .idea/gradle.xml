@@ -9,7 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/phone" />
-            <option value="$PROJECT_DIR$/shared" />
+            <option value="$PROJECT_DIR$/shared_lib" />
+            <option value="$PROJECT_DIR$/spinnerWheel" />
             <option value="$PROJECT_DIR$/utils" />
             <option value="$PROJECT_DIR$/wear" />
           </set>

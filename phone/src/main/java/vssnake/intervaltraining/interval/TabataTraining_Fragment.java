@@ -78,6 +78,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
 
 
 
+
         }
     };
 
@@ -239,5 +240,10 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
                 ());
         binder.changeTrain(idTrain);
         mSliding.openCloseMenu(false);
+    }
+
+    @Override
+    public boolean trainStarted() {
+        return binder.isTrainRunning();
     }
 }

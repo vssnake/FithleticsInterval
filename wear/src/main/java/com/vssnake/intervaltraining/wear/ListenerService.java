@@ -9,9 +9,14 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.example.unai.intervaltraining.R;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
+import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
+import com.vssnake.intervaltraining.shared.wearable.WearableService;
 
 public class ListenerService extends WearableListenerService{
 
@@ -31,6 +36,17 @@ public static final String INTERVAL_VIBRATION = "/interval/vibration";
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents){
+        for (DataEvent event: dataEvents){
+            switch (event.getType()) {
+                case DataEvent.TYPE_CHANGED:
+                    if (event.getDataItem().getUri().getPath().equals(WearableService.INTERVAL_DATA)){
+                        DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
+                        DataMap dataMap = dataMapItem.getDataMap();
+                        IntervalStaticData.replaceAllIntervals(dataMap);
+                    }
+                    break;
+            }
+        }
 
     }
     @Override
@@ -46,10 +62,11 @@ public static final String INTERVAL_VIBRATION = "/interval/vibration";
 
 
             PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,
-                    new Intent(this, IntervalActivityListener.class),0);
+                    new Intent(this, IntervalActivityListener.class),PendingIntent.FLAG_CANCEL_CURRENT);
             NotificationCompat.WearableExtender wearableExtender = new NotificationCompat
                     .WearableExtender();
             wearableExtender.setHintHideIcon(true);
+
             wearableExtender.setBackground((BitmapFactory.decodeResource(getResources(),
                     R.drawable.a_track)));
 

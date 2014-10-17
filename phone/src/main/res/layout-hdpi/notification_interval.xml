@@ -71,7 +71,6 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/notifIntervalImage_Image"
         android:id="@+id/linearLayout4"
-        android:layout_below="@+id/textView"
         android:layout_alignLeft="@+id/linearLayout3"
         android:layout_alignStart="@+id/linearLayout3"
         android:layout_alignBottom="@+id/notifIntervalState_TextView">

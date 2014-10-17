@@ -165,4 +165,8 @@ public class IntervalActivity extends IntervalActivity_Base  implements
     public void specialEvent(TrainingServiceConnectors.specialUICommands commands) {
 
     }
+
+    void initialize(){
+        IntervalStaticData.getIntervalData(this);
+    }
 }

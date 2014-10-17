@@ -7,88 +7,159 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
+import com.vssnake.intervaltraining.shared.utils.StacData;
+import com.vssnake.intervaltraining.shared.utils.Utils;
+import com.vssnake.utils.ActivitySpinnerSelection;
 
 import vssnake.intervaltraining.R;
-import vssnake.intervaltraining.utils.StacData;
+import vssnake.intervaltraining.customFragments.InfoIntervalFragment;
 
 public class IntervalEditorActivity extends Activity {
 
-    Button btnSave;
-    Button btnCancel;
     TextView txtName;
-    TextView txtDescription;
+
     TextView txtRestTime;
     TextView txtEffortTime;
+    TextView txtNumberIntervals;
+    Button btnSave;
+
+
+    //Codes for activityResult
+    final int codeEffort = 1;
+    final int codeRest = 2;
+    final int codeIntervals = 3;
+
+    public static final String KEY_NAME = "keyName";
+    public static final String KEY_EFFORT = "keyEffort";
+    public static final String KEY_REST = "keyRest";
+    public static final String KEY_INTERVAL = "keyInterval";
+    public static final String KEY_ID = "keyId";
+
+    int timeEffort = 0, timeRest = 0,numberIntervals = 0;
+    Long editID;
+
+    LinearLayout linearEffort;
+    LinearLayout linearRest;
+    LinearLayout linearIntervals;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interval_editor);
-        btnSave = (Button) findViewById(R.id.intervalEditor_btnOK);
-        btnCancel = (Button) findViewById(R.id.intervalEditor_btnBack);
+
         txtName = (TextView) findViewById(R.id.interval_editor_name);
-        txtDescription= (TextView) findViewById(R.id.interval_editor_description);
-        txtRestTime= (TextView) findViewById(R.id.intervalEditor_secondsRest);
-        txtEffortTime= (TextView) findViewById(R.id.intervalEditor_secondsEffort);
-        initialize();
-    }
+        txtRestTime = (TextView) findViewById(R.id.IE_txt_SecondsRest);
+        txtEffortTime = (TextView) findViewById(R.id.IE_txt_SecondsEffort);
+        txtNumberIntervals= (TextView) findViewById(R.id.IE_txt_NumberIntervals);
+
+        linearEffort = (LinearLayout) findViewById(R.id.IE_Effort);
+        linearRest = (LinearLayout) findViewById(R.id.IE_Rest);
+        linearIntervals = (LinearLayout) findViewById(R.id.IE_Intervals);
+
+        btnSave = (Button) findViewById(R.id.IE_btnSave);
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.interval_editor, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+        linearEffort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IntervalEditorActivity.this,
+                        ActivitySpinnerSelection.class);
+                intent.putExtra(ActivitySpinnerSelection.KEY_SELECT_MODE,
+                        ActivitySpinnerSelection.HOUR_MODE);
+                intent.putExtra(ActivitySpinnerSelection.KEY_TITLE,
+                        getString(R.string.IE_Title_TimeEffort));
 
+                startActivityForResult(intent, codeEffort);
+               // startActivity(intent);
+            }
+        });
 
-    private void initialize(){
+        linearRest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IntervalEditorActivity.this,
+                        ActivitySpinnerSelection.class);
+                intent.putExtra(ActivitySpinnerSelection.KEY_SELECT_MODE,
+                        ActivitySpinnerSelection.HOUR_MODE);
+                intent.putExtra(ActivitySpinnerSelection.KEY_TITLE,
+                        getString(R.string.IE_Title_TimeRest));
+
+                startActivityForResult(intent, codeRest);
+            }
+        });
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (check()){
-                    Intent intent = IntervalEditorActivity.this.getIntent();
-                    intent.putExtra(StacData.IntervalEditor.nameKey,txtName.getText());
-                    intent.putExtra(StacData.IntervalEditor.descriptionKey,txtDescription.getText());
-                    intent.putExtra(StacData.IntervalEditor.secondsEffortKey,txtEffortTime.getText());
-                    intent.putExtra(StacData.IntervalEditor.secondsRestKey,txtRestTime.getText());
-                    IntervalEditorActivity.this.setResult(RESULT_OK,intent);
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(KEY_ID,editID.intValue());
+                    returnIntent.putExtra(KEY_NAME,txtName.getText().toString());
+                    returnIntent.putExtra(KEY_EFFORT,timeEffort);
+                    returnIntent.putExtra(KEY_REST,timeRest);
+                    returnIntent.putExtra(KEY_INTERVAL,numberIntervals);
+                    setResult(RESULT_OK,returnIntent);
                     finish();
-                }else{
-                    CharSequence text = "Failed!";
-                    Toast.makeText(IntervalEditorActivity.this,text,Toast.LENGTH_LONG).show();
                 }
+
             }
         });
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+
+        linearIntervals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(IntervalEditorActivity.this,
+                        ActivitySpinnerSelection.class);
+                intent.putExtra(ActivitySpinnerSelection.KEY_SELECT_MODE,
+                        ActivitySpinnerSelection.NORMAL_MODE);
+                intent.putExtra(ActivitySpinnerSelection.KEY_NORMAL_MODE_SIZE,
+                        2);
+                intent.putExtra(ActivitySpinnerSelection.KEY_TITLE,
+                        getString(R.string.IE_Title_NumberIntervals));
+
+                startActivityForResult(intent, codeIntervals);
             }
         });
+
+        //Check if Interval enter a new interval or a previous interval data and it performs some operations
+        editID = getIntent().getLongExtra(InfoIntervalFragment.KEY_EDIT_INTERVAL_ID,-1);
+        if(editID != -1){
+            loadExistingID(editID);
+        }
+    }
+
+    protected void onActivityResult(int requestCode,int resultCode, Intent data){
+
+        if (resultCode == RESULT_OK){
+            switch (requestCode){
+                case codeEffort:
+                    timeEffort = data.getIntExtra("result", 0);
+                    txtEffortTime.setText(Utils.formatTime(timeEffort));
+                    break;
+                case codeIntervals:
+
+                    numberIntervals = data.getIntExtra("result",0);
+                    txtNumberIntervals.setText(Integer.toString(numberIntervals));
+                    break;
+                case codeRest:
+                    timeRest = data.getIntExtra("result",0);
+                    txtRestTime.setText(Utils.formatTime(timeRest));
+                    break;
+            }
+        }
+
     }
 
     private boolean check(){
         boolean checked= true;
         String name = txtName.getText().toString();
-        String description = txtDescription.getText().toString();
-        String effort = txtEffortTime.getText().toString();
-        String rest = txtRestTime.getText().toString();
+
         if (name.isEmpty()){
             txtName.setError("Name not should be blank");
 
@@ -96,30 +167,39 @@ public class IntervalEditorActivity extends Activity {
         }else{
             txtName.setError(null);
         }
-        if (description.isEmpty()){
-           // txtDescription.setBackgroundColor(0xffffc330);
-            txtDescription.setError("Description not should be blank");
-            checked = false;
-
-        }else{
-
-           txtDescription.setError(null);
-
-        }
-        if (effort.isEmpty()){
+        if (timeEffort == 0){
 
             txtEffortTime.setError("Effort Time not should be blank");
             checked = false;
         }else{
             txtEffortTime.setError(null);
         }
-        if (rest.isEmpty()){
+        if (timeRest == 0){
 
             txtRestTime.setError("Rest Time not should be blank");
             checked = false;
         }else{
             txtRestTime.setError(null);
         }
+        if (numberIntervals == 0){
+            txtNumberIntervals.setError("Number Intervals not should be a 0");
+            checked = false;
+        }else{
+            txtNumberIntervals.setError(null);
+        }
         return checked;
+
+    }
+
+    private void loadExistingID(Long id){
+       IntervalStaticData.IntervalData data =  IntervalStaticData.intervalData.get(id.intValue());
+        timeEffort = data.getmTimeDoing();
+        timeRest = data.getmTimeResting();
+        numberIntervals = data.getmTotalIntervals();
+        txtName.setText(data.getmName());
+
+        txtRestTime.setText(Utils.formatTime(timeRest));
+        txtEffortTime.setText(Utils.formatTime(timeEffort));
+        txtNumberIntervals.setText(numberIntervals + "");
     }
 }

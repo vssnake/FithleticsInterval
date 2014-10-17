@@ -7,10 +7,16 @@
     </style>
 
 
+
+
     <!-- ActionBar styles -->
     <style name="MyActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">#bf360c</item>
+    </style>
+    <style name="WheelDemoTheme.Light" parent="android:Theme.Holo.Light">
+    </style>
+    <style name="WheelDemoTheme" parent="android:Theme.Holo">
     </style>
 
 </resources>

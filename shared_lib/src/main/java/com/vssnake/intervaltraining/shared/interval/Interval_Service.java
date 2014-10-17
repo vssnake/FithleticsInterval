@@ -63,20 +63,6 @@ public abstract class Interval_Service extends TrainingBase_Service {
 
     int IDTrain;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public boolean onUnbind(Intent intent){
         return true;
     }

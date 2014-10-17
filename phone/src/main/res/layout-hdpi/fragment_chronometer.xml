@@ -61,9 +61,9 @@
         android:layout_toStartOf="@+id/chronometerTotalText_TextView"
         android:text="00:00"
         android:layout_below="@+id/chronometerTotalText_TextView"
-        android:layout_alignLeft="@+id/chronometerTotalText_TextView"
-        android:layout_alignStart="@+id/chronometerTotalText_TextView"
-        android:layout_alignRight="@+id/chronometerTotalText_TextView"
-        android:layout_alignEnd="@+id/chronometerTotalText_TextView"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

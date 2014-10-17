@@ -3,7 +3,7 @@
 
     <string name="app_name_menu_title">Ludus XII</string>
     <string name="app_name_menu_subtitle">HiiT</string>
-    <string name="app_name">FiThletics Interval</string>
+    <string name="app_name">FiThletics Interval Wear</string>
     <string name="tabata">Tabata</string>
 
     <!-- Sections name -->
@@ -39,6 +39,10 @@
     <string name="Resting">Resting</string>
     <string name="Running">Running</string>
     <string name="nothing">Nothing</string>
+    <string name="train_started_error_title">Train Started</string>
+    <string name="train_started_error_description">You can´t modify the list of intervals
+        when a interval is running</string>
+    <string name="only_1_interval_remaining">You can´t remove the last Interval</string>
 
     <!-- NotificationInterval -->
     <string name="Pause">Pause</string>
@@ -54,9 +58,20 @@
     <string name="IE_description">Description of interval:</string>
     <string name="IE_secondsEffort">Seconds of effort:</string>
     <string name="IE_secondsRest">Seconds of rest:</string>
+    <string name="IE_numberIntervals">Number of Intervals:</string>
     <string name="IE_back">Back</string>
     <string name="IE_save">Save</string>
+    <string name="IE_Title_TimeEffort">Time to Effort</string>
+    <string name="IE_Title_TimeRest">Time to Rest</string>
+    <string name="IE_Title_NumberIntervals">Number of Intervals</string>
 
+    <!-- Intervals List -->
+    <string name="interval_effort">Effort Time: %1$s Seconds \n</string>
+    <string name="interval_rest">Rest Time: %1$s Seconds\n</string>
+    <string name="interval_rounds">Rounds: %1$s</string>
+    <string name="interval_Custom_Operation">Additional Options</string>
+    <string name="interval_custom_op_edit">Edit</string>
+    <string name="interval_custom_op_delete">Delete</string>
     <!-- Intervals Types -->
     <string name="interval_30secondSprint_name">30 Seconds Sprint</string>
     <string name="interval_30secondSprint_description"> 30 seconds of sprint
