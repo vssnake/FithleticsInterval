@@ -8,6 +8,4 @@
     app:roundLayout="@layout/activity_list_train_round"
     tools:context="com.vssnake.intervaltraining.wear.interval.ListTrainActivity"
     android:id="@+id/activity_list_train_view_stub">
-
-
 </android.support.wearable.view.WatchViewStub>
