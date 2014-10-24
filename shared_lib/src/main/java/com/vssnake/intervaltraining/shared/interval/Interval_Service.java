@@ -80,7 +80,9 @@ public abstract class Interval_Service extends TrainingBase_Service {
 
     @Override
     public void onCreate(){
+        Log.d(TAG, "Destroy service");
         super.onCreate();
+
 
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
@@ -92,7 +94,7 @@ public abstract class Interval_Service extends TrainingBase_Service {
         if (mIntervalBehaviour == null)
             mIntervalBehaviour = ImplIntervalBehaviour.newInstance(IDTrain, this,
                     new int[]{3000,
-                    2000, 1000});
+                    2000, 1000},this);
 
 
 
@@ -100,8 +102,9 @@ public abstract class Interval_Service extends TrainingBase_Service {
 
     @Override
     public void onDestroy(){
-        super.onDestroy();
         Log.d(TAG, "Destroy service");
+        super.onDestroy();
+
         mTrainingStart = false;
         mTimerHandler.removeCallbacks(runnable);
         mIntervalInterface = null;
@@ -209,7 +212,7 @@ public abstract class Interval_Service extends TrainingBase_Service {
 
         if (mIntervalBehaviour == null)
             mIntervalBehaviour = ImplIntervalBehaviour.newInstance(IDTrain, this, new int[]{3000,
-                    2000, 1000});
+                    2000, 1000},this);
 
         mIntervalBehaviour.resetInterval();
 

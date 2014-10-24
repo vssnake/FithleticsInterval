@@ -66,7 +66,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/infoInterval_tick_image"
-                android:layout_weight="50"
+                android:layout_weight="60"
                 android:src="@drawable/downtick"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"/>
@@ -106,7 +106,8 @@
                     android:layout_weight="50"
                     android:gravity="center"
                     android:textColor="@color/white"
-                    android:layout_marginTop="-10dp" />
+                    android:layout_marginTop="-10dp"
+                    />
             </LinearLayout>
         </LinearLayout>
 

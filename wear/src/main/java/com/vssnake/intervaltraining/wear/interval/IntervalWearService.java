@@ -56,7 +56,7 @@ public class IntervalWearService extends Interval_Service{
         public void changeTrain(long IDTraining){
             mSharedPreference.edit().putInt(StacData.PREFS_TRAIN_KEY,(int)IDTraining).commit();
             endTrain();
-            mIntervalBehaviour.changeTraining(IDTraining);
+            mIntervalBehaviour.changeTraining(IDTraining,getApplicationContext());
         }
 
     }

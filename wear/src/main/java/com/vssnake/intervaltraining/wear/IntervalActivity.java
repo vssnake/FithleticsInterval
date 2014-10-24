@@ -9,15 +9,11 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 
-import com.vssnake.intervaltraining.shared.interval.Interval_Service;
 import com.vssnake.intervaltraining.shared.interval.TrainingServiceConnectors;
 import com.vssnake.intervaltraining.shared.model.IntervalStaticData;
 import com.vssnake.intervaltraining.shared.utils.StacData;
 import com.vssnake.intervaltraining.shared.utils.Utils;
 import com.vssnake.intervaltraining.wear.interval.IntervalWearService;
-
-import java.util.EventListener;
-import java.util.EventObject;
 
 /**
  * Created by unai on 22/07/2014.
@@ -167,6 +163,6 @@ public class IntervalActivity extends IntervalActivity_Base  implements
     }
 
     void initialize(){
-        IntervalStaticData.getIntervalData(this);
+        IntervalStaticData.initIntervalData(this);
     }
 }

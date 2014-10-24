@@ -113,22 +113,29 @@ public class IntervalNotification {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
+
             mBigContentView = new RemoteViews(context.getPackageName(),
                     R.layout.notification_interval);
+
             mBigContentView.setTextViewText(R.id.notifIntervalTotalTime_TextView,totalTime);
             mBigContentView.setOnClickPendingIntent(R.id.notifIntervalClose_Button, closeIntent);
-           mBigContentView.setTextViewText(R.id.notifIntervalTime_TextView, intervalTime);
+            mBigContentView.setTextViewText(R.id.notifIntervalTime_TextView, intervalTime);
             mNotification.bigContentView = mBigContentView;
             mSmallContentView = new RemoteViews(context.getPackageName(),
                     R.layout.notification_interval_l);
             mSmallContentView.setTextViewText(R.id.notifIntervalName_TextView, intervalName);
+            mSmallContentView.setTextViewText(R.id.notifIntervalRound_TextView,
+                    numberInterval + "/" + totalIntervals);
             mSmallContentView.setOnClickPendingIntent(R.id.notifInterval_S_Close_Button,closeIntent);
+            mSmallContentView.setTextViewText(R.id.notifIntervalState_TextView, stateInterval);
             mNotification.contentView = mSmallContentView;
 
         }else{
 
             mSmallContentView = new RemoteViews(context.getPackageName(),
                     R.layout.notification_interval_l);
+            mSmallContentView.setTextViewText(R.id.notifIntervalRound_TextView,
+                    numberInterval + "/" + totalIntervals);
             mSmallContentView.setTextViewText(R.id.notifIntervalName_TextView, intervalName);
             mSmallContentView.setOnClickPendingIntent(R.id.notifInterval_S_Close_Button, closeIntent);
             mNotification.contentView = mBigContentView;

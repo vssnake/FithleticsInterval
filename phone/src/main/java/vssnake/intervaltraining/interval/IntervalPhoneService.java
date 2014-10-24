@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.google.android.gms.wearable.DataMap;
 import com.vssnake.intervaltraining.shared.interval.Interval_Service;
@@ -78,7 +79,7 @@ public class IntervalPhoneService extends Interval_Service implements
         public void changeTrain(long IDTraining){
             mSharedPreference.edit().putInt(StacData.PREFS_TRAIN_KEY,(int)IDTraining).commit();
             endTrain();
-            mIntervalBehaviour.changeTraining(IDTraining);
+            mIntervalBehaviour.changeTraining(IDTraining,getApplicationContext());
 
         }
 

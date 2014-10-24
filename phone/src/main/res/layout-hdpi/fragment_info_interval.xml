@@ -7,7 +7,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:id="@+id/infoInterval_move_View"
-                android:background="#ff5722">
+                android:background="@color/white">
 
 
 
@@ -20,13 +20,14 @@
         android:id="@+id/linearLayout"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="#ff5722">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="50">
+            android:layout_weight="45">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -65,7 +66,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/infoInterval_tick_image"
-            android:layout_weight="50"
+            android:layout_weight="60"
             android:src="@drawable/downtick"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"/>
@@ -83,7 +84,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="50">
+            android:layout_weight="45">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -113,12 +114,21 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:id="@+id/infoInterval_list_name"
-        android:layout_above="@+id/linearLayout"
         android:layout_centerHorizontal="true"
         android:layout_alignParentEnd="true"
         android:headerDividersEnabled="false"
         android:footerDividersEnabled="false"
-        android:background="@android:color/white"/>
+        android:background="@android:color/white"
+        android:layout_above="@+id/infoInterval_AddButton"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:id="@+id/infoInterval_AddButton"
+        android:layout_above="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        />
 
 
 </RelativeLayout>

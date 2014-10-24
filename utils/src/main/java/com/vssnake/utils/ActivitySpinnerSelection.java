@@ -204,7 +204,7 @@ public class ActivitySpinnerSelection extends Activity {
 
             wheelVertical.setCyclic(true);
             wheelVertical.setInterpolator(new AnticipateOvershootInterpolator());
-            wheelVertical.setMinimumWidth(120);
+            wheelVertical.setMinimumWidth(100);
             wheelVertical.setCurrentItem(0);
             parent.addView(wheelVertical);
         }

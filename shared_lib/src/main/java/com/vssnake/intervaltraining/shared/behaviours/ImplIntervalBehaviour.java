@@ -1,5 +1,6 @@
 package com.vssnake.intervaltraining.shared.behaviours;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.vssnake.intervaltraining.shared.interval.TrainingServiceInterface;
@@ -38,11 +39,14 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
 
     long mMillisecondsTotal;
 
+    Context mContext;
+
     private ImplIntervalBehaviour(int IDTraining,TrainingServiceInterface iIntervalService,
-                                  int[] soundsTimeArray){
+                                  int[] soundsTimeArray,Context context){
         mIntervalData = new IntervalData();
 
-        changeTraining(IDTraining);
+        this.mContext = context;
+        changeTraining(IDTraining,mContext);
 
         this.mTrainingServiceInterface = iIntervalService;
 
@@ -60,8 +64,8 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
     public static ImplIntervalBehaviour
                     newInstance (int IDTraining,
                                  TrainingServiceInterface iIntervalService,
-                    int[] soundsTimeArray){
-        return new ImplIntervalBehaviour(IDTraining,iIntervalService,soundsTimeArray);
+                    int[] soundsTimeArray,Context context){
+        return new ImplIntervalBehaviour(IDTraining,iIntervalService,soundsTimeArray,context);
     }
 
     /***
@@ -158,8 +162,10 @@ public class ImplIntervalBehaviour implements IntervalBehaviour {
     }
 
     @Override
-    public boolean changeTraining(long id) {
-        IntervalStaticData.IntervalData intervalData = IntervalStaticData.intervalData.get((int)id);
+    public boolean changeTraining(long id,Context context) {
+        IntervalStaticData.IntervalData intervalData = IntervalStaticData.initIntervalData(context)
+                .get((int) id);
+
         if (intervalData!=null){
             this.mTotalIntervals = intervalData.getmTotalIntervals();
             this.mTimeToRest = intervalData.getmTimeResting()*1000;

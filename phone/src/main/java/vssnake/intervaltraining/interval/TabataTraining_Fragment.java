@@ -40,7 +40,7 @@ public class TabataTraining_Fragment extends TabataTrainingBase_Fragment impleme
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().bindService(intent,mConnection, Context.BIND_ABOVE_CLIENT);
+        getActivity().bindService(intent,mConnection, Context.BIND_AUTO_CREATE);
         getActivity().startService(intent);
 
 

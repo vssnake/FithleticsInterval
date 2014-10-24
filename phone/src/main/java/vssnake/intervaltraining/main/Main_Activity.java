@@ -76,7 +76,7 @@ public class Main_Activity extends MainBase_Activity {
 
     void initialize(){
        mSharedPreferences = getSharedPreferences(StacData.BASIC_CONFIG_PREFS, 0);
-       IntervalStaticData.getIntervalData(this);
+       IntervalStaticData.initIntervalData(this);
        int idTraining =  mSharedPreferences.getInt(StacData.PREFS_TRAIN_KEY,-1);
         if (idTraining== -1 || idTraining >= IntervalStaticData.intervalData.size()){
             mSharedPreferences.edit().putInt(StacData.PREFS_TRAIN_KEY,0).commit();

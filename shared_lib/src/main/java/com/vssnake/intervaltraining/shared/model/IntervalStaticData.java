@@ -43,7 +43,7 @@ public class IntervalStaticData {
 
     public static List<IntervalData> intervalData;
 
-    public static List<IntervalData> getIntervalData(Context context){
+    public static List<IntervalData> initIntervalData(Context context){
         File fileDir =context.getFilesDir();
 
         if (intervalDataManager == null){
